@@ -11,7 +11,7 @@ AFRAME.registerComponent('potreepointcloud', {
   tick: function () {
     if(!isInit) {
       //potreeCustomScene = new Potree.CustomScene(this.el.object3D);
-      viewer = new Potree.Viewer(null, {customScene: this.el.sceneEl.object3D, camera: this.el.sceneEl.camera, renderer: this.el.sceneEl.renderer});
+      viewer = new Potree.CustomViewer(this.el.object3D, this.el.sceneEl.renderer, this.el.sceneEl.camera);
       var that = this;
       viewer.setMaterial("RGB");
       Potree.loadPointCloud("../pointclouds/lion_takanawa/cloud.js", "lion", function(e){
@@ -24,7 +24,7 @@ AFRAME.registerComponent('potreepointcloud', {
 
         that.el.setObject3D('lion', that.mesh);
         
-        //viewer.fitToScreen();
+        viewer.fitToScreen();
 		  });
       isInit = true;
     }
