@@ -12739,6 +12739,8 @@ Potree.Viewer = class PotreeViewer extends THREE.EventDispatcher{
 		this.highQualityRenderer = null;
 		this.edlRenderer = null;
 		this.renderer = null;
+
+		if(args.renderer) this.renderer = args.renderer;
 		
 		this.scene = null;
 		
@@ -12756,6 +12758,8 @@ Potree.Viewer = class PotreeViewer extends THREE.EventDispatcher{
 		this.initThree();
 		
 		let scene = new Potree.Scene(this.renderer);
+		if(args.customScene) scene = new Potree.CustomScene(args.customScene, args.camera);
+
 		this.setScene(scene);
 		
 		{
@@ -12827,7 +12831,7 @@ Potree.Viewer = class PotreeViewer extends THREE.EventDispatcher{
 		}
 
 		// start rendering!
-		requestAnimationFrame(this.loop.bind(this));
+		//requestAnimationFrame(this.loop.bind(this));
 		
 	}
 
@@ -13821,22 +13825,26 @@ Potree.Viewer = class PotreeViewer extends THREE.EventDispatcher{
     }	
 	
 	initThree(){
-		let width = this.renderArea.clientWidth;
-		let height = this.renderArea.clientHeight;
+		
+		if(!this.renderer) {
+			let width = this.renderArea.clientWidth;
+			let height = this.renderArea.clientHeight;
 
-		this.renderer = new THREE.WebGLRenderer({premultipliedAlpha: false});
-		this.renderer.setSize(width, height);
-		this.renderer.autoClear = false;
-		this.renderArea.appendChild(this.renderer.domElement);
-		this.renderer.domElement.tabIndex = "2222";
+			this.renderer = new THREE.WebGLRenderer({premultipliedAlpha: false});
+			this.renderer.setSize(width, height);
+		/*this.renderer.autoClear = false;*/
+			this.renderArea.appendChild(this.renderer.domElement);
+		/*this.renderer.domElement.tabIndex = "2222";
 		this.renderer.domElement.addEventListener("mousedown", function(){
 			this.renderer.domElement.focus();
-		}.bind(this));
+		}.bind(this));*/
+	}
+	else this.renderArea = this.renderer.domElement;
 		
 		this.skybox = Potree.utils.loadSkybox(new URL(Potree.resourcePath + "/textures/skybox2/").href);
 
 		// enable frag_depth extension for the interpolation shader, if available
-		this.renderer.context.getExtension("EXT_frag_depth");
+		/*this.renderer.context.getExtension("EXT_frag_depth");*/
 	}
 
 	update(delta, timestamp){
@@ -14095,7 +14103,7 @@ Potree.Viewer = class PotreeViewer extends THREE.EventDispatcher{
 
 	loop(timestamp) {
 		
-		requestAnimationFrame(this.loop.bind(this));
+		//requestAnimationFrame(this.loop.bind(this));
 		
 		this.stats.begin();
 		
@@ -14181,7 +14189,7 @@ class PotreeRenderer{
 		
 		if(Potree.framenumber > 20 && false){
 			
-			if(Potree.__dems === undefined){
+			/*if(Potree.__dems === undefined){
 				Potree.__dems = {};
 				Potree.__dems.targetElevation = new THREE.WebGLRenderTarget( 128, 128, { 
 					minFilter: THREE.NearestFilter, 
@@ -14358,14 +14366,14 @@ class PotreeRenderer{
 				Potree.utils.screenPass.render(viewer.renderer, dems.medianFilterMaterial, dems.targetMedian);
 
 				plane.material = new THREE.MeshBasicMaterial({map: dems.targetMedian.texture});
-			}
+			}*/
 		}
 		
 
 		//var queryAll = Potree.startQuery("All", viewer.renderer.getContext());
 		
 		// render skybox
-		if(viewer.background === "skybox"){
+		/*if(viewer.background === "skybox"){
 			viewer.renderer.clear(true, true, false);
 			viewer.skybox.camera.rotation.copy(viewer.scene.camera.rotation);
 			viewer.skybox.camera.fov = viewer.scene.camera.fov;
@@ -14374,14 +14382,14 @@ class PotreeRenderer{
 			viewer.renderer.render(viewer.skybox.scene, viewer.skybox.camera);
 		}else if(viewer.background === "gradient"){
 			//viewer.renderer.clear(true, true, false);
-			viewer.renderer.render(viewer.scene.sceneBG, viewer.scene.cameraBG);
+			//viewer.renderer.render(viewer.scene.sceneBG, viewer.scene.cameraBG);
 		}else if(viewer.background === "black"){
 			viewer.renderer.setClearColor(0x000000, 1);
 			viewer.renderer.clear(true, true, false);
 		}else if(viewer.background === "white"){
 			viewer.renderer.setClearColor(0xFFFFFF, 1);
 			viewer.renderer.clear(true, true, false);
-		}
+		}*/
 		
 		
 		
@@ -14407,13 +14415,13 @@ class PotreeRenderer{
 		
 		
 		//var queryPC = Potree.startQuery("PointCloud", viewer.renderer.getContext());
-		viewer.renderer.render(viewer.scene.scenePointCloud, viewer.scene.camera);
+		//viewer.renderer.render(viewer.scene.scenePointCloud, viewer.scene.camera);
 		//Potree.endQuery(queryPC, viewer.renderer.getContext());
 		
 		// render scene
-		viewer.renderer.render(viewer.scene.scene, viewer.scene.camera);
+		//viewer.renderer.render(viewer.scene.scene, viewer.scene.camera);
 		
-		viewer.volumeTool.update();
+		/*viewer.volumeTool.update();
 		viewer.renderer.render(viewer.volumeTool.sceneVolume, viewer.scene.camera);
 		viewer.renderer.render(viewer.controls.sceneControls, viewer.scene.camera);
 		
@@ -14425,7 +14433,7 @@ class PotreeRenderer{
 		
 		viewer.renderer.render(viewer.measuringTool.sceneMeasurement, viewer.scene.camera);
 		viewer.renderer.render(viewer.profileTool.sceneProfile, viewer.scene.camera);
-		viewer.renderer.render(viewer.transformationTool.sceneTransform, viewer.scene.camera);
+		viewer.renderer.render(viewer.transformationTool.sceneTransform, viewer.scene.camera);*/
 		
 		
 		//Potree.endQuery(queryAll, viewer.renderer.getContext());
@@ -14534,7 +14542,7 @@ class HighQualityRenderer{
 			viewer.renderer.render(viewer.skybox.scene, viewer.skybox.camera);
 		}else if(viewer.background === "gradient"){
 			viewer.renderer.clear();
-			viewer.renderer.render(viewer.scene.sceneBG, viewer.scene.cameraBG);
+			//viewer.renderer.render(viewer.scene.sceneBG, viewer.scene.cameraBG);
 		}else if(viewer.background === "black"){
 			viewer.renderer.setClearColor(0x000000, 0);
 			viewer.renderer.clear();
@@ -14543,7 +14551,7 @@ class HighQualityRenderer{
 			viewer.renderer.clear();
 		}
 		
-		viewer.renderer.render(viewer.scene.scene, viewer.scene.camera);
+		//viewer.renderer.render(viewer.scene.scene, viewer.scene.camera);
 		
 		for(let pointcloud of viewer.scene.pointclouds){
 		
@@ -14706,7 +14714,7 @@ class EDLRenderer{
 			viewer.renderer.render(viewer.skybox.scene, viewer.skybox.camera);
 		}else if(viewer.background === "gradient"){
 			viewer.renderer.clear();
-			viewer.renderer.render(viewer.scene.sceneBG, viewer.scene.cameraBG);
+			//viewer.renderer.render(viewer.scene.sceneBG, viewer.scene.cameraBG);
 		}else if(viewer.background === "black"){
 			viewer.renderer.setClearColor(0x000000, 0);
 			viewer.renderer.clear();
@@ -14716,7 +14724,7 @@ class EDLRenderer{
 		}
 		
 		
-		viewer.renderer.render(viewer.scene.scene, viewer.scene.camera);
+		//viewer.renderer.render(viewer.scene.scene, viewer.scene.camera);
 		
 		viewer.renderer.clearTarget( this.rtColor, true, true, true );
 		
@@ -14791,7 +14799,7 @@ class EDLRenderer{
 		
 		//var queryPC = Potree.startQuery("PointCloud", viewer.renderer.getContext());
 		viewer.renderer.render(viewer.scene.scenePointCloud, viewer.scene.camera, this.rtColor);
-		viewer.renderer.render(viewer.scene.scene, viewer.scene.camera, this.rtColor);
+		//viewer.renderer.render(viewer.scene.scene, viewer.scene.camera, this.rtColor);
 		//Potree.endQuery(queryPC, viewer.renderer.getContext());
 		
 		
