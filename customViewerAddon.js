@@ -70,11 +70,6 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 		this.scene = null;
 		
 		this.inputHandler = null;
-
-		this.measuringTool = null;
-		this.profileTool = null;
-		this.volumeTool = null;
-		this.transformationTool = null;
 		
 		this.skybox = null;
 		this.clock = new THREE.Clock();
@@ -89,17 +84,8 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 			this.inputHandler = new Potree.InputHandler(this);
 			this.inputHandler.setScene(this.scene);
 			
-			this.measuringTool = new Potree.MeasuringTool(this);
-			this.profileTool = new Potree.ProfileTool(this);
-			this.volumeTool = new Potree.VolumeTool(this);
-			this.transformationTool = new Potree.TransformationTool(this);
-			
 			this.createControls();
 			
-			this.measuringTool.setScene(this.scene);
-			this.profileTool.setScene(this.scene);
-			this.volumeTool.setScene(this.scene);
-			//this.transformationTool.setScene(this.scene);
 			
 			let onPointcloudAdded = (e) => {
 				this.updateHeightRange();
@@ -121,9 +107,6 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 			
 			this.addEventListener("scene_changed", (e) => {
 				this.inputHandler.setScene(e.scene);
-				this.measuringTool.setScene(e.scene);
-				this.profileTool.setScene(e.scene);
-				this.volumeTool.setScene(e.scene);
 				this.updateHeightRange();
 				
 				if(!e.scene.hasEventListener("pointcloud_added", onPointcloudAdded)){
