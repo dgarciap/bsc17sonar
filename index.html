@@ -7,30 +7,30 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Potree Viewer</title>
 
-	<link rel="stylesheet" type="text/css" href="../build/potree/potree.css">
-	<link rel="stylesheet" type="text/css" href="../libs/jquery-ui/jquery-ui.min.css">
-	<link rel="stylesheet" type="text/css" href="../libs/perfect-scrollbar/css/perfect-scrollbar.css">
-	<link rel="stylesheet" href="../libs/openlayers3/ol.css" type="text/css">
+	<link rel="stylesheet" type="text/css" href="build/potree/potree.css">
+	<link rel="stylesheet" type="text/css" href="libs/jquery-ui/jquery-ui.min.css">
+	<link rel="stylesheet" type="text/css" href="libs/perfect-scrollbar/css/perfect-scrollbar.css">
+	<link rel="stylesheet" href="libs/openlayers3/ol.css" type="text/css">
 
 	<script src="https://aframe.io/releases/0.5.0/aframe.js"></script>
   </head>
 
   <body>
   
-	<script src="../libs/jquery/jquery-3.1.1.js"></script>
+	<script src="libs/jquery/jquery-3.1.1.js"></script>
 	
-	<!--<script src="../libs/other/webgl-debug.js"></script>-->
-	<script src="../libs/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
-	<script src="../libs/jquery-ui/jquery-ui.min.js"></script>
-	<script src="../libs/other/stats.min.js"></script>
-	<script src="../libs/other/BinaryHeap.js"></script>
-	<script src="../libs/tween/tween.min.js"></script>
-	<script src="../libs/d3/d3.js"></script>
-	<script src="../libs/proj4/proj4.js"></script>
-	<script src="../libs/openlayers3/ol.js"></script>
-    <script src="../libs/i18next/i18next.js"></script>
+	<!--<script src="libs/other/webgl-debug.js"></script>-->
+	<script src="libs/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
+	<script src="libs/jquery-ui/jquery-ui.min.js"></script>
+	<script src="libs/other/stats.min.js"></script>
+	<script src="libs/other/BinaryHeap.js"></script>
+	<script src="libs/tween/tween.min.js"></script>
+	<script src="libs/d3/d3.js"></script>
+	<script src="libs/proj4/proj4.js"></script>
+	<script src="libs/openlayers3/ol.js"></script>
+    <script src="libs/i18next/i18next.js"></script>
 	
-	<script src="../libs/potree/potree.js"></script>
+	<script src="libs/potree/potree.js"></script>
 	<script src="customSceneAddon.js"></script>
 	<script src="customViewerAddon.js"></script>
 	<script src="customRendererAddon.js"></script>
@@ -38,8 +38,8 @@
 	<!-- INCLUDE ADDITIONAL DEPENDENCIES HERE -->
 	<!-- INCLUDE SETTINGS HERE -->
 
-	<script src="../libs/plasio/js/laslaz.js"></script>
-	<script src="../libs/plasio/vendor/bluebird.js"></script>
+	<script src="libs/plasio/js/laslaz.js"></script>
+	<script src="libs/plasio/vendor/bluebird.js"></script>
 
 	<script>
 	
@@ -65,7 +65,7 @@
 		});*/
 		
 		// Sigeom
-		/*Potree.loadPointCloud("../pointclouds/lion_takanawa/cloud.js", "lion", function(e){
+		/*Potree.loadPointCloud("pointclouds/lion_takanawa/cloud.js", "lion", function(e){
 			viewer.scene.addPointCloud(e.pointcloud);
 			
 			viewer.fitToScreen();
@@ -77,6 +77,10 @@
 		<a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
 		<a-entity potreepointcloud> </a-entity>
 		<a-sky color="#FFFFFF"></a-sky>
+
+		<a-camera id="app-camera">
+			<a-cursor></a-cursor>
+		</a-camera>
 	</a-scene>
 	
 	

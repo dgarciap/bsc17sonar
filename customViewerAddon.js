@@ -69,8 +69,6 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 		
 		this.scene = null;
 		
-		this.inputHandler = null;
-		
 		this.skybox = null;
 		this.clock = new THREE.Clock();
 		this.background = null;
@@ -81,8 +79,6 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 		this.setScene(scene);
 		
 		{
-			this.inputHandler = new Potree.InputHandler(this);
-			this.inputHandler.setScene(this.scene);
 			
 			this.createControls();
 			
@@ -106,7 +102,6 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 			};
 			
 			this.addEventListener("scene_changed", (e) => {
-				this.inputHandler.setScene(e.scene);
 				this.updateHeightRange();
 				
 				if(!e.scene.hasEventListener("pointcloud_added", onPointcloudAdded)){
@@ -128,7 +123,6 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 			this.setPointBudget(1*1000*1000);
 			this.setShowBoundingBox(false);
 			this.setFreeze(false);
-			this.setNavigationMode(Potree.OrbitControls);
 			this.setBackground("gradient");
 			
 			this.scaleFactor = 1;
@@ -137,7 +131,7 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 		}
 
 		// start rendering!
-		requestAnimationFrame(this.loop.bind(this));
+		//requestAnimationFrame(this.loop.bind(this));
 		
 	}
 
@@ -790,36 +784,6 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 		}
 	};
 	
-	zoomTo(node, factor){
-		//this.scene.camera.zoomTo(node, factor);
-		let view = this.scene.view;
-		
-		let camera = this.scene.camera.clone();
-		camera.position.copy(view.position);
-		camera.lookAt(view.getPivot());
-		camera.updateMatrixWorld();
-		camera.zoomTo(node, factor);
-		
-		var bs;
-		if(node.boundingSphere){
-			bs = node.boundingSphere;
-		}else if(node.geometry && node.geometry.boundingSphere){
-			bs = node.geometry.boundingSphere;
-		}else{
-			bs = node.boundingBox.getBoundingSphere();
-		}
-		
-		bs = bs.clone().applyMatrix4(node.matrixWorld); 
-		
-		view.position.copy(camera.position);
-		view.radius = view.position.distanceTo(bs.center);
-		//let target = bs.center;
-		//target.z = target.z - bs.radius * 0.8;
-		//view.lookAt(target);
-		
-		this.dispatchEvent({"type": "zoom_to", "viewer": this});
-	};
-	
 	showAbout(){
 		$(function() {
 			$( "#about-panel" ).dialog();
@@ -845,15 +809,6 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 		}
 
 		return box;
-	};
-	
-	fitToScreen(factor = 1){
-		var box = this.getBoundingBox(this.scene.pointclouds);
-		
-		var node = new THREE.Object3D();
-		node.boundingBox = box;
-		
-		this.zoomTo(node, factor);
 	};
 	
 	setTopView(){
@@ -1276,38 +1231,12 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 			var result = Potree.updatePointClouds(scene.pointclouds, camera, this.renderer);
 			visibleNodes = result.visibleNodes.length;
 			visiblePoints = result.numVisiblePoints;
-			camera.near = result.lowestSpacing * 10.0;
+			/*camera.near = result.lowestSpacing * 10.0;
 			camera.far = -this.getBoundingBox().applyMatrix4(camera.matrixWorldInverse).min.z;
-			camera.far = Math.max(camera.far * 1.5, 1000);
+			camera.far = Math.max(camera.far * 1.5, 1000);*/
 		}
 		
-		camera.fov = this.fov;
-		
-		// Navigation mode changed?
-		if(this.getControls(scene.view.navigationMode) !== this.controls){
-			if(this.controls){
-				this.controls.enabled = false;
-				this.inputHandler.removeInputListener(this.controls);
-			}
-			
-			this.controls = this.getControls(scene.view.navigationMode);
-			this.controls.enabled = true;
-			this.inputHandler.addInputListener(this.controls);
-		}
-		//
-		if(this.controls !== null){
-			this.controls.setScene(scene);
-			this.controls.update(delta);
-			
-			camera.position.copy(scene.view.position);
-			//camera.rotation.x = scene.view.pitch;
-			//camera.rotation.y = scene.view.yaw;
-			
-			//camera.lookAt(scene.view.getPivot());
-			camera.rotation.order = "ZXY";
-			camera.rotation.x = Math.PI / 2 + this.scene.view.pitch;
-			camera.rotation.z = this.scene.view.yaw;
-		}
+		//camera.fov = this.fov;
 
 		{ // update clip boxes
 			//let boxes = this.scene.profiles.reduce( (a, b) => {return a.boxes.concat(b.boxes)}, []);
@@ -1328,39 +1257,6 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 			
 			for(let pointcloud of this.scene.pointclouds){
 				pointcloud.material.setClipBoxes(clipBoxes);
-			}
-		}
-
-		{ // update annotations
-			var distances = [];
-			for(let ann of this.scene.annotations){
-				var screenPos = ann.position.clone().project(this.scene.camera);
-				
-				screenPos.x = this.renderArea.clientWidth * (screenPos.x + 1) / 2;
-				screenPos.y = this.renderArea.clientHeight * (1 - (screenPos.y + 1) / 2);
-				
-				ann.domElement.style.left = Math.floor(screenPos.x - ann.domElement.clientWidth / 2) + "px";
-				ann.domElement.style.top = Math.floor(screenPos.y - ann.elOrdinal.clientHeight / 2) + "px";
-				
-				
-				
-				distances.push({annotation: ann, distance: screenPos.z});
-
-				if(-1 > screenPos.z || screenPos.z > 1){
-					ann.domElement.style.display = "none";
-				}else{
-					ann.domElement.style.display = "initial";
-				}
-			}
-			
-			distances.sort(function(a,b){return b.distance - a.distance});
-			
-			for(var i = 0; i < distances.length; i++){
-				var ann = distances[i].annotation;
-				ann.domElement.style.zIndex = "" + i;
-				if(ann.descriptionVisible){
-					ann.domElement.style.zIndex += 100;
-				}
 			}
 		}
 		
@@ -1390,7 +1286,7 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 
 	loop(timestamp) {
 		
-		requestAnimationFrame(this.loop.bind(this));
+		//requestAnimationFrame(this.loop.bind(this));
 		
 		this.stats.begin();
 		

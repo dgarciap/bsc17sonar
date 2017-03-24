@@ -119,8 +119,8 @@ Potree.CustomScene = class extends THREE.EventDispatcher{
 		this.referenceFrame.matrixAutoUpdate = false;
 		this.scenePointCloud.add(this.referenceFrame);
 
-		this.camera.up.set(0, 0, 1);
-		this.camera.position.set(1000, 1000, 1000);
+		//this.camera.up.set(0, 0, 1);
+		//this.camera.position.set(1000, 1000, 1000);
 		
 		this.directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
 		this.directionalLight.position.set( 10, 10, 10 );
