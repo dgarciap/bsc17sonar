@@ -14706,7 +14706,7 @@ class EDLRenderer{
 			viewer.renderer.render(viewer.skybox.scene, viewer.skybox.camera);
 		}else if(viewer.background === "gradient"){
 			viewer.renderer.clear();
-			viewer.renderer.render(viewer.scene.sceneBG, viewer.scene.cameraBG);
+			//viewer.renderer.render(viewer.scene.sceneBG, viewer.scene.cameraBG);
 		}else if(viewer.background === "black"){
 			viewer.renderer.setClearColor(0x000000, 0);
 			viewer.renderer.clear();
@@ -14716,7 +14716,7 @@ class EDLRenderer{
 		}
 		
 		
-		viewer.renderer.render(viewer.scene.scene, viewer.scene.camera);
+		//viewer.renderer.render(viewer.scene.scene, viewer.scene.camera);
 		
 		viewer.renderer.clearTarget( this.rtColor, true, true, true );
 		
@@ -14788,10 +14788,14 @@ class EDLRenderer{
 			}
 			
 		}
+
+		//var bufferScene = new THREE.Scene();
+
+		//bufferScene.add(viewer.scene.scenePointCloud);
 		
 		//var queryPC = Potree.startQuery("PointCloud", viewer.renderer.getContext());
-		viewer.renderer.render(viewer.scene.scenePointCloud, viewer.scene.camera, this.rtColor);
-		viewer.renderer.render(viewer.scene.scene, viewer.scene.camera, this.rtColor);
+		//viewer.renderer.render(viewer.scene.pointclouds, viewer.scene.camera, this.rtColor);
+		/*viewer.renderer.render(viewer.scene.scene, viewer.scene.camera, this.rtColor);*/
 		//Potree.endQuery(queryPC, viewer.renderer.getContext());
 		
 		
@@ -14812,9 +14816,6 @@ class EDLRenderer{
 				}
 			}
 		}
-		
-		viewer.volumeTool.update();
-		viewer.renderer.render(viewer.volumeTool.sceneVolume, viewer.scene.camera, this.rtColor);
 			
 		if(viewer.scene.pointclouds.length > 0){
 			
@@ -14826,7 +14827,7 @@ class EDLRenderer{
 			
 			//var query = Potree.startQuery("EDL", viewer.renderer.getContext());
 			
-			{ // EDL OCCLUSION PASS
+			/*{ // EDL OCCLUSION PASS
 				this.edlMaterial.uniforms.screenWidth.value = width;
 				this.edlMaterial.uniforms.screenHeight.value = height;
 				this.edlMaterial.uniforms.colorMap.value = this.rtColor;
@@ -14837,8 +14838,8 @@ class EDLRenderer{
 				this.edlMaterial.depthWrite = true;
 				this.edlMaterial.transparent = true;
 			
-				Potree.utils.screenPass.render(viewer.renderer, this.edlMaterial);
-			}	
+				//Potree.utils.screenPass.render(viewer.renderer, this.edlMaterial);
+			}*/
 			
 //			viewer.renderer.render(viewer.scene.scene, viewer.scene.camera);
 			
@@ -14846,19 +14847,10 @@ class EDLRenderer{
 			//Potree.resolveQueries(viewer.renderer.getContext());
 			
 			
-			viewer.renderer.clearDepth();
+			//viewer.renderer.clearDepth();
 			//viewer.volumeTool.update();
 			//viewer.renderer.render(viewer.volumeTool.sceneVolume, viewer.scene.camera);
-			viewer.renderer.render(viewer.controls.sceneControls, viewer.scene.camera);
 			
-			
-			viewer.measuringTool.update();
-			viewer.profileTool.update();
-			viewer.transformationTool.update();
-			
-			viewer.renderer.render(viewer.measuringTool.sceneMeasurement, viewer.scene.camera);
-			viewer.renderer.render(viewer.profileTool.sceneProfile, viewer.scene.camera);
-			viewer.renderer.render(viewer.transformationTool.sceneTransform, viewer.scene.camera);
 			
 			//viewer.profileTool.render();
 			//viewer.volumeTool.render();

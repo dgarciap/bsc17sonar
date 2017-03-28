@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="libs/openlayers3/ol.css" type="text/css">
 
 	<script src="https://aframe.io/releases/0.5.0/aframe.js"></script>
+	<!--<script src="libs/aframe/aframe.js"></script>-->
   </head>
 
   <body>
@@ -75,10 +76,10 @@
 
 	<a-scene>
 		<a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-		<a-entity potreepointcloud> </a-entity>
+		<a-entity potreepointcloud rotation="-90 0 0" position="0 -34.35 0"> </a-entity>
 		<a-sky color="#FFFFFF"></a-sky>
 
-		<a-camera id="app-camera">
+		<a-camera id="app-camera" rotation="0 250 0">
 			<a-cursor></a-cursor>
 		</a-camera>
 	</a-scene>
