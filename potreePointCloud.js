@@ -17,8 +17,8 @@ AFRAME.registerComponent('potreepointcloud', {
       var that = this;
 
       viewer.setMaterial("Elevation");
-      viewer.setPointSize(10);
-      viewer.setPointSizing("Fixed");
+      viewer.setPointSize(0.23);
+      viewer.setPointSizing("Adaptive");
       viewer.setQuality("Squares");
       //viewer.setPointBudget(0.04*1000*1000);
       viewer.setPointBudget(1*1000*1000);
@@ -28,10 +28,10 @@ AFRAME.registerComponent('potreepointcloud', {
         viewer.scene.addPointCloud(e.pointcloud);
 
         e.pointcloud.position.x = 0;
-        e.pointcloud.position.y = -40;
+        e.pointcloud.position.y = -35;
         e.pointcloud.position.z = 0;
 
-        e.pointcloud.rotation.x = 0;
+        e.pointcloud.rotation.x = -0.5*Math.PI;
         e.pointcloud.rotation.y = 0;
         e.pointcloud.rotation.z = 0;
 
@@ -46,6 +46,7 @@ AFRAME.registerComponent('potreepointcloud', {
 
         that.el.setObject3D('lion', that.mesh);
       
+        viewer.setElevationRange(-12.64, 50);
 		  });
       isInit = true;
 
