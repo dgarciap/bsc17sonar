@@ -28,16 +28,16 @@ AFRAME.registerComponent('potreepointcloud', {
         viewer.scene.addPointCloud(e.pointcloud);
 
         e.pointcloud.position.x = 0;
-        e.pointcloud.position.y = -35;
+        e.pointcloud.position.y = -15;
         e.pointcloud.position.z = 0;
 
         e.pointcloud.rotation.x = -0.5*Math.PI;
         e.pointcloud.rotation.y = 0;
         e.pointcloud.rotation.z = 0;
 
-        e.pointcloud.scale.x = 0.05;
-        e.pointcloud.scale.y = 0.05;
-        e.pointcloud.scale.z = 0.05;
+        e.pointcloud.scale.x = 0.02;
+        e.pointcloud.scale.y = 0.02;
+        e.pointcloud.scale.z = 0.02;
 
         that.material = e.pointcloud.material;
         that.geometry = e.pointcloud.pcoGeometry;
@@ -46,7 +46,8 @@ AFRAME.registerComponent('potreepointcloud', {
 
         that.el.setObject3D('lion', that.mesh);
       
-        viewer.setElevationRange(-12.64, 50);
+        viewer.setElevationRange(-4, -1);
+        //viewer.setElevationRange(-100, 1);
 		  });
       isInit = true;
 
