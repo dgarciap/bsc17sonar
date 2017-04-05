@@ -34,11 +34,14 @@
     <script src="libs/i18next/i18next.js"></script>
 	
 	<script src="libs/potree/potree.js"></script>
-	<script src="customSceneAddon.js"></script>
-	<script src="customViewerAddon.js"></script>
-	<script src="customRendererAddon.js"></script>
-	<script src="vertexShaderAddon.js"></script>
-	<script src="potreePointCloud.js"></script>
+	<script src="./app/potreeExtensions/customSceneAddon.js"></script>
+	<script src="./app/potreeExtensions/customViewerAddon.js"></script>
+	<script src="./app/potreeExtensions/customRendererAddon.js"></script>
+	<script src="./app/potreeExtensions/vertexShaderAddon.js"></script>
+	<script src="./app/aframeComponents/potreePointCloud.js"></script>
+	<script src="./app/config.js"></script>
+	<script src="./app/tileHeights.js"></script>
+	<script src="./app/main.js"></script>
 	<!-- INCLUDE ADDITIONAL DEPENDENCIES HERE -->
 	<!-- INCLUDE SETTINGS HERE -->
 
@@ -79,10 +82,15 @@
 
 	<a-scene>
 		<a-box position="0 0 0" rotation="0 45 0" color="#4CC3D9"></a-box>
-		<a-entity potreepointcloud> </a-entity>
+		<a-entity id="tile00" class="tile" potreepointcloud="pointcloudUrl: pointclouds/test00/cloud.js;tileC: 0;tileR: 0"> </a-entity>
+		<!--<a-entity potreepointcloud="pointcloudUrl: pointclouds/test01/cloud.js;tileC: 1;tileR: 0"> </a-entity>
+		<a-entity potreepointcloud="pointcloudUrl: pointclouds/test02/cloud.js;tileC: 2;tileR: 0"> </a-entity>
+		<a-entity potreepointcloud="pointcloudUrl: pointclouds/test03/cloud.js;tileC: 3;tileR: 0"> </a-entity>
+		-->
+		
 		<a-sky color="#000000"></a-sky>
 
-		<a-camera id="app-camera" rotation="0 310 0" position="40 0 -30">
+		<a-camera id="app-camera" rotation="0 310 0" position="20 0 -30">
 			<a-cursor></a-cursor>
 		</a-camera>
 	</a-scene>
