@@ -39,33 +39,33 @@ AFRAME.registerComponent('potreepointcloud', {
       var that = this;
 
       Potree.loadPointCloud(this.data.pointcloudUrl, "lion", function(e) {
-        that.viewer.scene.addPointCloud(e.pointcloud);
+          that.viewer.scene.addPointCloud(e.pointcloud);
 
-        e.pointcloud.position.x = that.data.tileC*that.data.tileSize*that.data.scale;
-        e.pointcloud.position.y = tileHeights[that.data.tileR][that.data.tileC] || -15;
-        e.pointcloud.position.z = -that.data.tileR*that.data.tileSize*that.data.scale;
+          e.pointcloud.position.x = that.data.tileC*that.data.tileSize*that.data.scale;
+          e.pointcloud.position.y = tileHeights[that.data.tileR][that.data.tileC] || -15;
+          e.pointcloud.position.z = -that.data.tileR*that.data.tileSize*that.data.scale;
 
-        if(!tileHeights[that.data.tileR][that.data.tileC]) 
-          console.error("There is no tile height for " + that.data.tileR + " , " + that.data.tileC);
+          if(!tileHeights[that.data.tileR][that.data.tileC]) 
+            console.error("There is no tile height for " + that.data.tileR + " , " + that.data.tileC);
 
-        e.pointcloud.rotation.x = -0.5*Math.PI;
-        e.pointcloud.rotation.y = 0;
-        e.pointcloud.rotation.z = 0;
+          e.pointcloud.rotation.x = -0.5*Math.PI;
+          e.pointcloud.rotation.y = 0;
+          e.pointcloud.rotation.z = 0;
 
-        e.pointcloud.scale.x = that.data.scale;
-        e.pointcloud.scale.y = that.data.scale;
-        e.pointcloud.scale.z = that.data.scale;
+          e.pointcloud.scale.x = that.data.scale;
+          e.pointcloud.scale.y = that.data.scale;
+          e.pointcloud.scale.z = that.data.scale;
 
-        that.material = e.pointcloud.material;
-        that.geometry = e.pointcloud.pcoGeometry;
+          that.material = e.pointcloud.material;
+          that.geometry = e.pointcloud.pcoGeometry;
 
-        that.mesh = e.pointcloud;
+          that.mesh = e.pointcloud;
 
-        that.el.setObject3D('lion', that.mesh);
-      
-        that.viewer.setElevationRange(-4, -1);
-        //viewer.setElevationRange(-100, 1);
-		  });
+          that.el.setObject3D('lion', that.mesh);
+
+          that.viewer.setElevationRange(-4, -1);
+          //viewer.setElevationRange(-100, 1);
+      });
       this.isInit = true;
 
     }
@@ -78,5 +78,5 @@ AFRAME.registerComponent('potreepointcloud', {
 
   remove: function () {},
   pause: function () {},
-  play: function () {}
+  play: function () {},
 });
