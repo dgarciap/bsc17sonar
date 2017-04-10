@@ -10,6 +10,7 @@ var loadedTiles = {tiles: {"00": {tileC: 0, tileR: 0}} };
 var appLogic = {};
 
 appLogic.currentTile = {tileR: 0, tileC: 0, tileNum: "00"};
+appLogic.sphereBarrier = undefined;
 
 appLogic.errorLoadingPointcloud = function(tileC, tileR, numTile) {
     //If the tiles does not exist and we are trying to draw a border tile,
@@ -100,15 +101,15 @@ setInterval(function() {
         newLoadedTiles.tiles[numTile] = {tileR: cTileR, tileC: cTileC};
 
         //¿Do I have to load close tiles?
-        if(posInC < 0.3) newLoadedTiles.tiles[""+cTileR+(cTileC-1)] = {tileR: cTileR, tileC: cTileC-1};
-        if(posInC > 0.7) newLoadedTiles.tiles[""+cTileR+(cTileC+1)] = {tileR: cTileR, tileC: cTileC+1};
-        if(posInR < 0.3) newLoadedTiles.tiles[""+(cTileR-1)+cTileC] = {tileR: cTileR-1, tileC: cTileC};
-        if(posInR > 0.7) newLoadedTiles.tiles[""+(cTileR+1)+cTileC] = {tileR: cTileR+1, tileC: cTileC};
+        if(posInC < config.tileLoadArea) newLoadedTiles.tiles[""+cTileR+(cTileC-1)] = {tileR: cTileR, tileC: cTileC-1};
+        if(posInC > 1-config.tileLoadArea) newLoadedTiles.tiles[""+cTileR+(cTileC+1)] = {tileR: cTileR, tileC: cTileC+1};
+        if(posInR < config.tileLoadArea) newLoadedTiles.tiles[""+(cTileR-1)+cTileC] = {tileR: cTileR-1, tileC: cTileC};
+        if(posInR > 1-config.tileLoadArea) newLoadedTiles.tiles[""+(cTileR+1)+cTileC] = {tileR: cTileR+1, tileC: cTileC};
 
-        if(posInR > 0.7 && posInC > 0.7) newLoadedTiles.tiles[""+(cTileR+1)+(cTileC+1)] = {tileR: cTileR+1, tileC: cTileC+1};
-        if(posInR > 0.7 && posInC < 0.3) newLoadedTiles.tiles[""+(cTileR+1)+(cTileC-1)] = {tileR: cTileR+1, tileC: cTileC-1};
-        if(posInR < 0.3 && posInC > 0.7) newLoadedTiles.tiles[""+(cTileR-1)+(cTileC+1)] = {tileR: cTileR-1, tileC: cTileC+1};
-        if(posInR < 0.3 && posInC < 0.3) newLoadedTiles.tiles[""+(cTileR-1)+(cTileC-1)] = {tileR: cTileR-1, tileC: cTileC-1};
+        if(posInR > 1-config.tileLoadArea && posInC > 1-config.tileLoadArea) newLoadedTiles.tiles[""+(cTileR+1)+(cTileC+1)] = {tileR: cTileR+1, tileC: cTileC+1};
+        if(posInR > 1-config.tileLoadArea && posInC < config.tileLoadArea) newLoadedTiles.tiles[""+(cTileR+1)+(cTileC-1)] = {tileR: cTileR+1, tileC: cTileC-1};
+        if(posInR < config.tileLoadArea && posInC > 1-config.tileLoadArea) newLoadedTiles.tiles[""+(cTileR-1)+(cTileC+1)] = {tileR: cTileR-1, tileC: cTileC+1};
+        if(posInR < config.tileLoadArea && posInC < config.tileLoadArea) newLoadedTiles.tiles[""+(cTileR-1)+(cTileC-1)] = {tileR: cTileR-1, tileC: cTileC-1};
 
 
         loadNewTiles(newLoadedTiles, loadedTiles);
@@ -172,3 +173,88 @@ function removeOldTiles(newTiles, oldTiles) {
     }
 }
 
+
+/**
+ * Manage sphere.
+ */
+function manageSphere() {
+    if(config.WITH_SPHERE_BARRIER) {
+        var sceneEl = document.querySelector('a-scene');
+        if(sceneEl) {
+            if(!this.sphereBarrier) {
+                
+                this.sphereBarrier = document.createElement('a-sphere');
+
+                this.sphereBarrier.setAttribute('color', 'black');
+                this.sphereBarrier.setAttribute('radius', '15');
+                this.sphereBarrier.setAttribute('side', 'back');
+                this.sphereBarrier.setAttribute('opacity', '0.9');
+                sceneEl.appendChild(this.sphereBarrier);
+            }
+            else {
+                var position = document.querySelector('#app-camera').getAttribute('position');
+                this.sphereBarrier.setAttribute('position', position);
+            }
+        }
+        requestAnimationFrame(manageSphere);
+    }
+}
+
+requestAnimationFrame(manageSphere);
+/**
+ * End. Manage sphere.
+ */
+
+
+/** WIND EFFECT. */
+
+/*var degreeX = Math.random()*2*Math.PI;
+var degreeY = Math.random()*2*Math.PI;
+var degreeZ = Math.random()*2*Math.PI;
+var signX = -1;
+var signY = 1;
+var signZ = -1;
+var spatialStep = 0.008;
+var spatialHeight = 0.003;
+var cicleDuration = 4000;//(millisecs)
+var startTime = new Date().getTime();
+
+function getRandomSign() {
+    return Math.random() >= 0.5 ? 1 : -1;
+}
+
+function windEffect() {
+    var currentTime = new Date().getTime();
+    var delta = currentTime-startTime;
+    var degreeStep = delta*2*Math.PI/cicleDuration;
+
+    degreeX += degreeStep;
+    if(degreeX > Math.PI*2) signX = getRandomSign();
+    degreeX %= Math.PI*2;
+
+    degreeY += degreeStep;
+    if(degreeY > Math.PI*2) signY = getRandomSign();
+    degreeY %= Math.PI*2;
+
+    degreeZ += degreeStep;
+    if(degreeZ > Math.PI*2) signZ = getRandomSign();
+    degreeZ %= Math.PI*2;
+
+    var xIncrement = Math.sin(degreeX);
+    var yIncrement = Math.sin(degreeY);
+    var zIncrement = Math.sin(degreeZ);
+
+    var position = document.querySelector('#app-camera').getAttribute('position');
+
+    position.x += xIncrement*spatialStep*signX;
+    position.y += yIncrement*spatialHeight*signY;
+    position.z += zIncrement*spatialStep*signZ;
+
+    document.querySelector('#app-camera').setAttribute('position', position);
+
+    startTime = new Date().getTime();
+
+    requestAnimationFrame(windEffect);
+}
+requestAnimationFrame(windEffect);*/
+/** END. WIND EFFECT. */
