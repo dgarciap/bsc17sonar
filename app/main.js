@@ -11,6 +11,7 @@ var appLogic = {};
 
 appLogic.currentTile = {tileR: 0, tileC: 0, tileNum: "00"};
 appLogic.sphereBarrier = undefined;
+appLogic.outerSphereBarrier = undefined;
 
 appLogic.errorLoadingPointcloud = function(tileC, tileR, numTile) {
     //If the tiles does not exist and we are trying to draw a border tile,
@@ -55,11 +56,11 @@ function addPlane(position, rotation, size, numTile) {
     
     entityEl.setAttribute('width', size);
     entityEl.setAttribute('height', size);
-    entityEl.setAttribute('color', "#FFF");
     entityEl.setAttribute('rotation', rotation);
     entityEl.setAttribute('position', position);
     entityEl.setAttribute('class', "plane"+numTile);
     entityEl.setAttribute('id', "plane-tile");
+    entityEl.setAttribute('material', "src: ./assets/imgs/prohibidowall.png;repeat: 10 10; transparent: true;");
     sceneEl.appendChild(entityEl);
 }
 
@@ -186,14 +187,23 @@ function manageSphere() {
                 this.sphereBarrier = document.createElement('a-sphere');
 
                 this.sphereBarrier.setAttribute('color', 'black');
-                this.sphereBarrier.setAttribute('radius', '15');
+                this.sphereBarrier.setAttribute('radius', '20');
                 this.sphereBarrier.setAttribute('side', 'back');
                 this.sphereBarrier.setAttribute('opacity', '0.9');
                 sceneEl.appendChild(this.sphereBarrier);
+
+                this.outerSphereBarrier = document.createElement('a-sphere');
+
+                this.outerSphereBarrier.setAttribute('color', 'black');
+                this.outerSphereBarrier.setAttribute('radius', '25');
+                this.outerSphereBarrier.setAttribute('side', 'back');
+                this.outerSphereBarrier.setAttribute('opacity', '1');
+                sceneEl.appendChild(this.outerSphereBarrier);
             }
             else {
                 var position = document.querySelector('#app-camera').getAttribute('position');
                 this.sphereBarrier.setAttribute('position', position);
+                this.outerSphereBarrier.setAttribute('position', position);
             }
         }
         requestAnimationFrame(manageSphere);
