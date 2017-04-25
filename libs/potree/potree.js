@@ -1224,9 +1224,13 @@ Potree.Shaders["pointcloud.fs"] = [
  "varying float	vRadius;",
  "varying vec3	vNormal;",
  "",
+ THREE.ShaderChunk[ "common" ],
+ THREE.ShaderChunk[ "fog_pars_fragment" ], 
  "float specularStrength = 1.0;",
  "",
  "void main() {",
+ "vec3 outgoingLight = vec3( 0.0 );",
+ THREE.ShaderChunk[ "fog_fragment" ],
  "",
  "	vec3 color = vColor;",
  "	float depth = gl_FragCoord.z;",
@@ -1254,7 +1258,12 @@ Potree.Shaders["pointcloud.fs"] = [
  "	#if defined color_type_point_index",
  "		gl_FragColor = vec4(color, pcIndex / 255.0);",
  "	#else",
- "		gl_FragColor = vec4(color, vOpacity);",
+ "		float originalZ = gl_FragCoord.z / gl_FragCoord.w;",
+ "		float startOpacity = 1.0-originalZ/30.0;",
+ "		if (startOpacity > 0.7)",
+ "			gl_FragColor = vec4(color, 1.0);",
+ "		else",
+ "			gl_FragColor = vec4(color, startOpacity);",
  "	#endif",
  "",
  "	vec3 normal = normalize( vNormal );",
@@ -3028,7 +3037,10 @@ Potree.PointCloudMaterial = function(parameters){
 	this.gradientTexture = Potree.PointCloudMaterial.generateGradientTexture(this._gradient);
 	this.classificationTexture = Potree.PointCloudMaterial.generateClassificationTexture(this._classification);
 	this.lights = false;
+
+	//Change for fog.
 	this.fog = false;
+
 	this._treeType = treeType;
 	this._useEDL = false;
 	
@@ -3043,6 +3055,11 @@ Potree.PointCloudMaterial = function(parameters){
 		pointSourceID: 		{ type: "f", value: [] },
 		normal:				{ type: "f", value: [] }
 	};
+
+	//Change for fog.
+	var sceneEl = document.querySelector('a-scene');
+	var fogConfig = sceneEl.getAttribute("fog");
+
 	
 	this.uniforms = {
 		spacing:			{ type: "f", value: 1.0 },
@@ -3087,6 +3104,16 @@ Potree.PointCloudMaterial = function(parameters){
 		wClassification:	{ type: "f", value: 0 },
 		wReturnNumber:		{ type: "f", value: 0 },
 		wSourceID:		{ type: "f", value: 0 },
+
+
+		//Change for fog.
+		topColor:    { type: "c", value: new THREE.Color( 0x0077ff ) },
+		bottomColor: { type: "c", value: new THREE.Color( 0xffffff ) },
+		offset:      { type: "f", value: 33 },
+		exponent:    { type: "f", value: 0.6 },
+		fogColor:    { type: "c", value: "#AAA"/*fogConfig.color*/ },
+		fogNear:     { type: "f", value: 0/*fogConfig.near*/ },
+		fogFar:      { type: "f", value: 100/*fogConfig.far*/ }
 	};
 	
 	this.defaultAttributeValues.normal = [0,0,0];

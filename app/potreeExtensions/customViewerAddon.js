@@ -57,11 +57,6 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 		this.freeze = false;
 
 		this.mapView;
-
-		this.stats = new Stats();
-		//this.stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-		//document.body.appendChild( this.stats.dom );
-		//this.stats.dom.style.left = "100px";
 		
 		this.potreeRenderer = null;
 		this.highQualityRenderer = null;
@@ -157,7 +152,7 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 		});
 		
 		
-		{ // Annotations
+		/*{ // Annotations
 			$(".annotation").detach();
 			
 			for(let annotation of this.scene.annotations){
@@ -178,7 +173,7 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 					this.renderer.domElement.focus();
 				});
 			});
-		}
+		}*/
 		
 	};
 	
@@ -1288,8 +1283,6 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 		
 		//requestAnimationFrame(this.loop.bind(this));
 		
-		this.stats.begin();
-		
 		//var start = new Date().getTime();
 		this.update(this.clock.getDelta(), timestamp);
 		//var end = new Date().getTime();
@@ -1332,8 +1325,6 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 		//	var w = this.open();
 		//	w.document.write('<img src="'+screenshot+'"/>');
 		//}	
-		
-		this.stats.end();
 
 		
 		Potree.framenumber++;

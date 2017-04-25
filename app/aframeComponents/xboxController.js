@@ -8,8 +8,8 @@ AFRAME.registerComponent('xbox-controller', {
       verticalMovEnabled: {default: true},
       horizontalMovEnabled: {default: true},
       minAxisValue: {default: 0.5},
-      hMovAxis: 0,
-      vMovAxis: 1,
+      hMovAxis: {default: 0},
+      vMovAxis: {default: 1},
   },
   customConst: {
     MAX_DELTA: 0.2,
@@ -23,7 +23,7 @@ AFRAME.registerComponent('xbox-controller', {
   findXboxController: function() {
     var gpads = navigator.getGamepads();
     for(var i = 0; i < gpads.length; ++i) {
-      if(gpads[i].id.indexOf("Xbox") !== -1) return gpads[i];
+      if(gpads[i] && gpads[i].id.indexOf("Xbox") !== -1) return gpads[i];
     }
     return null;
   },
