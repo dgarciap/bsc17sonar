@@ -5,6 +5,7 @@ AFRAME.registerComponent('particlesystem', {
   schema: {
       textureSrc: {type: "string", default: DEFAULT_TEXTURE_SRC},
   },
+  
   init: function () {
     // create the particle variables
     this.particleCount = 500;
@@ -49,7 +50,7 @@ AFRAME.registerComponent('particlesystem', {
     // add it to the scene
     this.el.setObject3D('partyclesystem', this.mesh);
   },
- 
+
   update: function () {
   },
 
