@@ -5,11 +5,17 @@ AFRAME.registerComponent('xbox-controller', {
       easing: {default: 20},
       fly: {default: false},
       enabled: {default: true},
-      verticalMovEnabled: {default: true},
+      zMovEnabled: {default: true},
       horizontalMovEnabled: {default: true},
+      verticalMovEnabled: {default: true},
       minAxisValue: {default: 0.5},
+      hMovElem: {default: "x"},
+      zMovElem: {default: "z"},
+      vMovElem: {default: "y"},
       hMovAxis: {default: 0},
-      vMovAxis: {default: 1},
+      zMovAxis: {default: 1},
+      vMovButtonUp: {default: 3},
+      vMovButtonDown: {default: 0},
   },
   customConst: {
     MAX_DELTA: 0.2,
@@ -59,30 +65,37 @@ AFRAME.registerComponent('xbox-controller', {
     var acceleration;
     var data = this.data;
     var velocity = this.velocity;
-    var hMovAxis;
-    var vMovAxis;
+    var hMovElem;
+    var zMovElem;
+    var vMovElem;
 
-    hMovAxis = data.hMovAxis;
-    vMovAxis = data.vMovAxis;
+    hMovElem = data.hMovElem;
+    zMovElem = data.zMovElem;
+    vMovElem = data.vMovElem;
 
     // If FPS too low, reset velocity.
-    if (delta > customConst.MAX_DELTA) {
-      velocity[hMovAxis] = 0;
-      velocity[vMovAxis] = 0;
+    if (delta > this.customConst.MAX_DELTA) {
+      velocity[hMovElem] = 0;
+      velocity[zMovElem] = 0;
+      velocity[vMovElem] = 0;
       return;
     }
 
     // Decay velocity.
-    if (velocity[hMovAxis] !== 0) {
-      velocity[hMovAxis] -= velocity[hMovAxis] * data.easing * delta;
+    if (velocity[hMovElem] !== 0) {
+      velocity[hMovElem] -= velocity[hMovElem] * data.easing * delta;
     }
-    if (velocity[vMovAxis] !== 0) {
-      velocity[vMovAxis] -= velocity[vMovAxis] * data.easing * delta;
+    if (velocity[zMovElem] !== 0) {
+      velocity[zMovElem] -= velocity[zMovElem] * data.easing * delta;
+    }
+    if (velocity[vMovElem] !== 0) {
+      velocity[vMovElem] -= velocity[vMovElem] * data.easing * delta;
     }
 
     // Clamp velocity easing.
-    if (Math.abs(velocity[hMovAxis]) < customConst.CLAMP_VELOCITY) { velocity[hMovAxis] = 0; }
-    if (Math.abs(velocity[vMovAxis]) < customConst.CLAMP_VELOCITY) { velocity[vMovAxis] = 0; }
+    if (Math.abs(velocity[hMovElem]) < this.customConst.CLAMP_VELOCITY) { velocity[hMovElem] = 0; }
+    if (Math.abs(velocity[zMovElem]) < this.customConst.CLAMP_VELOCITY) { velocity[zMovElem] = 0; }
+    if (Math.abs(velocity[vMovElem]) < this.customConst.CLAMP_VELOCITY) { velocity[vMovElem] = 0; }
 
     if (!data.enabled) { return; }
 
@@ -90,16 +103,22 @@ AFRAME.registerComponent('xbox-controller', {
     acceleration = data.acceleration;
     if (data.horizontalMovEnabled) {
       // 0: <- LeftAxis -> 
-      if (Math.abs(this.currentGamepad.axes[0]) > data.minAxisValue) { 
-        velocity[hMovAxis] += this.currentGamepad.axes[0] * acceleration * delta; 
+      if (Math.abs(this.currentGamepad.axes[data.hMovAxis]) > data.minAxisValue) { 
+        velocity[hMovElem] += this.currentGamepad.axes[data.hMovAxis] * acceleration * delta; 
+      }
+    }
+    if (data.zMovEnabled) {
+      // 1: ^ LeftAxis |
+      //    |          V
+      if (Math.abs(this.currentGamepad.axes[data.zMovAxis]) > data.minAxisValue) { 
+        velocity[zMovElem] += this.currentGamepad.axes[data.zMovAxis] * acceleration * delta; 
       }
     }
     if (data.verticalMovEnabled) {
-      // 1: ^ LeftAxis |
-      //    |          V
-      if (Math.abs(this.currentGamepad.axes[1]) > data.minAxisValue) { 
-        velocity[vMovAxis] += this.currentGamepad.axes[1] * acceleration * delta; 
-      }
+      // 1: Y:   (Buttons)  Up
+      //    A:              Down
+      velocity[vMovElem] -= this.currentGamepad.buttons[data.vMovButtonDown].value * acceleration * delta;
+      velocity[vMovElem] += this.currentGamepad.buttons[data.vMovButtonUp].value * acceleration * delta;
     }
 
   },
@@ -152,7 +171,7 @@ AFRAME.registerComponent('xbox-controller', {
       //    |           V
       if(Math.abs(this.currentGamepad.axes[3]) > 0.5) */
 
-      if (!velocity[data.adAxis] && !velocity[data.wsAxis]) { return; }
+      if (!velocity[this.data.hMovElem] && !velocity[this.data.zMovElem] && !velocity[this.data.vMovElem]) { return; }
 
       // Get movement vector and translate position.
       var movementVector = this.getMovementVector(delta);
