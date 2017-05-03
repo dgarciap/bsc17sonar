@@ -26,7 +26,7 @@ function addPlane(position, rotation, size, numTile) {
     entityEl.setAttribute('position', position);
     entityEl.setAttribute('class', "plane" + numTile);
     entityEl.setAttribute('id', "plane-tile");
-    entityEl.setAttribute('material', "src: ./resources/textures/prohibidowall.png;repeat: 10 10; transparent: true;");
+    entityEl.setAttribute('material', "src: ./resources/textures/prohibidowall.png;repeat: 10 10; transparent: true; color: white;");
     sceneEl.appendChild(entityEl);
 }
 

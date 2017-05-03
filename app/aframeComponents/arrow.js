@@ -36,9 +36,11 @@ AFRAME.registerComponent('arrow', {
 
   tick: function (time, timeDelta) {
     //If 1 sec is GROWTH_STEP, timeDelta is ...
-    var growth = timeDelta*GROWTH_STEP/1000;
-    var rotation = timeDelta*(Math.PI/2)/1000;
-    this.mesh.rotation.y += rotation % (Math.PI/2);
+    if(this.mesh) {
+        var growth = timeDelta*GROWTH_STEP/1000;
+        var rotation = timeDelta*(Math.PI/2)/1000;
+        this.mesh.rotation.y += rotation % (Math.PI/2);
+    }
 
     /*if(!this.defScale) {
         var initScale = this.data.initScale.split(" ");

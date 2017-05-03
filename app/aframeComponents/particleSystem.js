@@ -5,7 +5,7 @@ AFRAME.registerComponent('particlesystem', {
   schema: {
       textureSrc: {type: "string", default: DEFAULT_TEXTURE_SRC},
   },
-  
+
   init: function () {
     // create the particle variables
     this.particleCount = 500;

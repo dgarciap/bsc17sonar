@@ -87,6 +87,12 @@
 	</script>
 
 	<a-scene>
+
+		<a-assets>
+			<a-asset-item id="wave-obj" src="./resources/models/wave.obj"></a-asset-item>
+			<a-asset-item id="piramide-obj" src="./resources/models/piramide.obj"></a-asset-item>
+		</a-assets>
+
 		<a-box position="0 0 0" rotation="0 45 0" color="#4CC3D9"></a-box>
 		<a-entity soundsphere position="9.165 -2.835 -12.426"></a-entity>
 		<a-entity particlesystem position="9.165 -2.835 -12.426"></a-entity>
@@ -98,7 +104,13 @@
 		<a-entity potreepointcloud="pointcloudUrl: pointclouds/test02/cloud.js;tileC: 2;tileR: 0"> </a-entity>
 		<a-entity potreepointcloud="pointcloudUrl: pointclouds/test03/cloud.js;tileC: 3;tileR: 0"> </a-entity>
 		-->
+
+		<a-entity obj-model="obj: #wave-obj" material="color: yellow" position="23.558 -2.051 -15.282" rotation="90.000 0 0" scale="0.04 0.04 0.04"></a-entity>
+		<a-entity obj-model="obj: #piramide-obj" material="color: purple" position="30.558 -1.051 -15.282" rotation="90.000 0 0" scale="0.04 0.04 0.04"></a-entity>
 		
+		<a-entity light="type: point; intensity: 1; distance: 20; decay: 1" position="23.558 -1.869 -15.282"></a-entity>
+		
+
 		<a-sky color="#000000"></a-sky>
 
 		<a-camera id="app-camera" rotation="0 310 0" position="20 0 -30" xbox-controller xbox-look-controls>
