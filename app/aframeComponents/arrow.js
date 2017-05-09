@@ -30,7 +30,7 @@ AFRAME.registerComponent('arrow', {
         }
     );
   },
- 
+
   update: function () {
   },
 

@@ -289,7 +289,8 @@ AFRAME.registerComponent('xbox-look-controls', {
   findXboxController: function() {
     var gpads = navigator.getGamepads();
     for(var i = 0; i < gpads.length; ++i) {
-      if(gpads[i] && gpads[i].id.indexOf("Xbox") !== -1) return gpads[i];
+      //In firefox it is called "xinput", while on Chrome it is called "Xbox...".
+      if(gpads[i] && (gpads[i].id.indexOf("Xbox") !== -1 || gpads[i].id.indexOf("xinput") !== -1)) return gpads[i];
     }
     return null;
   },

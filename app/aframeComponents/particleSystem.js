@@ -8,7 +8,7 @@ AFRAME.registerComponent('particlesystem', {
 
   init: function () {
     // create the particle variables
-    this.particleCount = 500;
+    this.particleCount = 100;
     var particles = new THREE.Geometry(),
         pMaterial = new THREE.PointsMaterial({
             color: 0xFFFFFF,
