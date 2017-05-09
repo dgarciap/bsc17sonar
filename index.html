@@ -38,6 +38,7 @@
 	<script src="./app/potreeExtensions/vertexShaderAddon.js"></script>
 
 	<!-- Aframe Components -->
+	<script src="./app/aframeComponents/audioCreator.js"></script>
 	<script src="./app/aframeComponents/potreePointCloud.js"></script>
 	<script src="./app/aframeComponents/soundSphere.js"></script>
 	<script src="./app/aframeComponents/particleSystem.js"></script>
@@ -112,7 +113,7 @@
 		<a-entity obj-model="obj: #wave-obj" material="color: yellow" position="23.558 -2.051 -15.282" rotation="90.000 0 0" scale="0.04 0.04 0.04"></a-entity>
 		<a-entity obj-model="obj: #piramide-obj" material="color: purple" position="30.558 -1.051 -15.282" rotation="90.000 0 0" scale="0.04 0.04 0.04"></a-entity>
 		
-		<a-sound src="#engaud" autoplay="true" loop="true"
+		<!--<a-sound src="#engaud" autoplay="true" loop="true"
     		position="0 0 0"></a-sound>
 		<a-sound src="#spaaud" autoplay="true" loop="true"
     		position="0 0 -10"></a-sound>
@@ -126,7 +127,9 @@
 		<a-box position="10 0 0" color="blue"></a-box>
 		<a-box position="10 0 -10" color="white"></a-box>
 
-		<a-sky color="#000000"></a-sky>
+		<a-sky color="#000000"></a-sky>-->
+
+		<a-entity audiocreator/>
 
 		<a-camera id="app-camera" rotation="0 310 0" position="5 0 -5" xbox-controller xbox-look-controls>
 			<a-cursor></a-cursor>
