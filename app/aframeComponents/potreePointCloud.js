@@ -19,6 +19,38 @@ AFRAME.registerComponent('potreepointcloud', {
     console.log("Update.");
   },
 
+  addPointCloud: function(pointcloudUrl, tileR, tileC) {
+    var that = this;
+    Potree.loadPointCloud(pointcloudUrl, "lion"+tileR+tileC, function(e) {
+          that.viewer.scene.addPointCloud(e.pointcloud);
+
+          e.pointcloud.position.x = tileC*that.data.tileSize*that.data.scale;
+          e.pointcloud.position.y = tileHeights[tileR][tileC] || -15;
+          e.pointcloud.position.z = -tileR*that.data.tileSize*that.data.scale;
+
+          if(!tileHeights[tileR][tileC]) 
+            console.error("There is no tile height for " + tileR + " , " + tileC);
+
+          e.pointcloud.rotation.x = -0.5*Math.PI;
+          e.pointcloud.rotation.y = 0;
+          e.pointcloud.rotation.z = 0;
+
+          e.pointcloud.scale.x = that.data.scale;
+          e.pointcloud.scale.y = that.data.scale;
+          e.pointcloud.scale.z = that.data.scale;
+
+          that.material = e.pointcloud.material;
+          that.geometry = e.pointcloud.pcoGeometry;
+
+          //that.mesh = e.pointcloud;
+
+          //that.el.setObject3D('lion'+tileR+tileC, that.mesh);
+
+          //that.viewer.setElevationRange(-4, -1);
+          //viewer.setElevationRange(-100, 1);
+      });
+  },
+
   tick: function () {
     if(!this.isInit && this.data.pointcloudUrl === NO_POINTCLOUD) {
       console.error("No point cloud URL provided.");
@@ -56,12 +88,12 @@ AFRAME.registerComponent('potreepointcloud', {
           e.pointcloud.scale.y = that.data.scale;
           e.pointcloud.scale.z = that.data.scale;
 
-          that.material = e.pointcloud.material;
-          that.geometry = e.pointcloud.pcoGeometry;
+          //that.material = e.pointcloud.material;
+          //that.geometry = e.pointcloud.pcoGeometry;
 
-          that.mesh = e.pointcloud;
+          //that.mesh = e.pointcloud;
 
-          that.el.setObject3D('lion', that.mesh);
+          //that.el.setObject3D('lion', that.mesh);
 
           that.viewer.setElevationRange(-4, -1);
           //viewer.setElevationRange(-100, 1);

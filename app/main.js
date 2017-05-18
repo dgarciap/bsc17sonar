@@ -46,7 +46,7 @@ ws.onopen = function (event) {
 */
 
 //Update tiles drawn on screen.
-setInterval(function () {
+function tileManager() {
     var pos = document.querySelector('#app-camera').getAttribute('position');
 
     //Load a new tile if it is necessary.
@@ -84,8 +84,12 @@ setInterval(function () {
     removeOldTiles(newLoadedTiles, loadedTiles);
 
     loadedTiles = newLoadedTiles;
-}, config.UPDATE_TILES_INTERVAL);
 
+    requestAnimationFrame(tileManager);
+}
+
+
+requestAnimationFrame(tileManager);
 
 /**
  * Returns true if the tile is in our map.
@@ -224,7 +228,7 @@ function removeOldTiles(newTiles, oldTiles) {
     }
 }
 
-
+//TODO: Replace with something more serious.
 setTimeout(function() {
     loadNewTiles(loadedTiles, {tiles: {}});
 }, 1000);
