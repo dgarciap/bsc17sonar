@@ -5,13 +5,14 @@ var TILE_SIZE = 2000;
 //So that the size of our tiles when drawn on screen is TILE_SIZE*SCALE.
 var SCALE = 0.02;
 
+var APP_COLOR = "black";
+
 var loadedTiles = { tiles: { "00": { tileC: 0, tileR: 0 } } };
 
 var appLogic = {};
 
 appLogic.currentTile = { tileR: 0, tileC: 0, tileNum: "00" };
 appLogic.sphereBarrier = undefined;
-appLogic.outerSphereBarrier = undefined;
 
 /**
  * If there is no plane, create one.
@@ -26,7 +27,7 @@ function addPlane(position, rotation, size, numTile) {
     entityEl.setAttribute('position', position);
     entityEl.setAttribute('class', "plane" + numTile);
     entityEl.setAttribute('id', "plane-tile");
-    entityEl.setAttribute('material', "src: ./resources/textures/prohibidowall.png;repeat: 10 10; transparent: true; color: white;");
+    entityEl.setAttribute('material', "src: ./resources/textures/prohibidowall.png;repeat: 10 10; transparent: true; color: black;");
     sceneEl.appendChild(entityEl);
 }
 
@@ -95,13 +96,33 @@ function isNotAValidTile(tileR, tileC) {
         tileHeights[tileR][tileC] === undefined);
 }
 
+
+function createFloor(position, size, numTile) {
+    var sceneEl = document.querySelector('a-scene');
+    var entityEl = document.createElement('a-plane');
+
+    entityEl.setAttribute('width', size);
+    entityEl.setAttribute('height', size);
+    entityEl.setAttribute('rotation', "-90 0 0");
+    entityEl.setAttribute('position', position);
+    entityEl.setAttribute('class', "plane" + numTile);
+    entityEl.setAttribute('material', "color: "+APP_COLOR+";");
+    sceneEl.appendChild(entityEl);
+}
+
+
 /**
  * Given a tile num returns 
  */
 function createBorders(tileNum, tileR, tileC) {
+
     var tileSize = SCALE * TILE_SIZE;
     var position;
-    if (isNotAValidTile(tileR + 1, tileC)) {
+
+   /* var floorPosition = (tileC * tileSize + tileSize / 2) + " -4 " + (-1 * tileR * tileSize - tileSize / 2);
+    createFloor(floorPosition, tileSize, tileNum);
+*/
+    /*if (isNotAValidTile(tileR + 1, tileC)) {
         position = ((tileC * tileSize + tileSize / 2)) + " -5 " + (-1 * (tileR + 1) * tileSize);
         addPlane(position, "0 0 0", tileSize, tileNum);
     }
@@ -116,7 +137,7 @@ function createBorders(tileNum, tileR, tileC) {
     if (isNotAValidTile(tileR, tileC - 1)) {
         position = (tileC * tileSize) + " -5 " + (-1 * (tileR * tileSize + tileSize / 2));
         addPlane(position, "0 90 0", tileSize, tileNum);
-    }
+    }*/
 }
 
 /*appLogic.errorLoadingPointcloud = function (tileC, tileR, numTile) {
@@ -220,24 +241,15 @@ function manageSphere() {
 
                 this.sphereBarrier = document.createElement('a-sphere');
 
-                this.sphereBarrier.setAttribute('color', 'black');
+                this.sphereBarrier.setAttribute('color', APP_COLOR);
                 this.sphereBarrier.setAttribute('radius', '20');
                 this.sphereBarrier.setAttribute('side', 'back');
-                this.sphereBarrier.setAttribute('opacity', '0.9');
+                this.sphereBarrier.setAttribute('opacity', '1');
                 sceneEl.appendChild(this.sphereBarrier);
-
-                this.outerSphereBarrier = document.createElement('a-sphere');
-
-                this.outerSphereBarrier.setAttribute('color', 'black');
-                this.outerSphereBarrier.setAttribute('radius', '25');
-                this.outerSphereBarrier.setAttribute('side', 'back');
-                this.outerSphereBarrier.setAttribute('opacity', '1');
-                sceneEl.appendChild(this.outerSphereBarrier);
             }
             else {
                 var position = document.querySelector('#app-camera').getAttribute('position');
                 this.sphereBarrier.setAttribute('position', position);
-                this.outerSphereBarrier.setAttribute('position', position);
             }
         }
         requestAnimationFrame(manageSphere);

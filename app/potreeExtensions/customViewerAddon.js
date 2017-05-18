@@ -75,7 +75,7 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 		
 		{
 			
-			this.createControls();
+			//this.createControls();
 			
 			
 			let onPointcloudAdded = (e) => {

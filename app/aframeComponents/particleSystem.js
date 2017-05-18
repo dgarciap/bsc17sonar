@@ -1,4 +1,7 @@
-var DEFAULT_TEXTURE_SRC = "resources/textures/particleBla.png";
+var DEFAULT_TEXTURE_SRC = "resources/textures/particledefault.png";
+var PARTICLE_HEIGHT = 1;
+var PARTICLE_WIDTH = 0.4;
+var PARTICLE_DEPTH = 10;
 
 // Registering component
 AFRAME.registerComponent('particlesystem', {
@@ -8,11 +11,11 @@ AFRAME.registerComponent('particlesystem', {
 
   init: function () {
     // create the particle variables
-    this.particleCount = 100;
+    this.particleCount = 1000;
     var particles = new THREE.Geometry(),
         pMaterial = new THREE.PointsMaterial({
             color: 0xFFFFFF,
-            size: 0.6,
+            size: 0.07,
             map: THREE.ImageUtils.loadTexture(
                 this.data.textureSrc
             ),
@@ -25,14 +28,14 @@ AFRAME.registerComponent('particlesystem', {
 
         // create a particle with random
         // position values, -250 -> 250
-        var pX = Math.random() * 5 - 2.5,
-            pY = Math.random() * 20,
-            pZ = Math.random() * 5 - 2.5,
+        var pX = Math.random() * PARTICLE_WIDTH - PARTICLE_WIDTH/2,
+            pY = Math.random() * PARTICLE_HEIGHT,
+            pZ = Math.random() * PARTICLE_DEPTH - PARTICLE_DEPTH/2,
             particle = new THREE.Vector3(pX, pY, pZ);
 
         particle.velocity = new THREE.Vector3(
             0,              // x
-            Math.random()*0.2, // y: random vel
+            Math.random()*0.01, // y: random vel
             0);             // z
 
         // add it to the geometry
@@ -55,7 +58,7 @@ AFRAME.registerComponent('particlesystem', {
   },
 
   tick: function () {
-    this.mesh.rotation.y += 0.01;
+    //this.mesh.rotation.y += 0.01;
 
     var pCount = this.particleCount;
     while (pCount--) {
@@ -65,9 +68,9 @@ AFRAME.registerComponent('particlesystem', {
         this.geometry.vertices[pCount];
 
         // check if we need to reset
-        if (particle.y > 20) {
+        if (particle.y > PARTICLE_HEIGHT) {
             particle.y = 0;
-            particle.velocity.y = Math.random()*0.15;
+            particle.velocity.y = Math.random()*0.01;
         }
 
         // update the velocity with

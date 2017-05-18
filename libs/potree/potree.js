@@ -1258,12 +1258,9 @@ Potree.Shaders["pointcloud.fs"] = [
  "	#if defined color_type_point_index",
  "		gl_FragColor = vec4(color, pcIndex / 255.0);",
  "	#else",
- "		float originalZ = gl_FragCoord.z / gl_FragCoord.w;",
- "		float startOpacity = 1.0-originalZ/30.0;",
- "		if (startOpacity > 0.7)",
- "			gl_FragColor = vec4(color, 1.0);",
- "		else",
- "			gl_FragColor = vec4(color, startOpacity);",
+ "		vec4 pos = vec4(vViewPosition, 1.0);",
+ "		float startOpacity = 1.0-(-pos.z-7.0)/7.0;",
+ "		gl_FragColor = vec4(color*startOpacity, 1.0);",
  "	#endif",
  "",
  "	vec3 normal = normalize( vNormal );",
@@ -2945,6 +2942,15 @@ Potree.Gradients = {
 	GRAYSCALE: [
 		[0, new THREE.Color(0,0,0)],
 		[1, new THREE.Color(1,1,1)]
+	],
+	//ELEVATION MODIFICATION CHANGE.
+	WHITE_GRAYSCALE: [
+		[0, new THREE.Color(0.1,0.1,0.1)],
+		[1, new THREE.Color(1,1,1)]
+	],
+	BLACK_GRAYSCALE: [
+		[0, new THREE.Color(0.37,171/255,249/255)],
+		[1, new THREE.Color(9/255,60/255,112/255)]
 	]
 };
 
@@ -3032,7 +3038,8 @@ Potree.PointCloudMaterial = function(parameters){
 	this._clipMode = Potree.ClipMode.DISABLED;
 	this._weighted = false;
 	this._depthMap = null;
-	this._gradient = Potree.Gradients.RAINBOW;
+	//ELEVATION MODIFICATION CHANGE.
+	this._gradient = Potree.Gradients.WHITE_GRAYSCALE;
 	this._classification = Potree.Classification.DEFAULT;
 	this.gradientTexture = Potree.PointCloudMaterial.generateGradientTexture(this._gradient);
 	this.classificationTexture = Potree.PointCloudMaterial.generateClassificationTexture(this._classification);

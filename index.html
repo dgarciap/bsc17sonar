@@ -97,22 +97,32 @@
 			<audio id="spaaud" src="resources/music/spanish.ogg"></audio>
 			<audio id="engaud" src="resources/music/english.ogg"></audio>
 		</a-assets>
-		
-		<a-box position="0 0 0" rotation="0 45 0" color="#4CC3D9"></a-box>
-		<a-entity soundsphere position="9.165 -2.835 -12.426"></a-entity>
+
+		<a-entity particlesystem position="10.165 -2.835 -12.426"></a-entity>
 		<a-entity particlesystem position="9.165 -2.835 -12.426"></a-entity>
+		<a-entity particlesystem position="19.165 -2.835 -12.426"></a-entity>
+		<a-entity particlesystem position="12.165 -2.835 -12.426"></a-entity>
+		<a-entity particlesystem position="21.165 -2.835 -12.426"></a-entity>
+		<a-entity particlesystem position="14.165 -3.835 -12.426"></a-entity>
+		<a-entity particlesystem position="23.165 -2.835 -12.426"></a-entity>
+		<a-entity particlesystem position="16.165 -2.835 -12.426"></a-entity>
+		<a-entity particlesystem position="25.165 -2.835 -12.426"></a-entity>
+		
+		<!--<a-box position="0 0 0" rotation="0 45 0" color="#4CC3D9"></a-box>
+		<a-entity soundsphere position="9.165 -2.835 -12.426"></a-entity>
+		
 		<a-entity particlesystem="textureSrc: resources/textures/beep.png" position="10.406 -2.835 -27.931"></a-entity>
 		<a-entity soundwave position="10.406 -2.2 -27.931" rotation="90 0 0"></a-entity>
-		<a-entity arrow="initScale: 2 2 4" position="20.406 3 -27.931" rotation="0 0 90"></a-entity>
+		<a-entity arrow="initScale: 2 2 4" position="20.406 3 -27.931" rotation="0 0 90"></a-entity>-->
 		<!--<a-entity id="tile00" class="tile" potreepointcloud="pointcloudUrl: pointclouds/test00/cloud.js;tileC: 0;tileR: 0"> </a-entity>
 		--><!--<a-entity potreepointcloud="pointcloudUrl: pointclouds/test01/cloud.js;tileC: 1;tileR: 0"> </a-entity>
 		<a-entity potreepointcloud="pointcloudUrl: pointclouds/test02/cloud.js;tileC: 2;tileR: 0"> </a-entity>
 		<a-entity potreepointcloud="pointcloudUrl: pointclouds/test03/cloud.js;tileC: 3;tileR: 0"> </a-entity>
 		-->
-
+<!--
 		<a-entity obj-model="obj: #wave-obj" material="color: yellow" position="23.558 -2.051 -15.282" rotation="90.000 0 0" scale="0.04 0.04 0.04"></a-entity>
 		<a-entity obj-model="obj: #piramide-obj" material="color: purple" position="30.558 -1.051 -15.282" rotation="90.000 0 0" scale="0.04 0.04 0.04"></a-entity>
-		
+		-->
 		<!--<a-sound src="#engaud" autoplay="true" loop="true"
     		position="0 0 0"></a-sound>
 		<a-sound src="#spaaud" autoplay="true" loop="true"
@@ -129,9 +139,13 @@
 
 		<a-sky color="#000000"></a-sky>-->
 
-		<a-entity audiocreator/>
+		<!--<a-entity audiocreator/>-->
 
-		<a-camera id="app-camera" rotation="0 310 0" position="5 0 -5" xbox-controller xbox-look-controls>
+		<!-- Without this default light, aframe is creating default lights automatically. ¿Bug?
+		It keeps happening. -->
+		<a-entity light="type: ambient; color: #BBB"></a-entity>
+
+		<a-camera id="app-camera" rotation="0 310 0" position="40 0 -20" xbox-controller xbox-look-controls>
 			<a-cursor></a-cursor>
 		</a-camera>
 	</a-scene>
