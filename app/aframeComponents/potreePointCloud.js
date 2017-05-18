@@ -21,6 +21,7 @@ AFRAME.registerComponent('potreepointcloud', {
 
   addPointCloud: function(pointcloudUrl, tileR, tileC) {
     var that = this;
+    console.log("retrieving tile: ", pointcloudUrl);
     Potree.loadPointCloud(pointcloudUrl, "lion"+tileR+tileC, function(e) {
           that.viewer.scene.addPointCloud(e.pointcloud);
 

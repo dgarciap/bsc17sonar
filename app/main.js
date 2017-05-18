@@ -81,7 +81,7 @@ function tileManager() {
 
 
     loadNewTiles(newLoadedTiles, loadedTiles);
-    removeOldTiles(newLoadedTiles, loadedTiles);
+    //removeOldTiles(newLoadedTiles, loadedTiles);
 
     loadedTiles = newLoadedTiles;
 
@@ -190,7 +190,10 @@ function loadNewTiles(newTiles, oldTiles) {
                 //appLogic.errorLoadingPointcloud(newTiles.tiles[k].tileC, newTiles.tiles[k].tileR, k);
             }
             else {
-                var sceneEl = document.querySelector('a-scene');
+                var pointcloudUrl = 'pointclouds/test' + newTiles.tiles[k].tileR + '' + newTiles.tiles[k].tileC + '/cloud.js'
+                var pointcloudContainer = document.querySelector('.pointcloudContainer');
+                pointcloudContainer.components.potreepointcloud.addPointCloud(pointcloudUrl, newTiles.tiles[k].tileR, newTiles.tiles[k].tileC);
+                /*var sceneEl = document.querySelector('a-scene');
                 var entityEl = document.createElement('a-entity');
 
                 var c, f;
@@ -204,7 +207,7 @@ function loadNewTiles(newTiles, oldTiles) {
                     newTiles.tiles[k].tileC + ";tileR: " + newTiles.tiles[k].tileR);
                 sceneEl.appendChild(entityEl);
 
-                createBorders(k, newTiles.tiles[k].tileR, newTiles.tiles[k].tileC);
+                createBorders(k, newTiles.tiles[k].tileR, newTiles.tiles[k].tileC);*/
             }
         }
     }
@@ -227,11 +230,6 @@ function removeOldTiles(newTiles, oldTiles) {
         }
     }
 }
-
-//TODO: Replace with something more serious.
-setTimeout(function() {
-    loadNewTiles(loadedTiles, {tiles: {}});
-}, 1000);
 
 
 /**
