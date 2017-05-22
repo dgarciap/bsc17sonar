@@ -66,7 +66,7 @@ AFRAME.registerComponent('potreepointcloud', {
       this.viewer.setPointSizing("Adaptive");
       this.viewer.setQuality("Squares");
       //viewer.setPointBudget(0.04*1000*1000);
-      this.viewer.setPointBudget(1*1000*1000);
+      this.viewer.setPointBudget(3*1000*1000);
       this.viewer.setEDLEnabled(false);
 
       var that = this;

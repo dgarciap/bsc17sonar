@@ -1,11 +1,14 @@
-var COORDS_CORNER = { x: 428000, y: 4582000 }; //Coords in meters for the origin corner of our map. (x=0, z=0);
+MainConsts = {};
+
+//We are using EPGS 32631 for all geographic data on this application.
+MainConsts.COORDS_CORNER = { x: 426000, y: 4582000 }; //Coords in meters for the origin corner of our map. (x=0, z=0);
 //Size in meters of our tiles (square tiles). TILE_SIZExTILE_SIZE.
-var TILE_SIZE = 2000;
+MainConsts.TILE_SIZE = 2000;
 //Scale of our drawn map.
 //So that the size of our tiles when drawn on screen is TILE_SIZE*SCALE.
-var SCALE = 0.02;
+MainConsts.SCALE = 0.02;
 
-var APP_COLOR = "black";
+MainConsts.APP_COLOR = "black";
 
 var loadedTiles = { tiles: { "00": { tileC: 0, tileR: 0 } } };
 
@@ -39,7 +42,7 @@ ws.onopen = function (event) {
     //Every half of a second, report camera position in meters (spherical marcator).
     setInterval(function() {
         var pos = document.querySelector('#app-camera').getAttribute('position');
-        ws.send(JSON.stringify({position: {x: pos.x/SCALE+COORDS_CORNER.x, y: (pos.z*(-1))/SCALE+COORDS_CORNER.y}}));
+        ws.send(JSON.stringify({position: {x: pos.x/MainConsts.SCALE+MainConsts.COORDS_CORNER.x, y: (pos.z*(-1))/MainConsts.SCALE+MainConsts.COORDS_CORNER.y}}));
     }, config.POSITION_SEND_INTERVAL);
 
 };
@@ -50,15 +53,15 @@ function tileManager() {
     var pos = document.querySelector('#app-camera').getAttribute('position');
 
     //Load a new tile if it is necessary.
-    var tileCPos = pos.x / (SCALE * TILE_SIZE);
-    var tileRPos = (pos.z * (-1)) / (SCALE * TILE_SIZE);
+    var tileCPos = pos.x / (MainConsts.SCALE * MainConsts.TILE_SIZE);
+    var tileRPos = (pos.z * (-1)) / (MainConsts.SCALE * MainConsts.TILE_SIZE);
     var cTileC = Math.trunc(tileCPos);
     var cTileR = Math.trunc(tileRPos);
 
     var posInC = tileCPos - cTileC;
     var posInR = tileRPos - cTileR;
 
-    console.log("I'm in tile ", cTileR, ' ', cTileC);
+    //console.log("I'm in tile ", cTileR, ' ', cTileC);
 
     var numTile = "" + cTileR + cTileC;
     appLogic.currentTile = { tileR: cTileR, tileC: cTileC, numTile: numTile };
@@ -110,7 +113,7 @@ function createFloor(position, size, numTile) {
     entityEl.setAttribute('rotation', "-90 0 0");
     entityEl.setAttribute('position', position);
     entityEl.setAttribute('class', "plane" + numTile);
-    entityEl.setAttribute('material', "color: "+APP_COLOR+";");
+    entityEl.setAttribute('material', "color: "+MainConsts.APP_COLOR+";");
     sceneEl.appendChild(entityEl);
 }
 
@@ -120,7 +123,7 @@ function createFloor(position, size, numTile) {
  */
 function createBorders(tileNum, tileR, tileC) {
 
-    var tileSize = SCALE * TILE_SIZE;
+    var tileSize = MainConsts.SCALE * MainConsts.TILE_SIZE;
     var position;
 
    /* var floorPosition = (tileC * tileSize + tileSize / 2) + " -4 " + (-1 * tileR * tileSize - tileSize / 2);
@@ -149,7 +152,7 @@ function createBorders(tileNum, tileR, tileC) {
     //draw limit border.
     var rotationY = 0;
     var position = "0 0 0";
-    var tileSize = SCALE * TILE_SIZE;
+    var tileSize = MainConsts.SCALE * MainConsts.TILE_SIZE;
     if (tileR === appLogic.currentTile.tileR && tileC !== appLogic.currentTile.tileC) {
         // | 90   -90 |
         if (tileC < appLogic.currentTile.tileC) {
@@ -243,7 +246,7 @@ function manageSphere() {
 
                 this.sphereBarrier = document.createElement('a-sphere');
 
-                this.sphereBarrier.setAttribute('color', APP_COLOR);
+                this.sphereBarrier.setAttribute('color', MainConsts.APP_COLOR);
                 this.sphereBarrier.setAttribute('radius', '20');
                 this.sphereBarrier.setAttribute('side', 'back');
                 this.sphereBarrier.setAttribute('opacity', '1');
