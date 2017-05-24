@@ -41,8 +41,8 @@ AFRAME.registerComponent('soundwave', {
   update: function () {
   },
 
-  tick: function () {
-    this.material.uniforms['time'].value = .00009 * ( Date.now() - this.start );
+  tick: function (time, timeDelta) {
+
   },
 
   remove: function () {},

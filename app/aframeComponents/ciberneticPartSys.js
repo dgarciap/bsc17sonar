@@ -78,7 +78,6 @@ AFRAME.registerComponent('ciberneticpartsys', {
             Math.random()*0.01, // y: random vel
             0); //z
         
-        particle.rotation.z = 90;
 
         // add it to the geometry
         particles.vertices.push(particle);

@@ -44,6 +44,8 @@
 	<script src="./app/aframeComponents/soundSphere.js"></script>
 	<script src="./app/aframeComponents/noisePartSys.js"></script>
 	<script src="./app/aframeComponents/ciberneticPartSys.js"></script>
+	<script src="./app/aframeComponents/triangularAnimation.js"></script>
+	<script src="./app/aframeComponents/triangularAnimation2.js"></script>
 	<script src="./app/aframeComponents/soundWave.js"></script>
 	<script src="./app/aframeComponents/arrow.js"></script>
 	<script src="./app/aframeComponents/xboxController.js"></script>
@@ -94,6 +96,18 @@
 
 		<a-assets>
 		</a-assets>
+
+		<a-entity triangularanimation2 position="5 2 -10" rotation="0 180 0"></a-entity>
+		<a-entity triangularanimation position="10 2 0" rotation="0 180 0"></a-entity>
+		<a-entity triangularanimation position="0 2 0" rotation="0 180 0"></a-entity>
+
+		<a-entity intelligenttext="title: Plaza Catalunya;" position="10 2 -10" rotation="0 180 0"></a-entity>
+		<a-entity triangularanimation2 position="10 2 -10" rotation="0 180 0"></a-entity>
+
+		<a-entity triangularanimation2 position="10 2 -15" rotation="0 180 0"></a-entity>
+
+		<a-entity intelligenttext="title: Torre Agbar;" position="20 2 -20" rotation="0 180 0"></a-entity>
+		<a-entity triangularanimation position="20 2 -20" rotation="0 180 0"></a-entity>
 
 		<a-entity intelligenttext position="0 2 0" rotation="0 180 0"></a-entity>
 
@@ -149,7 +163,7 @@
 
 		<a-sky color="#000000"></a-sky>
 
-		<a-camera id="app-camera" rotation="0 180 0" position="95 0 -5" xbox-controller xbox-look-controls>
+		<a-camera id="app-camera" rotation="0 0 0" position="5 0 -5" xbox-controller xbox-look-controls>
 		</a-camera>
 	</a-scene>
 
