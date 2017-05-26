@@ -1,12 +1,16 @@
-var DEFAULT_TEXTURE_SRC = "resources/textures/particledefault.png";
-var PARTICLE_HEIGHT = 1;
-var PARTICLE_WIDTH = 0.4;
-var PARTICLE_DEPTH = 10;
+
+noisepartsys = {};
+noisepartsys.DEFAULT_TEXTURE_SRC = "resources/textures/particledefault2.png";
+noisepartsys.PARTICLE_HEIGHT = 0.1;
+noisepartsys.PARTICLE_WIDTH = 0.2;
+noisepartsys.PARTICLE_DEPTH = 10;
+
+noisepartsys.PARTICLES_PER_UNIT = 40;
 
 // Registering component
 AFRAME.registerComponent('noisepartsys', {
   schema: {
-      textureSrc: {type: "string", default: DEFAULT_TEXTURE_SRC},
+      textureSrc: {type: "string", default: noisepartsys.DEFAULT_TEXTURE_SRC},
       initX: {type: "number", default: 0},
       initZ: {type: "number", default: 0},
       endX: {type: "number", default: 0},
@@ -19,11 +23,10 @@ AFRAME.registerComponent('noisepartsys', {
 
   init: function () {
     // create the particle variables
-    this.particleCount = 2000;
     var particles = new THREE.Geometry(),
         pMaterial = new THREE.PointsMaterial({
             color: 0xFFFFFF,
-            size: 0.07,
+            size: 0.1,
             map: THREE.ImageUtils.loadTexture(
                 this.data.textureSrc
             ),
@@ -31,29 +34,41 @@ AFRAME.registerComponent('noisepartsys', {
             alphaTest: 0.5,
         });
 
-    var originPoint = {x: Math.abs(this.data.initX-MainConsts.COORDS_CORNER.x) * MainConsts.SCALE, z: Math.abs(this.data.initZ-MainConsts.COORDS_CORNER.y) * (-1) * MainConsts.SCALE}
-    var endPoint = {x: Math.abs(this.data.endX-MainConsts.COORDS_CORNER.x) * MainConsts.SCALE, z: Math.abs(this.data.endZ-MainConsts.COORDS_CORNER.y) * (-1) * MainConsts.SCALE}
+    var originPoint = {x: (this.data.initX-MainConsts.COORDS_CORNER.x) * MainConsts.SCALE, z: (this.data.initZ-MainConsts.COORDS_CORNER.y) * (-1) * MainConsts.SCALE}
+    var endPoint = {x: (this.data.endX-MainConsts.COORDS_CORNER.x) * MainConsts.SCALE, z: (this.data.endZ-MainConsts.COORDS_CORNER.y) * (-1) * MainConsts.SCALE}
 
     var longitude = this.pythagorean(endPoint.x-originPoint.x, endPoint.z-originPoint.z);
 
-    this.el.setAttribute('position', originPoint.x + " -3.635 " + originPoint.z);
+    this.el.setAttribute('position', originPoint.x + " -2.635 " + originPoint.z);
 
-    var radAngle = Math.PI/2 - Math.asin(Math.abs(endPoint.z-originPoint.z)/longitude);
+    var radAngle = Math.asin(Math.abs(endPoint.z-originPoint.z)/longitude);
+
+    //let's interprete this angle. According to the quadrant our triangle is in.
+    if(endPoint.x < originPoint.x) {
+        if(endPoint.z > originPoint.z) {
+            radAngle += Math.PI;
+        }
+        else {
+            radAngle = Math.PI - radAngle;
+        }
+    }
+    else if(endPoint.z > originPoint.z) radAngle = 2*Math.PI - radAngle;
 
     var degreeAngle = radAngle * 180 / Math.PI;
 
-    this.el.setAttribute('rotation', "0 -" + degreeAngle + " 0");
+    this.el.setAttribute('rotation', "0 " + degreeAngle + " 0");
 
     //TODO: number of particles proportional to longitude.
+    this.particleCount = Math.trunc(noisepartsys.PARTICLES_PER_UNIT*longitude);
 
     // now create the individual particles
     for (var p = 0; p < this.particleCount; p++) {
 
         // create a particle with random
         // position values, -250 -> 250
-        var pX = Math.random() * PARTICLE_WIDTH - PARTICLE_WIDTH/2,
-            pY = Math.random() * PARTICLE_HEIGHT,
-            pZ = Math.random() * longitude * (-1),
+        var pX = Math.random() * longitude,
+            pY = Math.random() * noisepartsys.PARTICLE_HEIGHT,
+            pZ = Math.random() * (noisepartsys.PARTICLE_WIDTH - noisepartsys.PARTICLE_WIDTH/2) * (-1),
             particle = new THREE.Vector3(pX, pY, pZ);
 
         particle.velocity = new THREE.Vector3(
@@ -91,7 +106,7 @@ AFRAME.registerComponent('noisepartsys', {
         this.geometry.vertices[pCount];
 
         // check if we need to reset
-        if (particle.y > PARTICLE_HEIGHT) {
+        if (particle.y > noisepartsys.PARTICLE_HEIGHT) {
             particle.y = 0;
             particle.velocity.y = Math.random()*0.01;
         }

@@ -43,6 +43,8 @@ AFRAME.registerComponent('triangularanimation', {
 
     this.mesh = new THREE.Line( this.geometry, this.material);
 
+    this.mesh2 = new THREE.Points( this.geometry, new THREE.PointsMaterial( { size: 0.1, sizeAttenuation: true } ));
+
     this.counter = 0;
     this.currentVertex = 1;
     this.lastY = -triangularanimation.RADIUS;
@@ -74,7 +76,7 @@ AFRAME.registerComponent('triangularanimation', {
 
   update: function () {
       this.el.setObject3D('triangularanimation', this.mesh);
-      //this.el.setObject3D('triangularanimation2', this.mesh2);
+      this.el.setObject3D('triangularanimation3', this.mesh2);
   },
 
   disassemble: function(time, timeDelta) {

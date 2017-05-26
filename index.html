@@ -46,6 +46,7 @@
 	<script src="./app/aframeComponents/ciberneticPartSys.js"></script>
 	<script src="./app/aframeComponents/triangularAnimation.js"></script>
 	<script src="./app/aframeComponents/triangularAnimation2.js"></script>
+	<script src="./app/aframeComponents/pathGenerator.js"></script>
 	<script src="./app/aframeComponents/soundWave.js"></script>
 	<script src="./app/aframeComponents/arrow.js"></script>
 	<script src="./app/aframeComponents/xboxController.js"></script>
@@ -111,8 +112,9 @@
 
 		<a-entity intelligenttext position="0 2 0" rotation="0 180 0"></a-entity>
 
-		<a-entity noisepartsys="initX: 430799.27;initZ: 4582250.27;endX: 431425.65;endZ: 4582556.36;" position="10.165 -3.235 -12.426"></a-entity>
-		<!--<a-entity noisepartsys="initX: 428300.91;initZ: 4582642.75;endX: 426215.70;endZ: 4581991.18;" position="10.165 -3.235 -12.426"></a-entity>
+		<a-entity pathgenerator="pathJsonUrl: data/paths.json;" position="10.165 -3.235 -12.426"></a-entity>
+		<!--<a-entity noisepartsys="initX: 430799.27;initZ: 4582250.27;endX: 431425.65;endZ: 4582556.36;" position="10.165 -3.235 -12.426"></a-entity>
+		--><!--<a-entity noisepartsys="initX: 428300.91;initZ: 4582642.75;endX: 426215.70;endZ: 4581991.18;" position="10.165 -3.235 -12.426"></a-entity>
 		--><a-entity ciberneticpartsys="initX: 430799.27;initZ: 4582250.27;endX: 431425.65;endZ: 4582556.36;" position="10.165 -3.235 -12.426"></a-entity>
 		<!--<a-entity particlesystem position="9.165 -2.835 -12.426"></a-entity>
 		<a-entity particlesystem position="19.165 -2.835 -12.426"></a-entity>
@@ -126,7 +128,7 @@
 		<a-entity class="pointcloudContainer" potreepointcloud="pointcloudUrl: pointclouds/test00/cloud.js;tileC: 0;tileR: 0"> </a-entity>
 		<!--<a-box position="0 0 0" rotation="0 45 0" color="#4CC3D9"></a-box>
 		<a-entity soundsphere position="9.165 -2.835 -12.426"></a-entity>
-		a
+
 		<a-entity particlesystem="textureSrc: resources/textures/beep.png" position="10.406 -2.835 -27.931"></a-entity>
 		<a-entity soundwave position="10.406 -2.2 -27.931" rotation="90 0 0"></a-entity>
 		<a-entity arrow="initScale: 2 2 4" position="20.406 3 -27.931" rotation="0 0 90"></a-entity>-->
