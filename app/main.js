@@ -72,19 +72,19 @@ function tileManager() {
     newLoadedTiles.tiles[numTile] = { tileR: cTileR, tileC: cTileC };
 
     //¿Do I have to load close tiles?
-    if (posInC < config.tileLoadArea) newLoadedTiles.tiles["" + cTileR + (cTileC - 1)] = { tileR: cTileR, tileC: cTileC - 1 };
-    if (posInC > 1 - config.tileLoadArea) newLoadedTiles.tiles["" + cTileR + (cTileC + 1)] = { tileR: cTileR, tileC: cTileC + 1 };
-    if (posInR < config.tileLoadArea) newLoadedTiles.tiles["" + (cTileR - 1) + cTileC] = { tileR: cTileR - 1, tileC: cTileC };
-    if (posInR > 1 - config.tileLoadArea) newLoadedTiles.tiles["" + (cTileR + 1) + cTileC] = { tileR: cTileR + 1, tileC: cTileC };
+    if (posInC < config.tileLoadArea && isAValidTile(cTileR, cTileC - 1)) newLoadedTiles.tiles["" + cTileR + (cTileC - 1)] = { tileR: cTileR, tileC: cTileC - 1 };
+    if (posInC > 1 - config.tileLoadArea && isAValidTile(cTileR, cTileC + 1)) newLoadedTiles.tiles["" + cTileR + (cTileC + 1)] = { tileR: cTileR, tileC: cTileC + 1 };
+    if (posInR < config.tileLoadArea && isAValidTile(cTileR-1, cTileC)) newLoadedTiles.tiles["" + (cTileR - 1) + cTileC] = { tileR: cTileR - 1, tileC: cTileC };
+    if (posInR > 1 - config.tileLoadArea && isAValidTile(cTileR+1, cTileC)) newLoadedTiles.tiles["" + (cTileR + 1) + cTileC] = { tileR: cTileR + 1, tileC: cTileC };
 
-    if (posInR > 1 - config.tileLoadArea && posInC > 1 - config.tileLoadArea) newLoadedTiles.tiles["" + (cTileR + 1) + (cTileC + 1)] = { tileR: cTileR + 1, tileC: cTileC + 1 };
-    if (posInR > 1 - config.tileLoadArea && posInC < config.tileLoadArea) newLoadedTiles.tiles["" + (cTileR + 1) + (cTileC - 1)] = { tileR: cTileR + 1, tileC: cTileC - 1 };
-    if (posInR < config.tileLoadArea && posInC > 1 - config.tileLoadArea) newLoadedTiles.tiles["" + (cTileR - 1) + (cTileC + 1)] = { tileR: cTileR - 1, tileC: cTileC + 1 };
-    if (posInR < config.tileLoadArea && posInC < config.tileLoadArea) newLoadedTiles.tiles["" + (cTileR - 1) + (cTileC - 1)] = { tileR: cTileR - 1, tileC: cTileC - 1 };
+    if (posInR > 1 - config.tileLoadArea && posInC > 1 - config.tileLoadArea && isAValidTile(cTileR+1, cTileC+1)) newLoadedTiles.tiles["" + (cTileR + 1) + (cTileC + 1)] = { tileR: cTileR + 1, tileC: cTileC + 1 };
+    if (posInR > 1 - config.tileLoadArea && posInC < config.tileLoadArea && isAValidTile(cTileR+1, cTileC-1)) newLoadedTiles.tiles["" + (cTileR + 1) + (cTileC - 1)] = { tileR: cTileR + 1, tileC: cTileC - 1 };
+    if (posInR < config.tileLoadArea && posInC > 1 - config.tileLoadArea && isAValidTile(cTileR-1, cTileC+1)) newLoadedTiles.tiles["" + (cTileR - 1) + (cTileC + 1)] = { tileR: cTileR - 1, tileC: cTileC + 1 };
+    if (posInR < config.tileLoadArea && posInC < config.tileLoadArea && isAValidTile(cTileR-1, cTileC-1)) newLoadedTiles.tiles["" + (cTileR - 1) + (cTileC - 1)] = { tileR: cTileR - 1, tileC: cTileC - 1 };
 
 
     loadNewTiles(newLoadedTiles, loadedTiles);
-    //removeOldTiles(newLoadedTiles, loadedTiles);
+    removeOldTiles(newLoadedTiles, loadedTiles);
 
     loadedTiles = newLoadedTiles;
 
@@ -92,13 +92,11 @@ function tileManager() {
 }
 
 
-requestAnimationFrame(tileManager);
-
 /**
  * Returns true if the tile is in our map.
  */
-function isNotAValidTile(tileR, tileC) {
-    return (tileR < 0 || tileC < 0 ||
+function isAValidTile(tileR, tileC) {
+    return !(tileR < 0 || tileC < 0 ||
         tileHeights[tileR] === undefined ||
         tileHeights[tileR][tileC] === undefined);
 }
@@ -182,54 +180,30 @@ function createBorders(tileNum, tileR, tileC) {
 }*/
 
 /**
- * Loads tiles on newLoadedTiles which are not in loadedTiles, because
- * those should be already visible on screen.
+ * Loads tiles on newLoadedTiles. Or set them to visible if they are already loaded.
  */
 function loadNewTiles(newTiles, oldTiles) {
+    var pointcloudContainer = document.querySelector('.pointcloudContainer').components.potreepointcloud;
     for (var k in newTiles.tiles) {
-        if (!oldTiles.tiles[k]) {
-            if (isNotAValidTile(newTiles.tiles[k].tileR, newTiles.tiles[k].tileC)) {
-                console.log("Tile ", k, " is out of bound.");
-                //appLogic.errorLoadingPointcloud(newTiles.tiles[k].tileC, newTiles.tiles[k].tileR, k);
-            }
-            else {
-                var pointcloudUrl = 'pointclouds/test' + newTiles.tiles[k].tileR + '' + newTiles.tiles[k].tileC + '/cloud.js'
-                var pointcloudContainer = document.querySelector('.pointcloudContainer');
-                pointcloudContainer.components.potreepointcloud.addPointCloud(pointcloudUrl, newTiles.tiles[k].tileR, newTiles.tiles[k].tileC);
-                /*var sceneEl = document.querySelector('a-scene');
-                var entityEl = document.createElement('a-entity');
-
-                var c, f;
-
-                if (k.length > 2) c = k[1] + k[2];
-
-                entityEl.setAttribute('id', 'tile' + k);
-                entityEl.setAttribute('class', 'tile');
-                entityEl.setAttribute('potreepointcloud',
-                    "pointcloudUrl: pointclouds/test" + k + "/cloud.js;tileC: " +
-                    newTiles.tiles[k].tileC + ";tileR: " + newTiles.tiles[k].tileR);
-                sceneEl.appendChild(entityEl);
-
-                createBorders(k, newTiles.tiles[k].tileR, newTiles.tiles[k].tileC);*/
-            }
+        if(pointcloudContainer.isTileAdded(newTiles.tiles[k].tileR, newTiles.tiles[k].tileC)) {
+                pointcloudContainer.setVisibility(newTiles.tiles[k].tileR, newTiles.tiles[k].tileC, true);
+        }
+        else {
+            console.log("TILE IS NOT LOADED: ", newTiles.tiles[k].tileR, " ", newTiles.tiles[k].tileC);
+            var pointcloudUrl = 'pointclouds/test' + newTiles.tiles[k].tileR + '' + newTiles.tiles[k].tileC + '/cloud.js'
+            pointcloudContainer.addPointCloud(pointcloudUrl, newTiles.tiles[k].tileR, newTiles.tiles[k].tileC);
         }
     }
 }
 
 /**
- * Removes old tiles which are not on the new tile list.
+ * Hide old tiles which are not on the new tile list.
  */
 function removeOldTiles(newTiles, oldTiles) {
     for (var k in oldTiles.tiles) {
         if (!newTiles.tiles[k]) {
-            var pointcloud = document.querySelector('#tile' + k);
-            if (pointcloud) {
-                pointcloud.parentNode.removeChild(pointcloud);
-
-                //If there is no tile, remove borders.
-                var planes = document.querySelectorAll('.plane' + k);
-                for (var i = 0; i < planes.length; ++i) planes[i].parentNode.removeChild(planes[i]);
-            }
+            var pointcloudContainer = document.querySelector('.pointcloudContainer').components.potreepointcloud;
+            pointcloudContainer.setVisibility(oldTiles.tiles[k].tileR, oldTiles.tiles[k].tileC, false);
         }
     }
 }
@@ -261,7 +235,11 @@ function manageSphere() {
     }
 }
 
-requestAnimationFrame(manageSphere);
+document.querySelector('a-scene').addEventListener('loaded', function () {
+    requestAnimationFrame(manageSphere);
+    requestAnimationFrame(tileManager);
+})
+
 /**
  * End. Manage sphere.
  */

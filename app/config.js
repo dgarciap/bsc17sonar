@@ -7,5 +7,5 @@ var config = {
     //Percentage. When the user enters the tileLoadArea in one direction the adjacent tile loads
     //or a bording indicating that there is no tile. It should be less than 0.5 to avoid
     //implementation problems.
-    tileLoadArea: 0.45,
+    tileLoadArea: 0.35,
 };

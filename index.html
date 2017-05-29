@@ -43,7 +43,6 @@
 	<script src="./app/aframeComponents/potreePointCloud.js"></script>
 	<script src="./app/aframeComponents/soundSphere.js"></script>
 	<script src="./app/aframeComponents/noisePartSys.js"></script>
-	<script src="./app/aframeComponents/ciberneticPartSys.js"></script>
 	<script src="./app/aframeComponents/triangularAnimation.js"></script>
 	<script src="./app/aframeComponents/triangularAnimation2.js"></script>
 	<script src="./app/aframeComponents/pathGenerator.js"></script>
@@ -55,7 +54,6 @@
 
 	<script src="./app/config.js"></script>
 	<script src="./app/tileHeights.js"></script>
-	<script src="./app/main.js"></script>
 
 	<!-- Potree dependencies -->
 	<script src="libs/plasio/js/laslaz.js"></script>
@@ -112,8 +110,8 @@
 
 		<a-entity intelligenttext position="0 2 0" rotation="0 180 0"></a-entity>
 
-		<a-entity pathgenerator="pathJsonUrl: data/paths.json;" position="10.165 -3.235 -12.426"></a-entity>
-		<!--<a-entity noisepartsys="initX: 430799.27;initZ: 4582250.27;endX: 431425.65;endZ: 4582556.36;" position="10.165 -3.235 -12.426"></a-entity>
+		<!--<a-entity pathgenerator="pathJsonUrl: data/paths.json;" position="10.165 -3.235 -12.426"></a-entity>
+		--><!--<a-entity noisepartsys="initX: 430799.27;initZ: 4582250.27;endX: 431425.65;endZ: 4582556.36;" position="10.165 -3.235 -12.426"></a-entity>
 		--><!--<a-entity noisepartsys="initX: 428300.91;initZ: 4582642.75;endX: 426215.70;endZ: 4581991.18;" position="10.165 -3.235 -12.426"></a-entity>
 		--><a-entity ciberneticpartsys="initX: 430799.27;initZ: 4582250.27;endX: 431425.65;endZ: 4582556.36;" position="10.165 -3.235 -12.426"></a-entity>
 		<!--<a-entity particlesystem position="9.165 -2.835 -12.426"></a-entity>
@@ -168,6 +166,9 @@
 		<a-camera id="app-camera" rotation="0 0 0" position="5 0 -5" xbox-controller xbox-look-controls>
 		</a-camera>
 	</a-scene>
+
+	<script src="./app/main.js"></script>
+	<script src="./app/aframeComponents/ciberneticPartSys.js"></script>
 
   </body>
 </html>
