@@ -2,7 +2,7 @@ potreepointcloud = {};
 //Constant to identify an instance of the component which has not been provided with pointcloud.
 potreepointcloud.NO_POINTCLOUD = "NOPC";
 
-potreepointcloud.POINT_BUDGET = 0.6*1000*1000;
+potreepointcloud.POINT_BUDGET = 0.4*1000*1000;
 
 // Registering component
 AFRAME.registerComponent('potreepointcloud', {

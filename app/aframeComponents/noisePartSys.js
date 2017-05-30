@@ -5,7 +5,7 @@ noisepartsys.PARTICLE_HEIGHT = 0.1;
 noisepartsys.PARTICLE_WIDTH = 0.2;
 noisepartsys.PARTICLE_DEPTH = 10;
 
-noisepartsys.PARTICLES_PER_UNIT = 40;
+noisepartsys.PARTICLES_PER_UNIT = 20;
 
 // Registering component
 AFRAME.registerComponent('noisepartsys', {
@@ -23,19 +23,20 @@ AFRAME.registerComponent('noisepartsys', {
 
   init: function () {
     // create the particle variables
+    var loader = new THREE.TextureLoader();
     var particles = new THREE.Geometry(),
         pMaterial = new THREE.PointsMaterial({
             color: 0xFFFFFF,
             size: 0.1,
-            map: THREE.ImageUtils.loadTexture(
+            map: loader.load(
                 this.data.textureSrc
             ),
             transparent: true,
             alphaTest: 0.5,
         });
 
-    var originPoint = {x: (this.data.initX-MainConsts.COORDS_CORNER.x) * MainConsts.SCALE, z: (this.data.initZ-MainConsts.COORDS_CORNER.y) * (-1) * MainConsts.SCALE}
-    var endPoint = {x: (this.data.endX-MainConsts.COORDS_CORNER.x) * MainConsts.SCALE, z: (this.data.endZ-MainConsts.COORDS_CORNER.y) * (-1) * MainConsts.SCALE}
+    var originPoint = {x: (this.data.initX-MainConsts.COORDS_CORNER.x) * MainConsts.SCALE, z: (this.data.initZ-MainConsts.COORDS_CORNER.y) * (-1) * MainConsts.SCALE};
+    var endPoint = {x: (this.data.endX-MainConsts.COORDS_CORNER.x) * MainConsts.SCALE, z: (this.data.endZ-MainConsts.COORDS_CORNER.y) * (-1) * MainConsts.SCALE};
 
     var longitude = this.pythagorean(endPoint.x-originPoint.x, endPoint.z-originPoint.z);
 
@@ -80,15 +81,27 @@ AFRAME.registerComponent('noisepartsys', {
         particles.vertices.push(particle);
     }
 
-    this.geometry = particles;
-    this.material = pMaterial;
+    //this.geometry = particles;
+    //this.material = pMaterial;
 
     // create the particle system
-    this.mesh = new THREE.Points(
+    /*this.mesh = new THREE.Points(
         this.geometry,
-        this.material);
+        this.material);*/
 
-    // add it to the scene
+    //LINES 
+    
+
+    this.material = new THREE.LineBasicMaterial( { color: 'red', opacity: 1 } );
+    this.geometry = new THREE.Geometry();
+    this.geometry.vertices.push( {x: 0, y: 0, z: 0} );
+    this.geometry.vertices.push( {x: longitude, y: 0, z: 0} );
+    
+    this.mesh = new THREE.Line( this.geometry, this.material);
+
+    //this.mesh.visible = false;
+
+    // add it to the scene.
     this.el.setObject3D('partyclesystem', this.mesh);
   },
 
@@ -98,7 +111,7 @@ AFRAME.registerComponent('noisepartsys', {
   tick: function () {
     //this.mesh.rotation.y += 0.01;
 
-    var pCount = this.particleCount;
+    /*var pCount = this.particleCount;
     while (pCount--) {
 
         // get the particle
@@ -122,8 +135,7 @@ AFRAME.registerComponent('noisepartsys', {
     // flag to the particle system
     // that we've changed its vertices.
     this.geometry.
-        verticesNeedUpdate = true;
-
+        verticesNeedUpdate = true;*/
   },
 
   remove: function () {},
