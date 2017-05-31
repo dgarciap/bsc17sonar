@@ -46,7 +46,7 @@ AFRAME.registerComponent('pathgenerator', {
         //NOTE: This.geometries is an array 
       for(i = 0; i < this.geometries.length; ++i) {
         if(typeof this.geometries[i] === 'object') 
-            this.initGeomParticles(this.geometries[i], i*pathgenerator.LONGITUDE_STEP);
+            this.initGeomParticles(this.geometries[i].geom, i*pathgenerator.LONGITUDE_STEP);
       }
   },
 
@@ -84,7 +84,7 @@ AFRAME.registerComponent('pathgenerator', {
     return radAngle;
   },
 
-  addMesh: function (textureSrc, initX, initZ, endX, endZ) {
+  addMesh: function (textureSrc, initX, initZ, endX, endZ, tiles) {
 
     var originPoint = {x: (initX-MainConsts.COORDS_CORNER.x) * MainConsts.SCALE, z: (initZ-MainConsts.COORDS_CORNER.y) * (-1) * MainConsts.SCALE};
     var endPoint = {x: (endX-MainConsts.COORDS_CORNER.x) * MainConsts.SCALE, z: (endZ-MainConsts.COORDS_CORNER.y) * (-1) * MainConsts.SCALE};
@@ -95,11 +95,11 @@ AFRAME.registerComponent('pathgenerator', {
     //TODO: We can adjust this to get better results.
     var geomIndex = Math.trunc(longitude/pathgenerator.LONGITUDE_STEP) + 1;
 
-    if(!this.geometries[geomIndex]) this.geometries[geomIndex] = new THREE.Geometry();
+    if(!this.geometries[geomIndex]) this.geometries[geomIndex] = {geom: new THREE.Geometry(), counter: 0};
 
     // create the particle system.
     mesh = new THREE.Points(
-        this.geometries[geomIndex],
+        this.geometries[geomIndex].geom,
         this.meshMaterial);
 
     mesh.rotation.y = this.getAngle(originPoint, endPoint, longitude);
@@ -108,7 +108,9 @@ AFRAME.registerComponent('pathgenerator', {
     mesh.position.y = -2.635;
     mesh.position.z = originPoint.z;
 
-    this.meshes.push(mesh);
+    mesh.visible = false;
+
+    this.meshes.push({mesh: mesh, tiles: tiles, geomData: this.geometries[geomIndex]});
   },
 
   retrieveJsonData: function(callback) {
@@ -157,7 +159,7 @@ AFRAME.registerComponent('pathgenerator', {
 
                     that.addMesh(pathgenerator.PARTICLE_URL, 
                         dataArray[that.count].start[0], dataArray[that.count].start[1], 
-                        dataArray[that.count].end[0], dataArray[that.count].end[1]);
+                        dataArray[that.count].end[0], dataArray[that.count].end[1], dataArray[that.count].tiles);
                     ++that.numRails;
                 }
                 ++that.count;
@@ -176,7 +178,7 @@ AFRAME.registerComponent('pathgenerator', {
 
   update: function () {
       for(var i = 0; i < this.meshes.length; ++i) {
-        this.el.setObject3D('partyclesystem'+i, this.meshes[i]);
+        this.el.setObject3D('partyclesystem'+i, this.meshes[i].mesh);
       }
   },
 
@@ -202,10 +204,31 @@ AFRAME.registerComponent('pathgenerator', {
     geom.verticesNeedUpdate = true;
   },
 
+  isMeshInTile: function(mesh, tile) {
+    for(var i = 0; i < mesh.tiles.length; ++i) {
+        if(mesh.tiles[i][0] === tile[1] && mesh.tiles[i][1] === tile[0]) return true;
+    }
+    //TODO: fill with code.
+    return false;
+  },
+
+  /**
+   * Change the visibility of certain paths. According to a tile Id.
+   */
+  changeVisibility: function(tile, visibility) {
+    for(var i = 0; i < this.meshes.length; ++i) {
+        if(this.isMeshInTile(this.meshes[i], tile) && this.meshes[i].mesh.visible !== visibility) {
+            this.meshes[i].mesh.visible = visibility;
+            if(visibility) ++this.meshes[i].geomData.counter;
+            else --this.meshes[i].geomData.counter;
+        }
+    }
+  },
+
   tick: function () {
       for(var i = 0; i < this.geometries.length; ++i) {
-          if(typeof this.geometries[i] === 'object') 
-            this.updateGeomParticles(this.geometries[i]);
+          if(this.geometries[i] && this.geometries[i].counter) 
+            this.updateGeomParticles(this.geometries[i].geom);
       }
   },
 

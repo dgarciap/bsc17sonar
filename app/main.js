@@ -10,7 +10,7 @@ MainConsts.SCALE = 0.02;
 
 MainConsts.APP_COLOR = "black";
 
-var loadedTiles = { tiles: { "00": { tileC: 0, tileR: 0 } } };
+var loadedTiles = { tiles: {} };
 
 var appLogic = {};
 
@@ -184,14 +184,20 @@ function createBorders(tileNum, tileR, tileC) {
  */
 function loadNewTiles(newTiles, oldTiles) {
     var pointcloudContainer = document.querySelector('.pointcloudContainer').components.potreepointcloud;
+    var pathgenerator = document.querySelector('#path-generator').components.pathgenerator;
     for (var k in newTiles.tiles) {
-        if(pointcloudContainer.isTileAdded(newTiles.tiles[k].tileR, newTiles.tiles[k].tileC)) {
-                pointcloudContainer.setVisibility(newTiles.tiles[k].tileR, newTiles.tiles[k].tileC, true);
-        }
-        else {
-            console.log("TILE IS NOT LOADED: ", newTiles.tiles[k].tileR, " ", newTiles.tiles[k].tileC);
-            var pointcloudUrl = 'pointclouds/test' + newTiles.tiles[k].tileR + '' + newTiles.tiles[k].tileC + '/cloud.js'
-            pointcloudContainer.addPointCloud(pointcloudUrl, newTiles.tiles[k].tileR, newTiles.tiles[k].tileC);
+        if(!oldTiles.tiles[k]) {
+            if(pointcloudContainer.isTileAdded(newTiles.tiles[k].tileR, newTiles.tiles[k].tileC)) {
+                    pointcloudContainer.setVisibility(newTiles.tiles[k].tileR, newTiles.tiles[k].tileC, true);
+            }
+            else {
+                console.log("TILE IS NOT LOADED: ", newTiles.tiles[k].tileR, " ", newTiles.tiles[k].tileC);
+                var pointcloudUrl = 'pointclouds/test' + newTiles.tiles[k].tileR + '' + newTiles.tiles[k].tileC + '/cloud.js'
+                pointcloudContainer.addPointCloud(pointcloudUrl, newTiles.tiles[k].tileR, newTiles.tiles[k].tileC);
+            }
+
+            //Set to visible paths on this tile.
+            pathgenerator.changeVisibility([newTiles.tiles[k].tileR, newTiles.tiles[k].tileC], true);
         }
     }
 }
@@ -204,6 +210,9 @@ function removeOldTiles(newTiles, oldTiles) {
         if (!newTiles.tiles[k]) {
             var pointcloudContainer = document.querySelector('.pointcloudContainer').components.potreepointcloud;
             pointcloudContainer.setVisibility(oldTiles.tiles[k].tileR, oldTiles.tiles[k].tileC, false);
+            //Set to visible paths on this tile.
+            var pathgenerator = document.querySelector('#path-generator').components.pathgenerator;
+            pathgenerator.changeVisibility([oldTiles.tiles[k].tileR, oldTiles.tiles[k].tileC], false);
         }
     }
 }
