@@ -117,7 +117,7 @@ AFRAME.registerComponent('triangularanimation', {
             var newY = this.lastY - Math.random() * triangularanimation.Y_RANGE;
 
             var newX = Math.random() * triangularanimation.X_RANGE - triangularanimation.X_RANGE/2;
-
+            if(!this.geometry.vertices[this.currentVertex]) console.log(this.currentVertex);
             this.geometry.vertices[this.currentVertex].y = newY;
             this.geometry.vertices[this.currentVertex].x = newX;
             this.geometry.verticesNeedUpdate = true;
