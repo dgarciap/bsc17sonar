@@ -2,6 +2,10 @@ pathgenerator = {};
 pathgenerator.LONGITUDE_STEP = 0.25;
 pathgenerator.PARTICLE_URL = "resources/textures/particledefault2.png";
 
+//Contain ocean height in 3D space.
+pathgenerator.OCEAN_HEIGHT = -4.320;
+
+
 AFRAME.registerComponent('pathgenerator', {
   schema: {
       pathJsonUrl: {type: "string", default: undefined},
@@ -84,12 +88,14 @@ AFRAME.registerComponent('pathgenerator', {
     return radAngle;
   },
 
-  addMesh: function (textureSrc, initX, initZ, endX, endZ, tiles) {
+  addMesh: function (textureSrc, initX, initZ, endX, endZ, height, tiles) {
 
     var originPoint = {x: (initX-MainConsts.COORDS_CORNER.x) * MainConsts.SCALE, z: (initZ-MainConsts.COORDS_CORNER.y) * (-1) * MainConsts.SCALE};
     var endPoint = {x: (endX-MainConsts.COORDS_CORNER.x) * MainConsts.SCALE, z: (endZ-MainConsts.COORDS_CORNER.y) * (-1) * MainConsts.SCALE};
 
     var longitude = this.pythagorean(endPoint.x-originPoint.x, endPoint.z-originPoint.z);
+
+    var height3DSpace = height*MainConsts.SCALE + pathgenerator.OCEAN_HEIGHT;
 
     //Will have a final geometry longer than the original longitude.
     //TODO: We can adjust this to get better results.
@@ -105,7 +111,7 @@ AFRAME.registerComponent('pathgenerator', {
     mesh.rotation.y = this.getAngle(originPoint, endPoint, longitude);
 
     mesh.position.x = originPoint.x;
-    mesh.position.y = -2.635;
+    mesh.position.y = height3DSpace;
     mesh.position.z = originPoint.z;
 
     mesh.visible = false;
@@ -159,7 +165,9 @@ AFRAME.registerComponent('pathgenerator', {
 
                     that.addMesh(pathgenerator.PARTICLE_URL, 
                         dataArray[that.count].start[0], dataArray[that.count].start[1], 
-                        dataArray[that.count].end[0], dataArray[that.count].end[1], dataArray[that.count].tiles);
+                        dataArray[that.count].end[0], dataArray[that.count].end[1],
+                        (dataArray[that.count].end[2]+dataArray[that.count].start[2])/2,
+                        dataArray[that.count].tiles);
                     ++that.numRails;
                 }
                 ++that.count;

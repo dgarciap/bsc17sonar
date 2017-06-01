@@ -264,7 +264,7 @@ document.querySelector('a-scene').addEventListener('loaded', function () {
     requestAnimationFrame(tileManager);
 
     //Place camera on initial position.
-    goToLocation(430965.87, 4583956.31);
+    goToLocation(434493.09, 4583537.94);
 })
 
 /**
