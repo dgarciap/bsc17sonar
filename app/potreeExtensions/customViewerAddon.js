@@ -28,7 +28,7 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 		this.isFlipYZ = false;
 		this.useDEMCollisions = false;
 		this.minNodeSize = 100;
-		this.directionalLight;
+		//this.directionalLight;
 		this.edlStrength = 1.0;
 		this.edlRadius = 1.4;
 		this.useEDL = false;
@@ -1146,8 +1146,8 @@ Potree.CustomViewer = class PotreeCustomViewer extends THREE.EventDispatcher{
 		
 		Potree.pointLoadLimit = Potree.pointBudget * 2;
 		
-		this.scene.directionalLight.position.copy(camera.position);
-		this.scene.directionalLight.lookAt(new THREE.Vector3().addVectors(camera.position, camera.getWorldDirection()));
+		//this.scene.directionalLight.position.copy(camera.position);
+		//this.scene.directionalLight.lookAt(new THREE.Vector3().addVectors(camera.position, camera.getWorldDirection()));
 		
 		var visibleNodes = 0;
 		var visiblePoints = 0;

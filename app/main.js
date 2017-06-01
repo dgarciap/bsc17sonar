@@ -8,6 +8,8 @@ MainConsts.TILE_SIZE = 2000;
 //So that the size of our tiles when drawn on screen is TILE_SIZE*SCALE.
 MainConsts.SCALE = 0.02;
 
+MainConsts.CAMERA_DEFAULT_HEIGHT = 0;
+
 MainConsts.APP_COLOR = "black";
 
 var loadedTiles = { tiles: {} };
@@ -219,6 +221,19 @@ function removeOldTiles(newTiles, oldTiles) {
 
 
 /**
+ * Code in charge of translating camera to a given point.
+ */
+function goToLocation(x, y) {
+    newLocation = {x: (x - MainConsts.COORDS_CORNER.x)*MainConsts.SCALE, y: (y - MainConsts.COORDS_CORNER.y)*MainConsts.SCALE};
+    document.querySelector('#app-camera').setAttribute('position', newLocation.x + " " + MainConsts.CAMERA_DEFAULT_HEIGHT + " -" + newLocation.y);
+}
+
+/**
+ * End. Code in charge of translating camera to a given point.
+ */
+
+
+/**
  * Manage sphere.
  */
 function manageSphere() {
@@ -247,6 +262,9 @@ function manageSphere() {
 document.querySelector('a-scene').addEventListener('loaded', function () {
     requestAnimationFrame(manageSphere);
     requestAnimationFrame(tileManager);
+
+    //Place camera on initial position.
+    goToLocation(430965.87, 4583956.31);
 })
 
 /**

@@ -39,7 +39,7 @@ AFRAME.registerComponent('triangularanimation', {
     for ( var i = 0; i < triangularanimation.NUM_VERTEX-1; i ++ )
         this.geometry.vertices.push( {x: initPX, y: initPY, z: 0} );
 
-    this.material = new THREE.LineBasicMaterial( { color: 0xffffff, opacity: 1 } );
+    this.material = new THREE.LineBasicMaterial( { color: 0xffba00, opacity: 1 } );
 
     this.mesh = new THREE.Line( this.geometry, this.material);
 
@@ -116,6 +116,9 @@ AFRAME.registerComponent('triangularanimation', {
 
             var newY = this.lastY - Math.random() * triangularanimation.Y_RANGE;
 
+            //If it is the last vertex, we place it in our minimum Y.
+            if(this.currentVertex >= triangularanimation.NUM_VERTEX - 1) newY = triangularanimation.MINIMUM_Y;
+
             var newX = Math.random() * triangularanimation.X_RANGE - triangularanimation.X_RANGE/2;
             if(!this.geometry.vertices[this.currentVertex]) console.log(this.currentVertex);
             this.geometry.vertices[this.currentVertex].y = newY;
@@ -129,7 +132,7 @@ AFRAME.registerComponent('triangularanimation', {
             }
 
             //If we reach the floor limit (y === 0), we stop descending.
-            if(this.lastY <= triangularanimation.MINIMUM_Y ) this.assembled = true;
+            if(this.lastY <= triangularanimation.MINIMUM_Y) this.assembled = true;
             else ++this.currentVertex;
             this.lastY = newY;
         }

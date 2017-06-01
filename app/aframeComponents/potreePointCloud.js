@@ -2,7 +2,7 @@ potreepointcloud = {};
 //Constant to identify an instance of the component which has not been provided with pointcloud.
 potreepointcloud.NO_POINTCLOUD = "NOPC";
 
-potreepointcloud.POINT_BUDGET = 0.6*1000*1000;
+potreepointcloud.POINT_BUDGET = 1*1000*1000;
 
 // Registering component
 AFRAME.registerComponent('potreepointcloud', {
@@ -75,7 +75,7 @@ AFRAME.registerComponent('potreepointcloud', {
       this.pointCloudMapper[tileR][tileC].visible = visible;
     }
     else if (this.pointCloudMapper[tileR] && typeof this.pointCloudMapper[tileR][tileC] === 'string') {
-      console.log("Trying to change visibility of not yet loaded tile. It will be visible when loaded anyway.")
+      console.log("Trying to change visibility of not yet loaded tile. It will be visible when loaded anyway.");
     }
     else console.error("potreepointcloud Error: setVisibility error. TileR: ", tileR, " TileC: ", tileC);
 

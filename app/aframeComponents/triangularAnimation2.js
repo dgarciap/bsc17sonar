@@ -39,7 +39,7 @@ AFRAME.registerComponent('triangularanimation2', {
     for ( var i = 0; i < triangularanimation.NUM_VERTEX; i ++ )
         this.geometry.vertices.push( {x: 0, y: triangularanimation.MINIMUM_Y, z: 0} );
 
-    this.material = new THREE.LineBasicMaterial( { color: 0xffffff, opacity: 1 } );
+    this.material = new THREE.LineBasicMaterial( { color: 0xffba00, opacity: 1 } );
 
     this.mesh = new THREE.Line( this.geometry, this.material);
 

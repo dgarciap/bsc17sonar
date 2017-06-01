@@ -24,7 +24,7 @@ Potree.CustomScene = class extends THREE.EventDispatcher{
 		this.inputHandler;
 		this.view = new Potree.View();
 		
-		this.directionalLight = null;
+		//this.directionalLight = null;
 		
 		this.initialize();
 		
@@ -122,13 +122,13 @@ Potree.CustomScene = class extends THREE.EventDispatcher{
 		//this.camera.up.set(0, 0, 1);
 		//this.camera.position.set(1000, 1000, 1000);
 		
-		this.directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+		/*this.directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
 		this.directionalLight.position.set( 10, 10, 10 );
 		this.directionalLight.lookAt( new THREE.Vector3(0, 0, 0));
-		this.scenePointCloud.add( this.directionalLight );
+		this.scenePointCloud.add( this.directionalLight );*/
 		
-		var light = new THREE.AmbientLight( 0x555555 ); // soft white light
-		this.scenePointCloud.add( light );
+		//var light = new THREE.AmbientLight( 0x555555 ); // soft white light
+		//this.scenePointCloud.add( light );
 	}
 	
 	addAnnotation(position, args = {}){
