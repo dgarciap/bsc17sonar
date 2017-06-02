@@ -2,7 +2,9 @@ potreepointcloud = {};
 //Constant to identify an instance of the component which has not been provided with pointcloud.
 potreepointcloud.NO_POINTCLOUD = "NOPC";
 
-potreepointcloud.POINT_BUDGET = 1*1000*1000;
+potreepointcloud.POINT_BUDGET = 0.5*1000*1000;
+
+potreepointcloud.DEFAULT_HEIGHT = -15;
 
 // Registering component
 AFRAME.registerComponent('potreepointcloud', {
@@ -13,6 +15,7 @@ AFRAME.registerComponent('potreepointcloud', {
     tileR: {type: "number", default: 0},
     tileSize: {type: "number", default: 2000},
   },
+  
   init: function () {
     this.isInit = false;
     this.viewer = undefined;
@@ -34,10 +37,10 @@ AFRAME.registerComponent('potreepointcloud', {
         that.pointCloudMapper[this.tileR][this.tileC] = e.pointcloud;
 
         e.pointcloud.position.x = this.tileC*that.data.tileSize*that.data.scale;
-        e.pointcloud.position.y = tileHeights[this.tileR][this.tileC] || -15;
+        e.pointcloud.position.y = (tileHeights[this.tileR][this.tileC] !== undefined) ? tileHeights[this.tileR][this.tileC] : potreepointcloud.DEFAULT_HEIGHT;
         e.pointcloud.position.z = -this.tileR*that.data.tileSize*that.data.scale;
 
-        if(!tileHeights[this.tileR][this.tileC]) 
+        if(tileHeights[this.tileR][this.tileC] === undefined) 
           console.error("There is no tile height for " + this.tileR + " , " + this.tileC);
 
         e.pointcloud.rotation.x = -0.5*Math.PI;

@@ -3,6 +3,18 @@
 // On the map the origin is the bottom-left corner, and columns go to the right, while rows go up.
 var tileHeights = [
     [
+        undefined,
+        -4.52,
+        -16.5,
+        -4.6,
+    ],
+    [
+        -13.45,
+        -4.45,
+        -15.55,
+        -4.6,
+    ],
+    [
         -10, //Column 0. (x axis).
         -13, //Column 1. (x axis).
         -18, //Column 2.

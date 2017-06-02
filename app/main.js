@@ -1,7 +1,7 @@
 MainConsts = {};
 
 //We are using EPGS 32631 for all geographic data on this application.
-MainConsts.COORDS_CORNER = { x: 426000, y: 4582000 }; //Coords in meters for the origin corner of our map. (x=0, z=0);
+MainConsts.COORDS_CORNER = { x: 426000, y: 4578000 }; //Coords in meters for the origin corner of our map. (x=0, z=0);
 //Size in meters of our tiles (square tiles). TILE_SIZExTILE_SIZE.
 MainConsts.TILE_SIZE = 2000;
 //Scale of our drawn map.
@@ -264,7 +264,7 @@ document.querySelector('a-scene').addEventListener('loaded', function () {
     requestAnimationFrame(tileManager);
 
     //Place camera on initial position.
-    goToLocation(434493.09, 4583537.94);
+    goToLocation(432000, 4580000);
 })
 
 /**

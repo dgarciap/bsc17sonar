@@ -42,7 +42,7 @@ Potree.Shaders["pointcloud.fs"] = [
  "      float startOpacity = 1.0;",
  //threshold is 10.0. Points closer to Z = -10 won't have gradient.
  //9.5 is the gradient range. -> From -10.0 to -19.5.
- "      if(-pos.z > 10.0) startOpacity = 1.0-(-pos.z-10.0)/9.5;",
+ "      startOpacity = 1.0-(-pos.z)/19.5;",
  "		startOpacity = max(0.0, startOpacity);",
  "		gl_FragColor = vec4(color*startOpacity, 1.0);",
  "	}",
