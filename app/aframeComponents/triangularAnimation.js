@@ -105,7 +105,7 @@ AFRAME.registerComponent('triangularanimation', {
   },
 
   assembly: function() {
-    if(!this.assembled && this.counter > triangularanimation.MOV_PHASE) {
+    if(!this.assembled && this.counter > triangularanimation.MOV_PHASE && this.currentVertex < triangularanimation.NUM_VERTEX) {
         this.counter -= triangularanimation.MOV_PHASE;
 
         if(this.currentVertex < 4) {

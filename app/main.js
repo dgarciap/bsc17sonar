@@ -219,12 +219,19 @@ function removeOldTiles(newTiles, oldTiles) {
     }
 }
 
+/**
+ * Given x and y in map coordinates (EPSG: 32631) returns (x, y) in 3d space coordinates.
+ */
+function mapCoordsTo3DSpace(x, y) {
+    return {x: (x - MainConsts.COORDS_CORNER.x)*MainConsts.SCALE, y: (y - MainConsts.COORDS_CORNER.y)*MainConsts.SCALE};
+}
+
 
 /**
  * Code in charge of translating camera to a given point.
  */
 function goToLocation(x, y) {
-    newLocation = {x: (x - MainConsts.COORDS_CORNER.x)*MainConsts.SCALE, y: (y - MainConsts.COORDS_CORNER.y)*MainConsts.SCALE};
+    newLocation = mapCoordsTo3DSpace(x, y);
     document.querySelector('#app-camera').setAttribute('position', newLocation.x + " " + MainConsts.CAMERA_DEFAULT_HEIGHT + " -" + newLocation.y);
 }
 
@@ -263,6 +270,50 @@ function manageSphere() {
     }
 }
 
+
+function retrieveJsonData(url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+                if (xmlhttp.status == 200) callback(JSON.parse(this.responseText));
+                else if (xmlhttp.status == 400) console.error('PathGenerator Error 400');
+                else console.error('PathGenerator Error');
+            }
+        };
+
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+}
+
+
+/**
+ * Reads a json file and loads all the map tags.
+ */
+function loadMapTags() {
+    retrieveJsonData('./data/map_tags.json', function(data) {
+        var sceneEl = document.querySelector('a-scene');
+        data.data.forEach(function(tag) {
+            var coords = mapCoordsTo3DSpace(tag.position[0], tag.position[1]);
+            var rotation = Math.trunc(Math.random()*180);
+
+            var tagStick = document.createElement('a-entity');
+            tagStick.setAttribute('triangularanimation', '');
+            tagStick.setAttribute('rotation', "0 " + rotation + " 0");
+            tagStick.setAttribute('position', coords.x + ' 2 -' + coords.y);
+
+            var tagTitle = document.createElement('a-entity');
+            tagTitle.setAttribute('intelligenttext', 'title: ' + tag.nombre + ';');
+            tagTitle.setAttribute('rotation', "0 " + rotation + " 0");
+            tagTitle.setAttribute('position', coords.x + ' 2 -' + coords.y);
+
+            sceneEl.appendChild(tagStick);
+            sceneEl.appendChild(tagTitle);
+        });
+    });
+
+}
+
 document.querySelector('a-scene').addEventListener('loaded', function () {
 
     var urls = [
@@ -281,6 +332,8 @@ document.querySelector('a-scene').addEventListener('loaded', function () {
         entity.components.webaudiosound.addSounds(urls);
         entity.components.webaudiosound.changeVolumes(volumes);
     });
+
+    loadMapTags();
 
     requestAnimationFrame(manageSphere);
     requestAnimationFrame(tileManager);
