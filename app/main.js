@@ -254,12 +254,34 @@ function manageSphere() {
                 var position = document.querySelector('#app-camera').getAttribute('position');
                 this.sphereBarrier.setAttribute('position', position);
             }
+
+            var position = document.querySelector('#app-camera').getAttribute('position');
+            document.querySelector('#user-sound').setAttribute('position', position);
+
         }
         requestAnimationFrame(manageSphere);
     }
 }
 
 document.querySelector('a-scene').addEventListener('loaded', function () {
+
+    var urls = [
+      './resources/music/english.ogg',
+      './resources/music/spanish.ogg',
+      './resources/music/french.ogg',
+    ];
+    var volumes = [
+        0,
+        1,
+        0.5
+    ];
+
+    //Fill webAudioSounds with sounds.
+    document.querySelectorAll('.webaudiosound').forEach(function(entity) {
+        entity.components.webaudiosound.addSounds(urls);
+        entity.components.webaudiosound.changeVolumes(volumes);
+    });
+
     requestAnimationFrame(manageSphere);
     requestAnimationFrame(tileManager);
 
