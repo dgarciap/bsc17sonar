@@ -1260,7 +1260,7 @@ Potree.Shaders["pointcloud.fs"] = [
  "	#else",
  "		vec4 pos = vec4(vViewPosition, 1.0);",
  "		float startOpacity = 1.0-(-pos.z-7.0)/7.0;",
- "		gl_FragColor = vec4(color*startOpacity, 1.0);",
+ "		gl_FragColor = vec4(color, 1.0);",
  "	#endif",
  "",
  "	vec3 normal = normalize( vNormal );",
