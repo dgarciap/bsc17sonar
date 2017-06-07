@@ -138,7 +138,7 @@ AFRAME.registerComponent('pathgenerator', {
         that.numRails = 0;
 
         for(;;) {
-            if(dataArray && that.count < 2200) {
+            if(dataArray && dataArray[that.count]) {
                 if(dataArray[that.count].start[0] > MainConsts.COORDS_CORNER.x && 
                     dataArray[that.count].start[1] > MainConsts.COORDS_CORNER.y && 
                     dataArray[that.count].end[0] > MainConsts.COORDS_CORNER.x && 

@@ -41,13 +41,14 @@
 
 	<!-- Aframe Components -->
 	<script src="./app/aframeComponents/audioCreator.js"></script>
+	<script src="./app/aframeComponents/webAudioSound.js"></script>
 	<script src="./app/aframeComponents/potreePointCloud.js"></script>
 	<script src="./app/aframeComponents/soundSphere.js"></script>
 	<script src="./app/aframeComponents/noisePartSys.js"></script>
 	<script src="./app/aframeComponents/triangularAnimation.js"></script>
 	<script src="./app/aframeComponents/triangularAnimation2.js"></script>
 	<!--<script src="./app/aframeComponents/pathGenerator.js"></script>-->
-	<script src="./app/aframeComponents/pathGenerator.js"></script>
+	<script src="./app/aframeComponents/pathGeneratorLine.js"></script>
 	<script src="./app/aframeComponents/soundWave.js"></script>
 	<script src="./app/aframeComponents/arrow.js"></script>
 	<script src="./app/aframeComponents/xboxController.js"></script>
@@ -96,6 +97,15 @@
 	<a-scene stats>
 
 		<a-assets>
+			<audio id="testaudio" src="./resources/music/street.mp3" preload="auto"></audio>
+			<audio id="testaudio1" src="./resources/music/trafficjam.mp3" preload="auto"></audio>
+			<audio id="testaudio2" src="./resources/music/urban.mp3" preload="auto"></audio>
+			<audio id="testaudio3" src="./resources/music/train.mp3" preload="auto"></audio>
+			<audio id="testaudio4" src="./resources/music/drilling.mp3" preload="auto"></audio>
+			<audio id="testaudio5" src="./resources/music/bus.mp3" preload="auto"></audio>
+			<audio id="testaudio6" src="./resources/music/english.ogg" preload="auto"></audio>
+			<audio id="testaudio7" src="./resources/music/spanish.ogg" preload="auto"></audio>
+			<audio id="testaudio8" src="./resources/music/french.ogg" preload="auto"></audio>
 		</a-assets>
 
 		<a-entity triangularanimation2 position="5 2 -10" rotation="0 180 0"></a-entity>
@@ -164,7 +174,20 @@
 		<a-entity light="type: ambient; color: #BBB"></a-entity>
 
 		<a-sky color="#000000"></a-sky>
-
+		<!--
+			<a-entity webaudiosound="src: nothing; loop:true; autoplay:true" position="120.000 0 -40.010"></a-entity>
+		-->
+		<a-entity id="user-sound">
+			<a-box position="0 0 2" color="red" scale="0.5 0.5 0.5"></a-box>
+			<a-box position="0 0 -2" color="white" scale="0.5 0.5 0.5"></a-box>
+			<a-box position="2 0 0" color="blue" scale="0.5 0.5 0.5"></a-box>
+			<a-box position="-2 0 0" color="white" scale="0.5 0.5 0.5"></a-box>
+			<!--<a-entity class="webaudiosound" webaudiosound="loop:true; autoplay:true" position="0 0 2"></a-entity>
+			<a-entity class="webaudiosound" webaudiosound="loop:true; autoplay:true" position="0 0 -2"></a-entity>
+			<a-entity class="webaudiosound" webaudiosound="loop:true; autoplay:true" position="8 0 0"></a-entity>
+			--><a-entity class="webaudiosound" webaudiosound="loop:true; autoplay:true" position="-8 0 0"></a-entity>
+		</a-entity>
+		
 		<a-camera id="app-camera" rotation="0 0 0" position="45 0 -45" xbox-controller xbox-look-controls>
 		</a-camera>
 		<a-plane position="179.081 -4.320 -26.236" rotation="-90 0 0" material="color: red;"></a-plane>
