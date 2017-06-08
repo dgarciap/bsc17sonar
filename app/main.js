@@ -345,7 +345,31 @@ document.querySelector('a-scene').addEventListener('loaded', function () {
 /**
  * End. Manage sphere.
  */
+/**
+ * Load starting points.
+ */
+function loadTeleportLocations() {
+    retrieveJsonData('./data/starting_points.json', function(data) {
+        appLogic.startLocations = data.data;
+        appLogic.startIndex = 0;
+    });
+}
 
+loadTeleportLocations();
+
+window.onkeyup = function(e) {
+   var key = e.keyCode ? e.keyCode : e.which;
+
+   //If G pressed.
+   if (key == 71 && appLogic.startLocations) {
+       var location = appLogic.startLocations[appLogic.startIndex];
+       goToLocation(location.position[0], location.position[1]);
+       appLogic.startIndex = (appLogic.startIndex+1) % appLogic.startLocations.length;
+   }
+}
+/**
+ * End. Load starting points.
+ */
 
 /** WIND EFFECT. */
 
