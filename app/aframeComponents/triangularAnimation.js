@@ -1,6 +1,6 @@
 triangularanimation = {};
 
-triangularanimation.X_RANGE = 2;
+triangularanimation.X_RANGE = 1;
 
 triangularanimation.Y_RANGE = 1;
 
@@ -10,9 +10,11 @@ triangularanimation.NUM_VERTEX = 15;
 
 triangularanimation.RADIUS = 1.5;
 
-triangularanimation.MINIMUM_Y = -4;
+triangularanimation.MINIMUM_Y = -4.320;
 
-triangularanimation.ACTIVATION_DISTANCE = 7;
+triangularanimation.MAXIMUM_Y = 1.15;
+
+triangularanimation.ACTIVATION_DISTANCE = 15;
 
 // Registering component
 AFRAME.registerComponent('triangularanimation', {
@@ -26,62 +28,72 @@ AFRAME.registerComponent('triangularanimation', {
     var initAngle = 1.5 * Math.PI;
 
     //Calculate three points of a circunference to create a triangle.
-    var initPX = triangularanimation.RADIUS * Math.cos(initAngle);
-    var initPY = triangularanimation.RADIUS * Math.sin(initAngle);
+    this.initPX = triangularanimation.RADIUS * Math.cos(initAngle);
+    this.initPY = triangularanimation.RADIUS * Math.sin(initAngle);
 
     this.geometry = new THREE.Geometry();
 
-    this.geometry.vertices.push( {x: initPX, y: initPY, z: 0} );
+    //this.geometry.vertices.push( {x: this.initPX, y: initPY, z: 0} );
 
     this.angles = [];
     this.angles[0] = initAngle;
 
-    for ( var i = 0; i < triangularanimation.NUM_VERTEX-1; i ++ )
-        this.geometry.vertices.push( {x: initPX, y: initPY, z: 0} );
+    for ( var i = 0; i < triangularanimation.NUM_VERTEX; i ++ )
+        this.geometry.vertices.push( {x: 0, y: triangularanimation.MINIMUM_Y, z: 0} );
 
-    this.material = new THREE.LineBasicMaterial( { color: 0xffba00, opacity: 1 } );
+    this.material = new THREE.LineBasicMaterial( { color: '#eaeaea', opacity: 1 } );
 
     this.mesh = new THREE.Line( this.geometry, this.material);
 
-    this.mesh2 = new THREE.Points( this.geometry, new THREE.PointsMaterial( { size: 0.1, sizeAttenuation: true } ));
-
     this.counter = 0;
     this.currentVertex = 1;
-    this.lastY = -triangularanimation.RADIUS;
+    this.lastY = triangularanimation.MINIMUM_Y;
     this.el.setAttribute("visible", false);
   },
 
-  assignTrianglePoint: function() {
+/*  assignTrianglePoint: function() {
       //Let's fill two of the remaining points of our rectangle. The first point (0) is
       //always the same, so does not net to be filled again.
-      if(this.currentVertex > 0 && this.currentVertex < 3) {
-          if(this.currentVertex === 4) {
-            this.geometry.vertices[this.currentVertex].y = this.geometry.vertices[0].y;
-            this.geometry.vertices[this.currentVertex].x = this.geometry.vertices[0].x;
+      if(this.currentVertex >= triangularanimation.NUM_VERTEX-4 && this.currentVertex < triangularanimation.NUM_VERTEX) {
+          if(this.currentVertex === triangularanimation.NUM_VERTEX-4 || this.currentVertex === triangularanimation.NUM_VERTEX-1) {
+            this.geometry.vertices[this.currentVertex].y = this.initPY;
+            this.geometry.vertices[this.currentVertex].x = this.initPX;
           }
           else {
+            var lastVertexId = this.currentVertex - (triangularanimation.NUM_VERTEX-3);
+            var currentVertexId = this.currentVertex - (triangularanimation.NUM_VERTEX-3) + 1;
             var midAngle = Math.random() * Math.PI / 2;
 
-            var midPX = triangularanimation.RADIUS * Math.cos(this.angles[this.currentVertex-1]+midAngle+Math.PI / 4);
-            var midPY = triangularanimation.RADIUS * Math.sin(this.angles[this.currentVertex-1]+midAngle+Math.PI / 4);
+            var midPX = triangularanimation.RADIUS * Math.cos(this.angles[lastVertexId]+midAngle+Math.PI / 4);
+            var midPY = triangularanimation.RADIUS * Math.sin(this.angles[lastVertexId]+midAngle+Math.PI / 4);
             this.geometry.vertices[this.currentVertex].y = midPY;
             this.geometry.vertices[this.currentVertex].x = midPX;
 
-            this.angles[this.currentVertex] = midAngle;
+            this.angles[currentVertexId] = midAngle;
          }
 
+          if(this.currentVertex < triangularanimation.NUM_VERTEX-1) ++this.currentVertex;
       }
       else if(this.currentVertex < 3) console.error("Current Vertex is not one of the triangle vertex: ", this.currentVertex);
-  },
+  },*/
 
   update: function () {
       this.el.setObject3D('triangularanimation', this.mesh);
-      this.el.setObject3D('triangularanimation3', this.mesh2);
+      //this.el.setObject3D('triangularanimation2', this.mesh2);
+  },
+
+  isSameVertex: function(i, j) {
+      return this.geometry.vertices[i].x == this.geometry.vertices[j].x && 
+        this.geometry.vertices[i].y == this.geometry.vertices[j].y && 
+        this.geometry.vertices[i].z == this.geometry.vertices[j].z;
   },
 
   disassemble: function(time, timeDelta) {
     if(!this.disasembled && this.counter > triangularanimation.MOV_PHASE) {
         this.counter -= triangularanimation.MOV_PHASE;
+
+        while(this.isSameVertex(this.currentVertex, this.currentVertex-1) && this.currentVertex > 1) 
+            --this.currentVertex;
 
         //Change location of remaining vertex.
         for(var i = this.currentVertex; i < triangularanimation.NUM_VERTEX; ++i) {
@@ -105,25 +117,23 @@ AFRAME.registerComponent('triangularanimation', {
   },
 
   assembly: function() {
-    if(!this.assembled && this.counter > triangularanimation.MOV_PHASE && this.currentVertex < triangularanimation.NUM_VERTEX) {
+    if(this.counter > triangularanimation.MOV_PHASE) {
         this.counter -= triangularanimation.MOV_PHASE;
 
-        if(this.currentVertex < 4) {
-            this.assignTrianglePoint();
-            ++this.currentVertex;
-        }
-        else {
+        if(!this.assembled) {
 
-            var newY = this.lastY - Math.random() * triangularanimation.Y_RANGE;
+            var newY = this.lastY + triangularanimation.Y_RANGE;
 
-            //If it is the last vertex, we place it in our minimum Y.
-            if(this.currentVertex >= triangularanimation.NUM_VERTEX - 1) newY = triangularanimation.MINIMUM_Y;
+            var newX = this.currentVertex % 2 ? triangularanimation.X_RANGE/2 : -triangularanimation.X_RANGE/2;
 
-            var newX = Math.random() * triangularanimation.X_RANGE - triangularanimation.X_RANGE/2;
-            if(!this.geometry.vertices[this.currentVertex]) console.log(this.currentVertex);
+            //If we reach the maximum height
+            if(newY > triangularanimation.MAXIMUM_Y || this.currentVertex >= triangularanimation.NUM_VERTEX-1) {
+                newY = triangularanimation.MAXIMUM_Y;
+                newX = 0;
+            }
+
             this.geometry.vertices[this.currentVertex].y = newY;
             this.geometry.vertices[this.currentVertex].x = newX;
-            this.geometry.verticesNeedUpdate = true;
 
             //Change location of remaining vertex.
             for(var i = this.currentVertex+1; i < triangularanimation.NUM_VERTEX; ++i) {
@@ -131,12 +141,12 @@ AFRAME.registerComponent('triangularanimation', {
                 this.geometry.vertices[i].x = this.geometry.vertices[this.currentVertex].x;
             }
 
-            //If we reach the floor limit (y === 0), we stop descending.
-            if(this.lastY <= triangularanimation.MINIMUM_Y) this.assembled = true;
+            if(newY >= triangularanimation.MAXIMUM_Y) this.assembled = true;
             else ++this.currentVertex;
             this.lastY = newY;
         }
 
+        this.geometry.verticesNeedUpdate = true;
         this.disasembled = false;
         this.el.setAttribute("visible", true);
     }
