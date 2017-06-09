@@ -1,0 +1,28 @@
+{
+    "data": [
+        {
+            "nombre":"Sónar 2017",
+            "position":[429151.72,4580477.86],
+            "icon":"",
+            "type":"T",
+            "zone":"3",
+            "dB":"0"
+        },
+        {
+            "nombre":"Universitat Square",
+            "position":[430079.73,4581916.66],
+            "icon":"",
+            "type":"T",
+            "zone":"4",
+            "dB":"0"
+        },
+        {
+            "nombre":"Plaça Catalunya",
+            "position":[430608.66,4582052.58],
+            "icon":"",
+            "type":"T",
+            "zone":"4",
+            "dB":"0"
+        }
+    ]
+}
