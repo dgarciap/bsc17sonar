@@ -1,9 +1,15 @@
 pathgenerator = {};
 pathgenerator.LONGITUDE_STEP = 0.25;
-pathgenerator.PARTICLE_URL = "resources/textures/particledefault2.png";
+pathgenerator.PARTICLE_URL = "resources/textures/traffic_vr.png";
 
 //Contain ocean height in 3D space.
 pathgenerator.OCEAN_HEIGHT = -4.320;
+
+pathgenerator.TEXTURE_MAP = {
+    "1": "resources/textures/particles/TRAFFIC.png",//"resources/textures/particles/TRAFFIC.png",//"resources/textures/traffic_vr.png",
+    "2": "resources/textures/traffic_vr.png",//"resources/textures/particles/INDUSTRY.png",
+    "3": "resources/textures/traffic_vr.png",//"resources/textures/particles/RAIL.png",
+}
 
 
 AFRAME.registerComponent('pathgenerator', {
@@ -54,17 +60,20 @@ AFRAME.registerComponent('pathgenerator', {
       }
   },
 
-  createMeshMaterial: function() {
+  createMeshMaterials: function() {
+      this.materials = {};
+      for(key in pathgenerator.TEXTURE_MAP) {
         var loader = new THREE.TextureLoader();
-        return new THREE.PointsMaterial({
+        this.materials[key] = new THREE.PointsMaterial({
             color: 0xFFFFFF,
-            size: 0.1,
+            size: 0.15,
             map: loader.load(
-                pathgenerator.PARTICLE_URL
+                pathgenerator.TEXTURE_MAP[key]
             ),
             transparent: true,
-            alphaTest: 0.5,
+            alphaTest: 0.1,
         });
+      }
   },
 
   /**
@@ -88,7 +97,7 @@ AFRAME.registerComponent('pathgenerator', {
     return radAngle;
   },
 
-  addMesh: function (textureSrc, initX, initZ, endX, endZ, height, tiles) {
+  addMesh: function (textureSrc, initX, initZ, endX, endZ, height, tiles, type) {
 
     var originPoint = {x: (initX-MainConsts.COORDS_CORNER.x) * MainConsts.SCALE, z: (initZ-MainConsts.COORDS_CORNER.y) * (-1) * MainConsts.SCALE};
     var endPoint = {x: (endX-MainConsts.COORDS_CORNER.x) * MainConsts.SCALE, z: (endZ-MainConsts.COORDS_CORNER.y) * (-1) * MainConsts.SCALE};
@@ -106,7 +115,7 @@ AFRAME.registerComponent('pathgenerator', {
     // create the particle system.
     mesh = new THREE.Points(
         this.geometries[geomIndex].geom,
-        this.meshMaterial);
+        this.materials["1"]);
 
     mesh.rotation.y = this.getAngle(originPoint, endPoint, longitude);
 
@@ -147,7 +156,8 @@ AFRAME.registerComponent('pathgenerator', {
     this.geometries = [];
     this.meshes = [];
     //Create only one material which will be reused for all the geometries.
-    this.meshMaterial = this.createMeshMaterial();
+    this.materials = {};
+    this.createMeshMaterials();
 
     var that = this;
 
@@ -157,7 +167,7 @@ AFRAME.registerComponent('pathgenerator', {
         that.numRails = 0;
 
         for(;;) {
-            if(dataArray && dataArray[that.count]) {
+            if(dataArray && dataArray[that.count] && that.count < 8000) {
                 if(dataArray[that.count].start[0] > MainConsts.COORDS_CORNER.x && 
                     dataArray[that.count].start[1] > MainConsts.COORDS_CORNER.y && 
                     dataArray[that.count].end[0] > MainConsts.COORDS_CORNER.x && 
@@ -167,7 +177,7 @@ AFRAME.registerComponent('pathgenerator', {
                         dataArray[that.count].start[0], dataArray[that.count].start[1], 
                         dataArray[that.count].end[0], dataArray[that.count].end[1],
                         (dataArray[that.count].end[2]+dataArray[that.count].start[2])/2,
-                        dataArray[that.count].tiles);
+                        dataArray[that.count].tiles, dataArray[that.count].oc);
                     ++that.numRails;
                 }
                 ++that.count;

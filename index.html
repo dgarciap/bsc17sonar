@@ -5,7 +5,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Potree Viewer</title>
+    <title>SonoMap</title>
 
 	<link rel="stylesheet" type="text/css" href="build/potree/potree.css">
 
@@ -46,15 +46,14 @@
 	<script src="./app/aframeComponents/soundSphere.js"></script>
 	<script src="./app/aframeComponents/noisePartSys.js"></script>
 	<script src="./app/aframeComponents/triangularAnimation.js"></script>
-	<script src="./app/aframeComponents/triangularAnimation2.js"></script>
 	<!--<script src="./app/aframeComponents/pathGenerator.js"></script>-->
-	<script src="./app/aframeComponents/pathGeneratorLine.js"></script>
+	<script src="./app/aframeComponents/pathGenerator.js"></script>
 	<script src="./app/aframeComponents/soundWave.js"></script>
 	<script src="./app/aframeComponents/arrow.js"></script>
 	<script src="./app/aframeComponents/xboxController.js"></script>
 	<script src="./app/aframeComponents/xboxLookControls.js"></script>
 	<script src="./app/aframeComponents/upDownControls.js"></script>
-	<script src="./app/aframeComponents/intelligentText.js"></script>
+	<script src="./app/aframeComponents/tag.js"></script>
 
 	<script src="./app/config.js"></script>
 	<script src="./app/tileHeights.js"></script>
@@ -108,20 +107,6 @@
 			<audio id="testaudio7" src="./resources/music/spanish.ogg" preload="auto"></audio>
 			<audio id="testaudio8" src="./resources/music/french.ogg" preload="auto"></audio>
 		</a-assets>
-
-		<a-entity triangularanimation2 position="5 2 -10" rotation="0 180 0"></a-entity>
-		<a-entity triangularanimation position="10 2 0" rotation="0 180 0"></a-entity>
-		<a-entity triangularanimation position="0 2 0" rotation="0 180 0"></a-entity>
-
-		<a-entity intelligenttext="title: Plaza Catalunya;" position="10 2 -10" rotation="0 180 0"></a-entity>
-		<a-entity triangularanimation2 position="10 2 -10" rotation="0 180 0"></a-entity>
-
-		<a-entity triangularanimation2 position="10 2 -15" rotation="0 180 0"></a-entity>
-
-		<a-entity intelligenttext="title: Torre Agbar;" position="20 2 -20" rotation="0 180 0"></a-entity>
-		<a-entity triangularanimation position="20 2 -20" rotation="0 180 0"></a-entity>
-
-		<a-entity intelligenttext position="0 2 0" rotation="0 180 0"></a-entity>
 
 		<a-entity id="path-generator" pathgenerator="pathJsonUrl: data/paths.json;" position="0 0 0"></a-entity>
 		<!--<a-entity noisepartsys="initX: 430799.27;initZ: 4582250.27;endX: 431425.65;endZ: 4582556.36;" position="10.165 -3.235 -12.426"></a-entity>

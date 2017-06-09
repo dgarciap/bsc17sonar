@@ -238,7 +238,7 @@ function goToLocation(x, y) {
 /**
  * End. Code in charge of translating camera to a given point.
  */
-
+this.startTime = Date.now();
 
 /**
  * Manage sphere.
@@ -252,7 +252,7 @@ function manageSphere() {
                 this.sphereBarrier = document.createElement('a-sphere');
 
                 this.sphereBarrier.setAttribute('color', MainConsts.APP_COLOR);
-                this.sphereBarrier.setAttribute('radius', '20');
+                this.sphereBarrier.setAttribute('radius', '22');
                 this.sphereBarrier.setAttribute('side', 'back');
                 this.sphereBarrier.setAttribute('opacity', '1');
                 sceneEl.appendChild(this.sphereBarrier);
@@ -260,6 +260,10 @@ function manageSphere() {
             else {
                 var position = document.querySelector('#app-camera').getAttribute('position');
                 this.sphereBarrier.setAttribute('position', position);
+                if(Date.now()-this.startTime > 1000){
+                    console.log("Position: ", position.x/MainConsts.SCALE+" "+position.y/MainConsts.SCALE+ " "+position.z/MainConsts.SCALE);
+                    this.startTime = Date.now();
+                }
             }
 
             var position = document.querySelector('#app-camera').getAttribute('position');
@@ -300,10 +304,10 @@ function loadMapTags() {
             var tagStick = document.createElement('a-entity');
             tagStick.setAttribute('triangularanimation', '');
             tagStick.setAttribute('rotation', "0 " + rotation + " 0");
-            tagStick.setAttribute('position', coords.x + ' 2 -' + coords.y);
+            tagStick.setAttribute('position', coords.x + ' 0.0 -' + coords.y);
 
             var tagTitle = document.createElement('a-entity');
-            tagTitle.setAttribute('intelligenttext', 'title: ' + tag.nombre + ';');
+            tagTitle.setAttribute('tag', Math.random() < 0.5 ? 'pngFile: ./resources/textures/tags/sin.png;': 'pngFile: ./resources/textures/tags/con.png;' /*+ tag.file*/);
             tagTitle.setAttribute('rotation', "0 " + rotation + " 0");
             tagTitle.setAttribute('position', coords.x + ' 2 -' + coords.y);
 

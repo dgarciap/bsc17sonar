@@ -2,7 +2,7 @@ potreepointcloud = {};
 //Constant to identify an instance of the component which has not been provided with pointcloud.
 potreepointcloud.NO_POINTCLOUD = "NOPC";
 
-potreepointcloud.POINT_BUDGET = 0.5*1000*1000;
+potreepointcloud.POINT_BUDGET = 0.7*1000*1000;
 
 potreepointcloud.DEFAULT_HEIGHT = -15;
 
@@ -109,7 +109,7 @@ AFRAME.registerComponent('potreepointcloud', {
       this.viewer = new Potree.CustomViewer(this.el.object3D, this.el.sceneEl.renderer, this.el.sceneEl.camera);
 
       this.viewer.setMaterial("Elevation");
-      this.viewer.setPointSize(0.27);
+      this.viewer.setPointSize(0.2);
       this.viewer.setPointSizing("Adaptive");
       this.viewer.setQuality("Squares");
       //viewer.setPointBudget(0.04*1000*1000);
