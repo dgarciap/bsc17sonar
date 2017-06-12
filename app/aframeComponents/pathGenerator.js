@@ -5,6 +5,8 @@ pathgenerator.PARTICLE_URL = "resources/textures/traffic_vr.png";
 //Contain ocean height in 3D space.
 pathgenerator.OCEAN_HEIGHT = -4.320;
 
+pathgenerator.PATH_LIMIT = 4000;
+
 pathgenerator.TEXTURE_MAP = {
     "1": "resources/textures/particles/TRAFFIC.png",//"resources/textures/particles/TRAFFIC.png",//"resources/textures/traffic_vr.png",
     "2": "resources/textures/traffic_vr.png",//"resources/textures/particles/INDUSTRY.png",
@@ -167,7 +169,7 @@ AFRAME.registerComponent('pathgenerator', {
         that.numRails = 0;
 
         for(;;) {
-            if(dataArray && dataArray[that.count] && that.count < 8000) {
+            if(dataArray && dataArray[that.count] && that.count < pathgenerator.PATH_LIMIT) {
                 if(dataArray[that.count].start[0] > MainConsts.COORDS_CORNER.x && 
                     dataArray[that.count].start[1] > MainConsts.COORDS_CORNER.y && 
                     dataArray[that.count].end[0] > MainConsts.COORDS_CORNER.x && 

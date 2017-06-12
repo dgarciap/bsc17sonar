@@ -307,7 +307,7 @@ function loadMapTags() {
             tagStick.setAttribute('position', coords.x + ' 0.0 -' + coords.y);
 
             var tagTitle = document.createElement('a-entity');
-            tagTitle.setAttribute('tag', Math.random() < 0.5 ? 'pngFile: ./resources/textures/tags/sin.png;': 'pngFile: ./resources/textures/tags/con.png;' /*+ tag.file*/);
+            tagTitle.setAttribute('tag', Math.random() < 0.5 ? 'pngFile: ./resources/textures/tags/barceloneta.png;': 'pngFile: ./resources/textures/tags/con.png;' /*+ tag.file*/);
             tagTitle.setAttribute('rotation', "0 " + rotation + " 0");
             tagTitle.setAttribute('position', coords.x + ' 2 -' + coords.y);
 
