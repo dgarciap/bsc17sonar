@@ -213,7 +213,7 @@ volumeEstimator = function(){
         let ATTENUATION_THRESHOLD = 100; // meters
         let z_loc = (user_z - avg_height[nx][ny])/ATTENUATION_THRESHOLD;        
         let updown_factor = Math.pow( Math.sin(Math.min(1,Math.abs(z_loc))*Math.PI/2.0), 6);
-        console.log("attenuation factor: "+updown_factor);
+        //console.log("attenuation factor: "+updown_factor);
         var direction_to_boost = z_loc>=0 ? "down" : "up";
         for (var n=0;n<volumes[direction_to_boost].length;n++) {
             nvolume = 0.0;

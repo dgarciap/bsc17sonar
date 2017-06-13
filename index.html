@@ -10,7 +10,8 @@
 	<link rel="stylesheet" type="text/css" href="build/potree/potree.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 
-	<script src="https://aframe.io/releases/0.5.0/aframe.js"></script>
+	<!--<script src="https://aframe.io/releases/0.5.0/aframe.js"></script>-->
+	<script src="libs/aframe_0.5.0/aframe.js"></script>
 	<script src="libs/other/aframe-look-at-component.js"></script>
 	<!-- MODIFIED VERSION WITH TOCK() METHOD FOR POST_PROCESSING EFFECTS: 
 		<script src="libs/aframe/aframe.js"></script>
@@ -18,12 +19,6 @@
   </head>
 
   <body>
-
-	<!-- Shaders: -->
-	<script src="app/shaders/classicnoise3D.js"></script>
-	<script src="app/shaders/vShaders/soundSphereVS.js"></script>
-	<script src="app/shaders/vShaders/soundWaveVS.js"></script>
-	<script src="app/shaders/fShaders/soundSphereFS.js"></script>
 	
 	<!--<script src="libs/other/webgl-debug.js"></script>-->
 
@@ -44,12 +39,8 @@
 	<script src="./app/aframeComponents/audioCreator.js"></script>
 	<script src="./app/aframeComponents/webAudioSound.js"></script>
 	<script src="./app/aframeComponents/potreePointCloud.js"></script>
-	<script src="./app/aframeComponents/soundSphere.js"></script>
-	<script src="./app/aframeComponents/noisePartSys.js"></script>
 	<script src="./app/aframeComponents/triangularAnimation.js"></script>
 	<script src="./app/aframeComponents/pathGenerator.js"></script>
-	<script src="./app/aframeComponents/soundWave.js"></script>
-	<script src="./app/aframeComponents/arrow.js"></script>
 	<script src="./app/aframeComponents/xboxController.js"></script>
 	<script src="./app/aframeComponents/xboxLookControls.js"></script>
 	<script src="./app/aframeComponents/upDownControls.js"></script>
@@ -59,7 +50,7 @@
 	<script src="./app/tileHeights.js"></script>
 
 	<!-- Volume Changer dependencies -->
-	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="libs/d3/d3.min.js"></script>
 
 	<!-- Potree dependencies -->
 	<script src="libs/plasio/js/laslaz.js"></script>

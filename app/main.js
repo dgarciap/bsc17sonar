@@ -337,7 +337,7 @@ function manageSphere() {
                 var position = document.querySelector('#app-camera').getAttribute('position');
                 this.sphereBarrier.setAttribute('position', position);
                 if(Date.now()-this.startTime > 1000){
-                    console.log("Position: ", position.x/MainConsts.SCALE+" "+position.y/MainConsts.SCALE+ " "+position.z/MainConsts.SCALE);
+                    //console.log("Position: ", position.x/MainConsts.SCALE+" "+position.y/MainConsts.SCALE+ " "+position.z/MainConsts.SCALE);
                     this.startTime = Date.now();
                 }
             }
