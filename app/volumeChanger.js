@@ -226,9 +226,9 @@ volumeEstimator = function(){
         // add wind and subterranean noise        
         volumes["up"][sample_numbers["wind"]] = z_loc>=0 ? updown_factor : 0;
         volumes["down"][sample_numbers["subterranean"]] = z_loc<=0 ? updown_factor : 0;
-        console.log("Z difference: "+z_loc);
-        console.log("up noise: "+volumes["up"][sample_numbers["wind"]])
-        console.log("down noise: "+volumes["down"][sample_numbers["subterranean"]]);
+        //console.log("Z difference: "+z_loc);
+        //console.log("up noise: "+volumes["up"][sample_numbers["wind"]])
+        //console.log("down noise: "+volumes["down"][sample_numbers["subterranean"]]);
         return volumes; 
     }   
 

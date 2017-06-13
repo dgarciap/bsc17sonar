@@ -1,9 +1,10 @@
 var config = {
-    WS_HOST: "ws://localhost:3000",
+    WS_HOST: "ws://visualization-case.bsc.es/17sonarvrsrv",
+    HTTP_HOST: "http://visualization-case.bsc.es/17sonarvrsrv",
     POSITION_SEND_INTERVAL: 1000,
     UPDATE_TILES_INTERVAL: 3000,
     WITH_SPHERE_BARRIER: true,
-    WITH_USER_SHADOW: true,
+    WITH_USER_SHADOW: false,
     REPORT_POSITION: false,
     REPORT_EVERY: 500,
 

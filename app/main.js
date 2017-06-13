@@ -50,7 +50,7 @@ ws.onopen = function (event) {
 };
 */
 
-function reportPosition() {
+function reportPositionWS() {
     if(Date.now() - appLogic.reportCounter > config.REPORT_EVERY) {
         var pos = document.querySelector('#app-camera').getAttribute('position');
         var rot = document.querySelector('#app-camera').getAttribute('rotation');
@@ -67,7 +67,7 @@ function reportPosition() {
     requestAnimationFrame(reportPosition);
 }
 
-function startReportingPosition() {
+function startReportingPositionWS() {
     appLogic.ws = new WebSocket(config.WS_HOST);
     appLogic.reportCounter = Date.now();
     appLogic.ws.onopen = function (event) {
@@ -75,6 +75,41 @@ function startReportingPosition() {
         //Every half of a second, report camera position in meters (spherical marcator).
         requestAnimationFrame(reportPosition);
     };
+}
+
+function reportPosition() {
+    if(Date.now() - appLogic.reportCounter > config.REPORT_EVERY) {
+        var pos = document.querySelector('#app-camera').getAttribute('position');
+        var rot = document.querySelector('#app-camera').getAttribute('rotation');
+        var xmlhttp = new XMLHttpRequest();
+
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+                if (xmlhttp.status == 200) ;
+                else if (xmlhttp.status == 400) console.error('Report Position HTTP Error 400');
+                else console.error('Report Position HTTP Error');
+            }
+        };
+
+        var params = "?data="+JSON.stringify({
+                position: {
+                    x: pos.x/MainConsts.SCALE+MainConsts.COORDS_CORNER.x, 
+                    y: (pos.z*(-1))/MainConsts.SCALE+MainConsts.COORDS_CORNER.y
+                },
+                rotation: rot,
+            },
+        );
+
+        xmlhttp.open("GET", config.HTTP_HOST+params, true);
+        xmlhttp.send();
+        appLogic.reportCounter = Date.now();
+    }
+    requestAnimationFrame(reportPosition);
+}
+
+function startReportingPosition() {
+    appLogic.reportCounter = Date.now();
+    requestAnimationFrame(reportPosition);
 }
 
 //Update tiles drawn on screen.
