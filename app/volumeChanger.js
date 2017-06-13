@@ -226,13 +226,13 @@ volumeEstimator = function(){
         // add wind and subterranean noise        
         volumes["up"][sample_numbers["wind"]] = z_loc>=0 ? updown_factor : 0;
         volumes["down"][sample_numbers["subterranean"]] = z_loc<=0 ? updown_factor : 0;
-        //console.log("Z difference: "+z_loc);
-        //console.log("up noise: "+volumes["up"][sample_numbers["wind"]])
-        //console.log("down noise: "+volumes["down"][sample_numbers["subterranean"]]);
+        console.log("Z difference: "+z_loc);
+        console.log("up noise: "+volumes["up"][sample_numbers["wind"]])
+        console.log("down noise: "+volumes["down"][sample_numbers["subterranean"]]);
         return volumes; 
     }   
 
-    d3.text("data/1920_noise_kernelized_viario.csv", function(error,string){
+    d3.text("data/1920_noise_kernelized_total.csv", function(error,string){
       if (error) throw error;
       data = d3.csvParseRows(string);
         for (var x=0;x<data.length;x++){
