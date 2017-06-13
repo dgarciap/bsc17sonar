@@ -43,9 +43,10 @@ AFRAME.registerComponent('webaudiosound', {
    * TODO: Use keys to identify each sound.
    */
   changeVolumes: function(volumes) {
+    console.log(this.el.getAttribute("id"), " ", volumes);
     this.pool.children.forEach(function (sound, index) {
       if(volumes[index] !== undefined)
-        sound.setVolume(volumes[index]);
+        sound.setVolume(volumes[index] > 0 ? volumes[index] : 0);
     });
   },
 
@@ -80,6 +81,7 @@ AFRAME.registerComponent('webaudiosound', {
       this.loaded = false;
       this.urlsCounter = 0;
       this.loadUrls();
+      this.urlsChanged = false;
     }
   },
 

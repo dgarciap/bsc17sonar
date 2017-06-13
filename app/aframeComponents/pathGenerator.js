@@ -8,9 +8,7 @@ pathgenerator.OCEAN_HEIGHT = -4.320;
 pathgenerator.PATH_LIMIT = 4000;
 
 pathgenerator.TEXTURE_MAP = {
-    "1": "resources/textures/particles/TRAFFIC.png",//"resources/textures/particles/TRAFFIC.png",//"resources/textures/traffic_vr.png",
-    "2": "resources/textures/traffic_vr.png",//"resources/textures/particles/INDUSTRY.png",
-    "3": "resources/textures/traffic_vr.png",//"resources/textures/particles/RAIL.png",
+    "1": "resources/textures/particles/NEW_TRAFFIC.png",//"resources/textures/particles/TRAFFIC.png",//"resources/textures/traffic_vr.png",
 }
 
 

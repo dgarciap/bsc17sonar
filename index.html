@@ -8,6 +8,7 @@
     <title>SonoMap</title>
 
 	<link rel="stylesheet" type="text/css" href="build/potree/potree.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 
 	<script src="https://aframe.io/releases/0.5.0/aframe.js"></script>
 	<script src="libs/other/aframe-look-at-component.js"></script>
@@ -46,7 +47,6 @@
 	<script src="./app/aframeComponents/soundSphere.js"></script>
 	<script src="./app/aframeComponents/noisePartSys.js"></script>
 	<script src="./app/aframeComponents/triangularAnimation.js"></script>
-	<!--<script src="./app/aframeComponents/pathGenerator.js"></script>-->
 	<script src="./app/aframeComponents/pathGenerator.js"></script>
 	<script src="./app/aframeComponents/soundWave.js"></script>
 	<script src="./app/aframeComponents/arrow.js"></script>
@@ -57,6 +57,9 @@
 
 	<script src="./app/config.js"></script>
 	<script src="./app/tileHeights.js"></script>
+
+	<!-- Volume Changer dependencies -->
+	<script src="https://d3js.org/d3.v4.min.js"></script>
 
 	<!-- Potree dependencies -->
 	<script src="libs/plasio/js/laslaz.js"></script>
@@ -94,7 +97,7 @@
 		
 	</script>
 
-	<a-scene stats>
+	<a-scene>
 
 		<a-assets>
 			<audio id="testaudio" src="./resources/music/street.mp3" preload="auto"></audio>
@@ -163,18 +166,28 @@
 		<!--
 			<a-entity webaudiosound="src: nothing; loop:true; autoplay:true" position="120.000 0 -40.010"></a-entity>
 		-->
-		<a-entity id="user-sound">
-			<!--<a-entity class="webaudiosound" webaudiosound="loop:true; autoplay:true" position="0 0 2"></a-entity>
-			<a-entity class="webaudiosound" webaudiosound="loop:true; autoplay:true" position="0 0 -2"></a-entity>
-			<a-entity class="webaudiosound" webaudiosound="loop:true; autoplay:true" position="8 0 0"></a-entity>
-			<a-entity class="webaudiosound" webaudiosound="loop:true; autoplay:true" position="-8 0 0"></a-entity>
+		<a-entity id="user-sound" rotation="0 46 0">
+			<!--<a-box id="east" position="1 0 0"  color="red" scale="0.1 0.1 0.1"></a-box>
+			<a-box id="west" position="-1 0 0"  color="green" scale="0.1 0.1 0.1"></a-box>
+			<a-box id="up" position="0 1 0" color="blue" scale="0.1 0.1 0.1"></a-box>
+			<!--<a-box id="down" position="0 -1 0"  color="blue" scale="0.1 0.1 0.1"></a-box>-->
+			<!--<a-box id="south" position="0 0 1"  color="black" scale="0.1 0.1 0.1"></a-box>
+			<a-box id="north" position="0 0 -1"  color="yellow" scale="0.1 0.1 0.1"></a-box>-->
+			<!--<a-entity id="southsound" class="webaudiosound" webaudiosound="loop:true; autoplay:true" position="0 0 1"></a-entity>
+			--><a-entity id="northsound" class="webaudiosound" webaudiosound="loop:true; autoplay:true" position="0 0 -1"></a-entity>
+			<a-entity id="eastsound" class="webaudiosound" webaudiosound="loop:true; autoplay:true" position="1 0 0"></a-entity>
+			<a-entity id="westsound" class="webaudiosound" webaudiosound="loop:true; autoplay:true" position="-1 0 0"></a-entity>
+			<!--<a-entity id="upsound" class="webaudiosound" webaudiosound="loop:true; autoplay:true" position="0 1 0"></a-entity>
+			<a-entity id="downsound" class="webaudiosound" webaudiosound="loop:true; autoplay:true" position="0 -1 0"></a-entity>
 		--></a-entity>
 		
-		<a-camera id="app-camera" rotation="0 0 0" position="45 0 -45" xbox-controller xbox-look-controls updown-controls>
+		<a-camera id="app-camera" rotation="0 0 0" position="45 0 -45" xbox-controller xbox-look-controls updown-controls wasd-controls="acceleration: 50">
 		</a-camera>
 	</a-scene>
-	<div class="logo"><p>LOGO</p></div>
 
+	<img class="logos" src="./resources/imgs/logos.svg"></img>
+
+	<script src="./app/volumeChanger.js"></script>
 	<script src="./app/main.js"></script>
 
   </body>

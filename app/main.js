@@ -118,34 +118,6 @@ function createFloor(position, size, numTile) {
 }
 
 
-/**
- * Given a tile num returns 
- */
-function createBorders(tileNum, tileR, tileC) {
-
-    var tileSize = MainConsts.SCALE * MainConsts.TILE_SIZE;
-    var position;
-
-   /* var floorPosition = (tileC * tileSize + tileSize / 2) + " -4 " + (-1 * tileR * tileSize - tileSize / 2);
-    createFloor(floorPosition, tileSize, tileNum);
-*/
-    /*if (isNotAValidTile(tileR + 1, tileC)) {
-        position = ((tileC * tileSize + tileSize / 2)) + " -5 " + (-1 * (tileR + 1) * tileSize);
-        addPlane(position, "0 0 0", tileSize, tileNum);
-    }
-    if (isNotAValidTile(tileR - 1, tileC)) {
-        position = ((tileC * tileSize + tileSize / 2)) + " -5 " + (-1 * tileR * tileSize);
-        addPlane(position, "0 180 0", tileSize, tileNum);
-    }
-    if (isNotAValidTile(tileR, tileC + 1)) {
-        position = ((tileC + 1) * tileSize) + " -5 " + (-1 * (tileR * tileSize + tileSize / 2));
-        addPlane(position, "0 -90 0", tileSize, tileNum);
-    }
-    if (isNotAValidTile(tileR, tileC - 1)) {
-        position = (tileC * tileSize) + " -5 " + (-1 * (tileR * tileSize + tileSize / 2));
-        addPlane(position, "0 90 0", tileSize, tileNum);
-    }*/
-}
 
 /*appLogic.errorLoadingPointcloud = function (tileC, tileR, numTile) {
     //If the tiles does not exist and we are trying to draw a border tile,
@@ -226,6 +198,9 @@ function mapCoordsTo3DSpace(x, y) {
     return {x: (x - MainConsts.COORDS_CORNER.x)*MainConsts.SCALE, y: (y - MainConsts.COORDS_CORNER.y)*MainConsts.SCALE};
 }
 
+function threeDSpaceToMap(x, y) {
+    return {x: x/MainConsts.SCALE+MainConsts.COORDS_CORNER.x, y: (y*(-1))/MainConsts.SCALE+MainConsts.COORDS_CORNER.y};
+}
 
 /**
  * Code in charge of translating camera to a given point.
@@ -240,6 +215,45 @@ function goToLocation(x, y) {
  */
 this.startTime = Date.now();
 
+function manageUserShadow() {
+    
+    if (config.WITH_USER_SHADOW) {
+        var sceneEl = document.querySelector('a-scene');
+        if (sceneEl) {
+            if (!this.userShadow) {
+
+                this.userShadow = document.createElement('a-plane');
+
+                this.userShadow.setAttribute('color', "red");
+                this.userShadow.setAttribute('scale', '0.1 0.1 0.1');
+                this.userShadow.setAttribute('rotation', '-90 0 0');
+                this.userShadow.setAttribute('side', 'front');
+                this.userShadow.setAttribute('opacity', '1');
+                sceneEl.appendChild(this.userShadow);
+            }
+            else {
+                var position = document.querySelector('#app-camera').getAttribute('position');
+                this.userShadow.setAttribute('position', position.x + " "+pathgenerator.OCEAN_HEIGHT+" " + position.z);
+            }
+
+            var position = document.querySelector('#app-camera').getAttribute('position');
+            document.querySelector('#user-sound').setAttribute('position', position);
+
+        }
+        requestAnimationFrame(manageUserShadow);
+    }
+}
+
+/**
+ * Manage sphere.
+ */
+function manageUserAudio() {
+    var position = document.querySelector('#app-camera').getAttribute('position');
+    document.querySelector('#user-sound').setAttribute('position', position);
+
+    requestAnimationFrame(manageUserAudio);
+}
+
 /**
  * Manage sphere.
  */
@@ -252,7 +266,7 @@ function manageSphere() {
                 this.sphereBarrier = document.createElement('a-sphere');
 
                 this.sphereBarrier.setAttribute('color', MainConsts.APP_COLOR);
-                this.sphereBarrier.setAttribute('radius', '22');
+                this.sphereBarrier.setAttribute('radius', '23');
                 this.sphereBarrier.setAttribute('side', 'back');
                 this.sphereBarrier.setAttribute('opacity', '1');
                 sceneEl.appendChild(this.sphereBarrier);
@@ -265,10 +279,6 @@ function manageSphere() {
                     this.startTime = Date.now();
                 }
             }
-
-            var position = document.querySelector('#app-camera').getAttribute('position');
-            document.querySelector('#user-sound').setAttribute('position', position);
-
         }
         requestAnimationFrame(manageSphere);
     }
@@ -307,7 +317,7 @@ function loadMapTags() {
             tagStick.setAttribute('position', coords.x + ' 0.0 -' + coords.y);
 
             var tagTitle = document.createElement('a-entity');
-            tagTitle.setAttribute('tag', Math.random() < 0.5 ? 'pngFile: ./resources/textures/tags/barceloneta.png;': 'pngFile: ./resources/textures/tags/con.png;' /*+ tag.file*/);
+            tagTitle.setAttribute('tag', 'pngFile: ./resources/textures/tags/'+ tag.file +'.png;');
             tagTitle.setAttribute('rotation', "0 " + rotation + " 0");
             tagTitle.setAttribute('position', coords.x + ' 2 -' + coords.y);
 
@@ -318,27 +328,80 @@ function loadMapTags() {
 
 }
 
-document.querySelector('a-scene').addEventListener('loaded', function () {
+//Volume Estimator initialization.
+var vol = volumeEstimator();
+
+function audioManager() {
+    var position = document.querySelector('#app-camera').getAttribute('position');
+
+    var mapPos = threeDSpaceToMap(position.x, position.z);
+
+    var current_volumes = vol(mapPos.x, mapPos.y, (position.y-pathgenerator.OCEAN_HEIGHT)/MainConsts.SCALE);
+
+    document.querySelector('#northsound').components.webaudiosound.changeVolumes(current_volumes["north"]);
+    document.querySelector('#eastsound').components.webaudiosound.changeVolumes(current_volumes["east"]);
+    document.querySelector('#westsound').components.webaudiosound.changeVolumes(current_volumes["west"]);
+
+    requestAnimationFrame(audioManager);
+}
+
+function loadWebAudioSounds() {
+
+    if(this.webaudiosoundsCounter === undefined) this.webaudiosoundsCounter = 0;
+    if(this.webaudiosoundsTimer === undefined) this.webaudiosoundsTimer = Date.now();
 
     var urls = [
-      './resources/music/english.ogg',
-      './resources/music/spanish.ogg',
-      './resources/music/french.ogg',
-    ];
-    var volumes = [
-        0,
-        1,
-        0.5
+      "./resources/sounds/124492__miastodzwiekow__street-crickets-120711.mp3",
+      "./resources/sounds/325246__jeffreys2__traffic2.mp3",
+      "./resources/sounds/234243__jessiep__traffic-to-alley-quiet.mp3",
+      "./resources/sounds/84646__cmusounddesign__traffic-night.mp3",
+      "./resources/sounds/Driving Ambiance-SoundBible.com-670322941.mp3",
+      "./resources/sounds/131259__jcgd2__traffic-noise-in-the-street.mp3",
+      "./resources/sounds/street-daniel_simon.mp3",
+      "./resources/sounds/Urban Traffic-SoundBible.com-1217469275.mp3",
+      "./resources/sounds/medium_traffic.mp3",
+      "./resources/sounds/17869__cognito-perceptu__traffic-on-i-359.mp3",
+      "./resources/sounds/Background Noise-SoundBible.com-190168996.mp3",
+      "./resources/sounds/160684__antique98__fast-traffic-on-the-highway.mp3",
+      "./resources/sounds/253760__caculo__highway-traffic-sounds-in-the-background.mp3",
+      "./resources/sounds/Traffic_Jam-Yo_Mama-1164700013-3.mp3",
+      "./resources/sounds/Train_Honk_Horn_Distance-Mike_Koenig-1905511933.mp3",
+      "./resources/sounds/341569__dggrunzweig__street-car.mp3",
+      "./resources/sounds/City_Centre-Hopeinawe-377331566.mp3",
+      "./resources/sounds/Cargo Plane Cabin Ambiance-SoundBible.com-589803489.mp3",
+      "./resources/sounds/Builders Drilling-SoundBible.com-2062910629.mp3",
+      "./resources/sounds/352514__inspectorj__ambience-night-wildlife-a.mp3",
+      "./resources/sounds/205966__kangaroovindaloo__medium-wind.mp3",
+      "./resources/sounds/174763__corsica-s__pacific-ocean.mp3",
+      "./resources/sounds/103267__robinhood76__01760-industrial-noise.mp3",
+      "./resources/sounds/383265__deleted-user-7146007__busy-bar-ambience.mp3",
+      "./resources/sounds/32319__oniwe__barnoisyambience.mp3",
+      "./resources/sounds/16198__andriala__in-music-bar.mp3",
+      "./resources/sounds/246171__ajexk__construction-soundscape.mp3",
+      "./resources/sounds/69891__costamonteiro__metro-under-construction.mp3",
     ];
 
     //Fill webAudioSounds with sounds.
-    document.querySelectorAll('.webaudiosound').forEach(function(entity) {
-        entity.components.webaudiosound.addSounds(urls);
-        entity.components.webaudiosound.changeVolumes(volumes);
-    });
+    if(Date.now()-this.webaudiosoundsTimer > 1000) {
+        document.querySelectorAll('.webaudiosound')[this.webaudiosoundsCounter].components.webaudiosound.addSounds(urls);
+        this.webaudiosoundsTimer = Date.now();
+        ++this.webaudiosoundsCounter;
+    }
+
+    if(document.querySelectorAll('.webaudiosound').length <= this.webaudiosoundsCounter)
+        requestAnimationFrame(audioManager);
+    else requestAnimationFrame(loadWebAudioSounds);
+
+}
+
+document.querySelector('a-scene').addEventListener('loaded', function () {
+
+    loadWebAudioSounds();
 
     loadMapTags();
 
+    requestAnimationFrame(manageUserShadow);
+    requestAnimationFrame(manageUserAudio);
     requestAnimationFrame(manageSphere);
     requestAnimationFrame(tileManager);
 

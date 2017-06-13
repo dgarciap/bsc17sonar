@@ -1,6 +1,7 @@
 {"data":[
 {
-"nombre":"Olympic port",
+"nombre":"Port Olímpic",
+"file":"port_olimpic",
 "position":[433028.97,4582101.98],
 "icon":"",
 "type":"T",
@@ -8,7 +9,8 @@
 "dB":"0"
 },
 {
-"nombre":"Forum park",
+"nombre":"Parc del Fòrum",
+"file":"parc_forum",
 "position":[435339.29,4584635.73],
 "icon":"",
 "type":"T",
@@ -17,6 +19,7 @@
 },
 {
 "nombre":"Arc del triomf",
+"file":"arc_triomf",
 "position":[431499.16,4582492.66],
 "icon":"",
 "type":"T",
@@ -25,7 +28,8 @@
 },
 
 {
-"nombre":"Agbar tower",
+"nombre":"Torre Agbar",
+"file":"torre_agbar",
 "position":[432260.23,4583856.71],
 "icon":"",
 "type":"T",
@@ -35,6 +39,7 @@
 
 {
 "nombre":"Barceloneta",
+"file":"barceloneta",
 "position":[432481.18,4581103.37],
 "icon":"",
 "type":"T",
@@ -44,6 +49,7 @@
 
 {
 "nombre":"Estació de França",
+"file":"estacio_franca",
 "position":[431980.85,4581700.94],
 "icon":"",
 "type":"T",
@@ -53,6 +59,7 @@
 
 {
 "nombre":"Ciutadella",
+"file":"ciutadella",
 "position":[432438.64,4582101.90],
 "icon":"",
 "type":"T",
@@ -63,7 +70,8 @@
 
 
 {
-"nombre":"Colon Monument",
+"nombre":"Monument a Colom",
+"file":"colon",
 "position":[431248.97,4580798.52],
 "icon":"",
 "type":"T",
@@ -72,7 +80,8 @@
 },
 
 {
-"nombre":"Mercat de la Boquería",
+"nombre":"Mercat de la Boqueria",
+"file":"mercat_boqueria",
 "position":[430731.82,4581465.17],
 "icon":"",
 "type":"T",
@@ -82,6 +91,7 @@
 
 {
 "nombre":"Anella Olímpica",
+"file":"anella_olimpica",
 "position":[429124.03,4579442.23],
 "icon":"",
 "type":"T",
@@ -91,7 +101,8 @@
 
 
 {
-"nombre":"Montjuic Castle",
+"nombre":"Castell de Montjuïc",
+"file":"castell_montjuic",
 "position":[430166.56,4579385.48],
 "icon":"",
 "type":"T",
@@ -102,6 +113,7 @@
 
 {
 "nombre":"MNAC",
+"file":"mnac",
 "position":[429061.40,4580307.76],
 "icon":"",
 "type":"T",
@@ -110,7 +122,8 @@
 },
 
 {
-"nombre":"Montjuic Fonts",
+"nombre":"Fonts de Montjuïc",
+"file":"fonts_montjuic",
 "position":[428845.66,4580307.76],
 "icon":"",
 "type":"T",
@@ -120,6 +133,7 @@
 
 {
 "nombre":"Plaça Espanya",
+"file":"placa_espanya",
 "position":[429061.40,4580738.44],
 "icon":"",
 "type":"T",
@@ -128,7 +142,8 @@
 },
 
 {
-"nombre":"Sants Station",
+"nombre":"Sants Estació",
+"file":"sants_estacio",
 "position":[428236.55,4581387.31],
 "icon":"",
 "type":"T",
@@ -138,16 +153,8 @@
 
 {
 "nombre":"Camp Nou",
+"file":"camp_nou",
 "position":[426652.94,4581412.05],
-"icon":"",
-"type":"T",
-"zone":"3",
-"dB":"0"
-},
-
-{
-"nombre":"MNAC",
-"position":[429210.64,4580003.19],
 "icon":"",
 "type":"T",
 "zone":"3",
@@ -157,6 +164,7 @@
 
 {
 "nombre":"Barcelona Supercomputing Center (BSC)",
+"file":"bsc_cns",
 "position":[426105.67,4582361.36],
 "icon":"",
 "type":"T",
@@ -166,6 +174,7 @@
 
 {
 "nombre":"Sónar 2017",
+"file":"sonar",
 "position":[429151.72,4580477.86],
 "icon":"",
 "type":"T",
@@ -175,7 +184,8 @@
 
 
 {
-"nombre":"Universitat Square",
+"nombre":"Plaça Universitat",
+"file":"placa_universitat",
 "position":[430079.73,4581916.66],
 "icon":"",
 "type":"T",
@@ -185,6 +195,7 @@
 
 {
 "nombre":"Plaça Catalunya",
+"file":"placa_catalunya",
 "position":[430608.66,4582052.58],
 "icon":"",
 "type":"T",
@@ -194,6 +205,7 @@
 
 {
 "nombre":"Batlló House",
+"file":"batllo",
 "position":[430172.15,4582569.73],
 "icon":"",
 "type":"T",
@@ -202,13 +214,251 @@
 },
 
 {
-"nombre":"Punxes House",
+"nombre":"Casa de les Punxes",
+"file":"casa_punxes",
 "position":[430106.98,4583267.62],
 "icon":"",
 "type":"T",
 "zone":"4",
 "dB":"0"
-}
+},
 
+{
+"nombre":"Parc de Joan Mirò",
+"file":"joan_miro",
+"position":[428791.26,4581075.40],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+
+{
+"nombre":"Hospital Clínic",
+"file":"hospital_clinic",
+"position":[428754.41,4582174.95],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+
+{
+"nombre":"Sarrià",
+"file":"sarria",
+"position":[426793.35,4583224.86],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+
+{
+"nombre":"Parc del Guinardó",
+"file":"guinardo",
+"position":[430418.37,4585656.19],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+
+{
+"nombre":"El Tibidabo",
+"file":"tibidabo",
+"position":[426447.13,4586094.06],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+
+{
+"nombre":"Observatori Fabra",
+"file":"obs_fabra",
+"position":[426809.60,4585576.32],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+
+{
+"nombre":"Torre de Collserola",
+"file":"torre_collserola",
+"position":[425979.30,4585457.08],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+
+{
+"nombre":"El temple del Sagrat Cor",
+"file":"sagrat_cor",
+"position":[426362.47,4585987.22],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+
+{
+"nombre":"Sagrada Família",
+"file":"sagrada_familia",
+"position":[430979.07,4583893.23],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+
+{
+"nombre":"Mirador Torre Baró",
+"file":"torre_baro",
+"position":[431399.20,4589231.96],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+{
+"nombre":"Catedral de Barcelona",
+"file":"catedral",
+"position":[431119.63,4581707.96],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+{
+"nombre":"Catedral del Mar",
+"file":"catedral_del_mar",
+"position":[431611.20,4581695.53],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+{
+"nombre":"Museu Picasso",
+"file":"museo_picasso",
+"position":[431513.93,4581844.12],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+
+{
+"nombre":"Hospital de Sant Pau",
+"file":"sant_pau",
+"position":[430991.85,4584883.49],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+
+{
+"nombre":"Parc Güell",
+"file":"parc_guell",
+"position":[429142.45,4585001.28],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+
+{
+"nombre":"La Pedrera",
+"file":"casa_mila",
+"position":[429937.15,4582996.13],
+"icon":"",
+"type":"T",
+"zone":"3",
+"dB":"0"
+},
+
+{
+"nombre":"Mercat de Sant Antoni",
+"file":"mercat_antoni",
+"position":[429932.45,4581126.45],
+"icon":"",
+"type":"T",
+"zone":"4",
+"dB":"0"
+},
+
+{
+"nombre":"Teatre del Raval",
+"file":"raval",
+"position":[430180.70,4581200.66],
+"icon":"",
+"type":"T",
+"zone":"4",
+"dB":"0"
+},
+
+
+{
+"nombre":"Parc de l'Espanya Industrial",
+"file":"parc_industrial",
+"position":[428126.61,4581010.90],
+"icon":"",
+"type":"T",
+"zone":"4",
+"dB":"0"
+},
+
+{
+"nombre":"L'Auditori",
+"file":"auditori",
+"position":[431894.18,4583333.87],
+"icon":"",
+"type":"T",
+"zone":"4",
+"dB":"0"
+},
+
+{
+"nombre":"Teatre Apolo",
+"file":"teatre_apolo",
+"position":[430624.06,4580691.23],
+"icon":"",
+"type":"T",
+"zone":"4",
+"dB":"0"
+},
+
+{
+"nombre":"Plaça Letamendi",
+"file":"letamendi",
+"position":[429823.21,4580691.23],
+"icon":"",
+"type":"T",
+"zone":"4",
+"dB":"0"
+},
+
+{
+"nombre":"Barri de Gràcia",
+"file":"gracia",
+"position":[429538.28,4583848.26],
+"icon":"",
+"type":"T",
+"zone":"4",
+"dB":"0"
+},
+
+{
+"nombre":"Plaça de la Vila",
+"file":"placa_vila",
+"position":[429575.32,4583531.47],
+"icon":"",
+"type":"T",
+"zone":"4",
+"dB":"0"
+}
 
 ]}
