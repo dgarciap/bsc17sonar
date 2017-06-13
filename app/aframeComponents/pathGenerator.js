@@ -113,6 +113,9 @@ AFRAME.registerComponent('pathgenerator', {
     if(!this.geometries[geomIndex]) this.geometries[geomIndex] = {geom: new THREE.Geometry(), counter: 0};
 
     materialId = parseInt(type);
+    materialId -= 68;
+    materialId = Math.trunc(materialId*5 / 13); //13 levels of noise maped into 5 levels.
+    //Interval [69,82].
     if (materialId < 1) materialId = 1;
     if (materialId > 5) materialId = 5;
 
