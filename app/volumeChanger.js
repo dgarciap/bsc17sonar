@@ -9,11 +9,9 @@ var sample_numbers = {
     "subterranean": 17
 };
 
-var plane_directions = ["north","south","east","west"];
-var all_directions = ["north","south","east","west","up","down"];
 var sample_list = [
     {"name": "traffic_light_1", type: "traffic", file: "124492__miastodzwiekow__street-crickets-120711.mp3" }, //0
-    {"name": "traffic_light_2", type: "traffic", file: "325246__jeffreys2__traffic2.mp3"}, //1
+    {"name": "traffic_light_2", type: "traffic", file: "City_Centre-Hopeinawe-377331566.mp3"}, //1 325246__jeffreys2__traffic2.mp3
     {"name": "traffic_light_3", type: "traffic", file: "234243__jessiep__traffic-to-alley-quiet.mp3"}, //2
     {"name": "traffic_light_4", type: "traffic", file: "84646__cmusounddesign__traffic-night.mp3"}, //3
     {"name": "traffic_light_5", type: "traffic", file: "Driving Ambiance-SoundBible.com-670322941.mp3"}, //4  
@@ -44,22 +42,47 @@ var sample_list = [
 
 var sample_num_from_traffic_type = function(typ){
     switch(typ) {
-    case 0:
+    case 11:
         return 0;
-    case 1:
+    case 12:
         return 1;
-    case 2:
+    case 13:
         return 2;
-    case 3:
+    case 14:
         return 3;
-    case 4:
+    case 15:
         return 4;
+    case 21:
+        return 5;
+    case 22:
+        return 6;
+    case 23:
+        return 7;
+    case 24:
+        return 8;
+    case 25:
+        return 9;
+    case 31:
+    case 32:
+        return 10;
+    case 33:
+        return 11;
+    case 34:
+    case 35:
+        return 12;
+    case 41:
+    case 42:
+    case 43:
+    case 44:
+    case 45:                
+        return 13;
     default:
-        return 0;
+        return 19; // crickets
     }
 }
 
-
+var plane_directions = ["north","south","east","west"];
+var all_directions = ["north","south","east","west","up","down"];
 
 dataMatrix = function(){
     var data = new Array(1920);
@@ -187,25 +210,25 @@ volumeEstimator = function(){
             }
         });
         // Estimate z range and move sounds to up or down accordingly
-        let z_loc = (user_z - avg_height[nx][ny]);
-        let updown_factor = 1.0/Math.cosh(z_loc/80); // above 200 meters sound moves 66%
+        let ATTENUATION_THRESHOLD = 100; // meters
+        let z_loc = (user_z - avg_height[nx][ny])/ATTENUATION_THRESHOLD;        
+        let updown_factor = Math.pow( Math.sin(Math.min(1,Math.abs(z_loc))*Math.PI/2.0), 6);
+        console.log("attenuation factor: "+updown_factor);
         var direction_to_boost = z_loc>=0 ? "down" : "up";
         for (var n=0;n<volumes[direction_to_boost].length;n++) {
             nvolume = 0.0;
             plane_directions.forEach(function(d){
                 nvolume += volumes[d][n];
-                volumes[d][n] = updown_factor*volumes[d][n];
+                volumes[d][n] = (1-updown_factor)*volumes[d][n];
             })
-            volumes[direction_to_boost][n] = (1-updown_factor)*nvolume;                
+            volumes[direction_to_boost][n] = updown_factor*nvolume;                
         }
-        // add wind and subterranean noise
-        updown_factor = 0.5*( (1+erf((z_loc+200)/20))- (1+erf((z_loc-200)/20)) );
-        volumes["up"][sample_numbers["wind"]] = z_loc>=0 ? background_volume*(1-updown_factor)/max_dB : 0;
-        volumes["down"][sample_numbers["subterranean"]] = z_loc<=0 ? background_volume*(1-updown_factor)/max_dB : 0;
-        //console.log("Z difference: "+z_loc);
-        //console.log("updown factor: "+updown_factor);
-        //console.log("up noise: "+volumes["up"][sample_numbers["wind"]])
-        //console.log("down noise: "+volumes["down"][sample_numbers["subterranean"]]);
+        // add wind and subterranean noise        
+        volumes["up"][sample_numbers["wind"]] = z_loc>=0 ? updown_factor : 0;
+        volumes["down"][sample_numbers["subterranean"]] = z_loc<=0 ? updown_factor : 0;
+        console.log("Z difference: "+z_loc);
+        console.log("up noise: "+volumes["up"][sample_numbers["wind"]])
+        console.log("down noise: "+volumes["down"][sample_numbers["subterranean"]]);
         return volumes; 
     }   
 
@@ -247,7 +270,7 @@ volumeEstimator = function(){
                 traffic_type[x][y] = +data[x][y];
             }
         }
-        //console.log("type of traffic done");
+        console.log("type of traffic done");
     }); 
     d3.text("data/1920_average_height.csv", function(error,string){
       if (error) throw error;
@@ -257,7 +280,7 @@ volumeEstimator = function(){
                 avg_height[x][y] = +data[x][y];
             }
         }
-        //console.log("type of traffic done");
+        console.log("type of traffic done");
     });     
     d3.csv("data/constructions_data.csv", function(error,data){
       if (error) throw error;

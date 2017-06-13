@@ -1,3 +1,5 @@
+webaudiosound.VOLCHANGE_PER_SECOND
+
 /**
  * Sound component.
  */
@@ -43,11 +45,24 @@ AFRAME.registerComponent('webaudiosound', {
    * TODO: Use keys to identify each sound.
    */
   changeVolumes: function(volumes) {
-    console.log(this.el.getAttribute("id"), " ", volumes);
-    this.pool.children.forEach(function (sound, index) {
-      if(volumes[index] !== undefined)
-        sound.setVolume(volumes[index] > 0 ? volumes[index] : 0);
-    });
+    if(this.loaded) {
+      console.log(this.el.getAttribute("id"), " ", volumes);
+      this.pool.children.forEach(function (sound, index) {
+        if(volumes[index] !== undefined) {
+          sound.setVolume(volumes[index] > 0 ? volumes[index] : 0);
+
+          if(volumes[index] === 0 && !sound.isPaused) {
+            sound.pause();
+            sound.isPaused = true;
+          }
+          else if(volumes[index] !== 0 && sound.isPaused) {
+            sound.play();
+            sound.isPaused = false;
+          }
+
+        }
+      });
+    }
   },
 
   update: function (oldData) {
@@ -90,7 +105,6 @@ AFRAME.registerComponent('webaudiosound', {
 
     this.audioLoader.load(this.urls[self.urlsCounter], function (buffer) {
         self.pool.children[self.urlsCounter].setBuffer(buffer);
-        self.loaded = true;
 
         // Remove this key from cache, otherwise we can't play it again
         THREE.Cache.remove(self.urls[self.urlsCounter]);

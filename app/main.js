@@ -217,14 +217,14 @@ this.startTime = Date.now();
 
 function manageUserShadow() {
     
-    if (config.WITH_USER_SHADOW) {
+    if (config.WITH_USER_SHADOW && false) {
         var sceneEl = document.querySelector('a-scene');
         if (sceneEl) {
             if (!this.userShadow) {
 
                 this.userShadow = document.createElement('a-plane');
 
-                this.userShadow.setAttribute('color', "red");
+                this.userShadow.setAttribute('color', "grey");
                 this.userShadow.setAttribute('scale', '0.1 0.1 0.1');
                 this.userShadow.setAttribute('rotation', '-90 0 0');
                 this.userShadow.setAttribute('side', 'front');
@@ -336,11 +336,16 @@ function audioManager() {
 
     var mapPos = threeDSpaceToMap(position.x, position.z);
 
+    console.log("Position: ", mapPos.x," ", mapPos.y, " ", (position.y-pathgenerator.OCEAN_HEIGHT)/MainConsts.SCALE)
+
     var current_volumes = vol(mapPos.x, mapPos.y, (position.y-pathgenerator.OCEAN_HEIGHT)/MainConsts.SCALE);
 
-    document.querySelector('#northsound').components.webaudiosound.changeVolumes(current_volumes["north"]);
-    document.querySelector('#eastsound').components.webaudiosound.changeVolumes(current_volumes["east"]);
-    document.querySelector('#westsound').components.webaudiosound.changeVolumes(current_volumes["west"]);
+    if(document.querySelector('#northsound')) document.querySelector('#northsound').components.webaudiosound.changeVolumes(current_volumes["north"]);
+    if(document.querySelector('#eastsound')) document.querySelector('#eastsound').components.webaudiosound.changeVolumes(current_volumes["east"]);
+    if(document.querySelector('#westsound')) document.querySelector('#westsound').components.webaudiosound.changeVolumes(current_volumes["west"]);
+    if(document.querySelector('#southsound')) document.querySelector('#southsound').components.webaudiosound.changeVolumes(current_volumes["south"]);
+    if(document.querySelector('#upsound')) document.querySelector('#upsound').components.webaudiosound.changeVolumes(current_volumes["up"]);
+    if(document.querySelector('#downsound')) document.querySelector('#downsound').components.webaudiosound.changeVolumes(current_volumes["down"]);
 
     requestAnimationFrame(audioManager);
 }
