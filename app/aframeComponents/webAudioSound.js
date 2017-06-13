@@ -1,4 +1,5 @@
-webaudiosound.VOLCHANGE_PER_SECOND
+webaudiosound = {};
+webaudiosound.VOLCHANGE_PER_SECOND = 2;
 
 /**
  * Sound component.
@@ -40,12 +41,61 @@ AFRAME.registerComponent('webaudiosound', {
   },
 
   /**
+   * We want to go from the original volume to the new one 'this.pendentVolume' without a drastic and annoying change.
+   * This method, will process one step in this change. And how much of volume can be changed depends on 'delta' and
+   * webaudiosound.VOLCHANGE_PER_SECOND.
+   */
+  modifyStepOfVolume: function(delta) {
+
+    var maxVolAdded = delta*webaudiosound.VOLCHANGE_PER_SECOND/1000;
+    if(this.pendentVolume && this.loaded) {
+      var volumeApplied = true;
+      var self = this;
+      this.pool.children.forEach(function (sound, index) {
+        if(self.pendentVolume[index] !== undefined) {
+          var finalVol = self.pendentVolume[index];
+          if(finalVol < 0) finalVol = 0;
+          if(finalVol > 1) finalVol = 1;
+
+          var volDiff = Math.min(Math.abs(finalVol - sound.getVolume()), maxVolAdded);
+
+          if(finalVol - sound.getVolume() > 0) sound.setVolume(Math.min(sound.getVolume()+volDiff, 1));
+          else sound.setVolume(Math.max(sound.getVolume()-volDiff, 0));
+
+          //Reduce precision of the numbers compared to two decimals.
+          if(finalVol.toFixed(2) !== sound.getVolume().toFixed(2)) {
+            volumeApplied = false;
+            console.log("AudioChange. ", index, " ", sound.getVolume());
+          }
+
+          if(sound.getVolume() === 0 && !sound.isPaused) {
+            sound.pause();
+            sound.isPaused = true;
+          }
+          else if(sound.getVolume() !== 0 && sound.isPaused) {
+            sound.play();
+            sound.isPaused = false;
+          }
+        }
+      });
+
+      //If we reached the desired volume configuration.
+      if(volumeApplied) {console.log("APPLIED"); this.pendentVolume = null;}
+    }
+  },
+
+  tick: function(time, delta) {
+    this.modifyStepOfVolume(delta);
+  },
+
+  /**
    * Given an array of volumes. Applies those volumes on the current sounds.
    * Volume order must match url order.
    * TODO: Use keys to identify each sound.
    */
   changeVolumes: function(volumes) {
-    if(this.loaded) {
+    this.pendentVolume = volumes;
+    /*if(this.loaded) {
       console.log(this.el.getAttribute("id"), " ", volumes);
       this.pool.children.forEach(function (sound, index) {
         if(volumes[index] !== undefined) {
@@ -62,7 +112,7 @@ AFRAME.registerComponent('webaudiosound', {
 
         }
       });
-    }
+    }*/
   },
 
   update: function (oldData) {
@@ -105,6 +155,7 @@ AFRAME.registerComponent('webaudiosound', {
 
     this.audioLoader.load(this.urls[self.urlsCounter], function (buffer) {
         self.pool.children[self.urlsCounter].setBuffer(buffer);
+        self.pool.children[self.urlsCounter].setVolume(0);
 
         // Remove this key from cache, otherwise we can't play it again
         THREE.Cache.remove(self.urls[self.urlsCounter]);
