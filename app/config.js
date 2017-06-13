@@ -7,6 +7,9 @@ var config = {
     WITH_USER_SHADOW: false,
     REPORT_POSITION: false,
     REPORT_EVERY: 500,
+    DEMO_DURATION: 1000*60*5,
+    SPHERE_RADIUS: 23,
+    DEMO_MODE_ENABLED: false,
 
     //Percentage. When the user enters the tileLoadArea in one direction the adjacent tile loads
     //or a bording indicating that there is no tile. It should be less than 0.5 to avoid

@@ -306,6 +306,31 @@ function manageUserShadow() {
     }
 }
 
+/** DEMO COUNTDOWN. */
+function demoManager() {
+    if(config.WITH_SPHERE_BARRIER) {
+        if(Date.now()-appLogic.demoCountdown > config.DEMO_DURATION && this.sphereBarrier) {
+            //The animation will last 'animDuration' and will change radius from config.SPHERE_RADIUS to minRadius.
+            var currentAnimTime = Date.now()-appLogic.demoCountdown - config.DEMO_DURATION;
+            var animDuration = 10000; // 5 secs.
+            var minRadius = 3;
+            var currentRadiusRed = (config.SPHERE_RADIUS-minRadius)*currentAnimTime/animDuration;
+            this.sphereBarrier.setAttribute("radius", config.SPHERE_RADIUS-currentRadiusRed);
+            if(config.SPHERE_RADIUS-currentRadiusRed > minRadius) requestAnimationFrame(demoManager);
+        }
+        else requestAnimationFrame(demoManager);
+    }
+}
+
+function startDemoCountdown() {
+    if(config.DEMO_MODE_ENABLED) {
+        appLogic.demoCountdown = Date.now();
+        if(config.WITH_SPHERE_BARRIER && this.sphereBarrier) this.sphereBarrier.setAttribute('radius', config.SPHERE_RADIUS);
+        requestAnimationFrame(demoManager);
+    }
+}
+/** END. DEMO COUNTDOWN. */
+
 /**
  * Manage sphere.
  */
@@ -328,7 +353,7 @@ function manageSphere() {
                 this.sphereBarrier = document.createElement('a-sphere');
 
                 this.sphereBarrier.setAttribute('color', MainConsts.APP_COLOR);
-                this.sphereBarrier.setAttribute('radius', '23');
+                this.sphereBarrier.setAttribute('radius', config.SPHERE_RADIUS);
                 this.sphereBarrier.setAttribute('side', 'back');
                 this.sphereBarrier.setAttribute('opacity', '1');
                 sceneEl.appendChild(this.sphereBarrier);
@@ -464,6 +489,7 @@ function loadWebAudioSounds() {
 document.querySelector('a-scene').addEventListener('loaded', function () {
 
     loadWebAudioSounds();
+    startDemoCountdown()
 
     loadMapTags();
 
@@ -502,6 +528,8 @@ window.onkeyup = function(e) {
        goToLocation(location.position[0], location.position[1]);
        appLogic.startIndex = (appLogic.startIndex+1) % appLogic.startLocations.length;
    }
+   //If O pressed.
+   if (key == 79 && config.DEMO_MODE_ENABLED) startDemoCountdown()
 }
 /**
  * End. Load starting points.
