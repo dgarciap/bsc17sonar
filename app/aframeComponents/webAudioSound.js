@@ -65,7 +65,7 @@ AFRAME.registerComponent('webaudiosound', {
           //Reduce precision of the numbers compared to two decimals.
           if(finalVol.toFixed(2) !== sound.getVolume().toFixed(2)) {
             volumeApplied = false;
-            console.log("AudioChange. ", index, " ", sound.getVolume());
+            //console.log("AudioChange. ", index, " ", sound.getVolume());
           }
 
           if(sound.getVolume() === 0 && !sound.isPaused) {

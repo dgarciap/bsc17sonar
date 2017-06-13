@@ -50,6 +50,33 @@ ws.onopen = function (event) {
 };
 */
 
+function reportPosition() {
+    if(Date.now() - appLogic.reportCounter > config.REPORT_EVERY) {
+        var pos = document.querySelector('#app-camera').getAttribute('position');
+        var rot = document.querySelector('#app-camera').getAttribute('rotation');
+        appLogic.ws.send(JSON.stringify({
+                position: {
+                    x: pos.x/MainConsts.SCALE+MainConsts.COORDS_CORNER.x, 
+                    y: (pos.z*(-1))/MainConsts.SCALE+MainConsts.COORDS_CORNER.y
+                },
+                rotation: rot,
+            },
+        ));
+        appLogic.reportCounter = Date.now();
+    }
+    requestAnimationFrame(reportPosition);
+}
+
+function startReportingPosition() {
+    appLogic.ws = new WebSocket(config.WS_HOST);
+    appLogic.reportCounter = Date.now();
+    appLogic.ws.onopen = function (event) {
+        //Let's react to camera position.
+        //Every half of a second, report camera position in meters (spherical marcator).
+        requestAnimationFrame(reportPosition);
+    };
+}
+
 //Update tiles drawn on screen.
 function tileManager() {
     var pos = document.querySelector('#app-camera').getAttribute('position');
@@ -336,7 +363,7 @@ function audioManager() {
 
     var mapPos = threeDSpaceToMap(position.x, position.z);
 
-    console.log("Position: ", mapPos.x," ", mapPos.y, " ", (position.y-pathgenerator.OCEAN_HEIGHT)/MainConsts.SCALE)
+    //console.log("Position: ", mapPos.x," ", mapPos.y, " ", (position.y-pathgenerator.OCEAN_HEIGHT)/MainConsts.SCALE)
 
     var current_volumes = vol(mapPos.x, mapPos.y, (position.y-pathgenerator.OCEAN_HEIGHT)/MainConsts.SCALE);
 
@@ -404,6 +431,8 @@ document.querySelector('a-scene').addEventListener('loaded', function () {
     loadWebAudioSounds();
 
     loadMapTags();
+
+    if(config.REPORT_POSITION) startReportingPosition();
 
     requestAnimationFrame(manageUserShadow);
     requestAnimationFrame(manageUserAudio);
