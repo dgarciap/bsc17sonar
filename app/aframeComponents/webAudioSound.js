@@ -80,7 +80,7 @@ AFRAME.registerComponent('webaudiosound', {
       });
 
       //If we reached the desired volume configuration.
-      if(volumeApplied) {console.log("APPLIED"); this.pendentVolume = null;}
+      if(volumeApplied) { this.pendentVolume = null; }
     }
   },
 

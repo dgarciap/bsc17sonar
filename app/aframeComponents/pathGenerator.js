@@ -61,18 +61,18 @@ AFRAME.registerComponent('pathgenerator', {
   },
 
   createMeshMaterials: function() {
-      this.materials = {};
-      for(key in pathgenerator.TEXTURE_MAP) {
-        var loader = new THREE.TextureLoader();
-        this.materials[key] = new THREE.PointsMaterial({
-            color: 0xFFFFFF,
-            size: 0.15,
-            map: loader.load(
-                pathgenerator.TEXTURE_MAP[key]
-            ),
-            transparent: true,
-            alphaTest: 0.1,
-        });
+      this.materials = [];
+      for(var i = 0; i < 5; ++i) {
+          var loader = new THREE.TextureLoader();
+          this.materials[i] = new THREE.PointsMaterial({
+                color: 0xFFFFFF,
+                size: 0.11+0.0225*i,
+                map: loader.load(
+                    pathgenerator.TEXTURE_MAP["1"]
+                ),
+                transparent: true,
+                alphaTest: 0.1,
+            });
       }
   },
 
@@ -112,10 +112,14 @@ AFRAME.registerComponent('pathgenerator', {
 
     if(!this.geometries[geomIndex]) this.geometries[geomIndex] = {geom: new THREE.Geometry(), counter: 0};
 
+    materialId = parseInt(type);
+    if (materialId < 1) materialId = 1;
+    if (materialId > 5) materialId = 5;
+
     // create the particle system.
     mesh = new THREE.Points(
         this.geometries[geomIndex].geom,
-        this.materials["1"]);
+        this.materials[materialId-1]);
 
     mesh.rotation.y = this.getAngle(originPoint, endPoint, longitude);
 
@@ -156,7 +160,7 @@ AFRAME.registerComponent('pathgenerator', {
     this.geometries = [];
     this.meshes = [];
     //Create only one material which will be reused for all the geometries.
-    this.materials = {};
+    this.materials = [];
     this.createMeshMaterials();
 
     var that = this;
