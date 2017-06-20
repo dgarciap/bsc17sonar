@@ -1,6 +1,11 @@
 webaudiosound = {};
 webaudiosound.VOLCHANGE_PER_SECOND = 2;
 
+//Cache shared between all the webaudiosounds.
+//It contains the loaded and decoded audio source that are
+//going to be used on multiple positional audio containers.
+webaudiosound.loadedSources = {};
+
 /**
  * Sound component.
  */
@@ -150,24 +155,31 @@ AFRAME.registerComponent('webaudiosound', {
     }
   },
 
+  processLoadedAudioSource: function (buffer) {
+    //Save this decoded audio source into our custom cache.
+    webaudiosound.loadedSources[this.urls[this.urlsCounter]] = buffer;
+    
+    this.pool.children[this.urlsCounter].setBuffer(buffer);
+    this.pool.children[this.urlsCounter].setVolume(0);
+
+    // Remove this key from cache, otherwise we can't play it again.
+    THREE.Cache.remove(this.urls[this.urlsCounter]);
+
+    ++this.urlsCounter;
+    if(this.urlsCounter < this.urls.length) this.loadUrls();
+    else {
+        this.loaded = true;
+        this.el.emit('sound-loaded');
+        if (this.data.autoplay || this.mustPlay) { this.playSound(); }
+    }
+  },
+
   loadUrls: function() {
-    var self = this;
 
-    this.audioLoader.load(this.urls[self.urlsCounter], function (buffer) {
-        self.pool.children[self.urlsCounter].setBuffer(buffer);
-        self.pool.children[self.urlsCounter].setVolume(0);
-
-        // Remove this key from cache, otherwise we can't play it again
-        THREE.Cache.remove(self.urls[self.urlsCounter]);
-
-        ++self.urlsCounter;
-        if(self.urlsCounter < self.urls.length) self.loadUrls();
-        else {
-            self.loaded = true;
-            self.el.emit('sound-loaded');
-            if (self.data.autoplay || self.mustPlay) { self.playSound(); }
-        }
-    });
+    if(webaudiosound.loadedSources[this.urls[this.urlsCounter]])
+      this.processLoadedAudioSource(webaudiosound.loadedSources[this.urls[this.urlsCounter]]);
+    else
+      this.audioLoader.load(this.urls[this.urlsCounter], this.processLoadedAudioSource.bind(this));
   },
 
   pause: function () {

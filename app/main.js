@@ -474,7 +474,7 @@ function loadWebAudioSounds() {
     ];
 
     //Fill webAudioSounds with sounds.
-    if(Date.now()-this.webaudiosoundsTimer > 1000) {
+    if(this.webaudiosoundsCounter === 0 || document.querySelectorAll('.webaudiosound')[this.webaudiosoundsCounter-1].components.webaudiosound.loaded) {
         document.querySelectorAll('.webaudiosound')[this.webaudiosoundsCounter].components.webaudiosound.addSounds(urls);
         this.webaudiosoundsTimer = Date.now();
         ++this.webaudiosoundsCounter;
@@ -507,6 +507,7 @@ document.querySelector('a-scene').addEventListener('loaded', function () {
 /**
  * End. Manage sphere.
  */
+
 /**
  * Load starting points.
  */
