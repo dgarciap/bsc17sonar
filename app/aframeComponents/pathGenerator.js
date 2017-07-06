@@ -11,7 +11,6 @@ pathgenerator.TEXTURE_MAP = {
     "1": "resources/textures/particles/NEW_TRAFFIC.png",//"resources/textures/particles/TRAFFIC.png",//"resources/textures/traffic_vr.png",
 }
 
-
 AFRAME.registerComponent('pathgenerator', {
   schema: {
       pathJsonUrl: {type: "string", default: undefined},
