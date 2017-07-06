@@ -13,3 +13,13 @@
     width: 200px;
     margin: 15px;
 }
+
+.init-menu {
+    position: absolute;
+    top: calc( 50vh - 25px);
+    left: calc( 50vw - 100px);
+    width: 200px;
+    height: 50px;
+    margin: 15px;
+    color: white;
+}

@@ -60,7 +60,7 @@ function reportPositionWS() {
                     y: (pos.z*(-1))/MainConsts.SCALE+MainConsts.COORDS_CORNER.y
                 },
                 rotation: rot,
-            },
+            }
         ));
         appLogic.reportCounter = Date.now();
     }
@@ -97,7 +97,7 @@ function reportPosition() {
                     y: (pos.z*(-1))/MainConsts.SCALE+MainConsts.COORDS_CORNER.y
                 },
                 rotation: rot,
-            },
+            }
         );
 
         xmlhttp.open("GET", config.HTTP_HOST+params, true);
@@ -485,10 +485,20 @@ function loadWebAudioSounds() {
         ++this.webaudiosoundsCounter;
     }
 
-    if(document.querySelectorAll('.webaudiosound').length <= this.webaudiosoundsCounter)
+    if(document.querySelectorAll('.webaudiosound').length <= this.webaudiosoundsCounter) {
+        //We assume that sounds are the last resoruces loaded. So that when we 
+        //end up loading those files, the page is fully loaded.
+        //TODO: THIS MAY CHANGE IN THE FUTURE.
+        hiddeLoading();
         requestAnimationFrame(audioManager);
+    }
     else requestAnimationFrame(loadWebAudioSounds);
 
+}
+
+function hiddeLoading() {
+    var initMenu = document.querySelector('.init-menu');
+    if(initMenu) initMenu.style.visibility = "hidden";
 }
 
 document.querySelector('a-scene').addEventListener('loaded', function () {
